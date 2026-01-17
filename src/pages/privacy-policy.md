@@ -36,4 +36,4 @@ We may update this Policy from time to time. Changes will be posted here, and si
 
 </section>
 <h2>Contact Us</h2>
-<p>If you have questions about this Privacy Policy, email us at support@retrogamingverse.com.</p>
+<p>If you have questions about this Privacy Policy, email us at contact@retrogamingverse.com.</p>
