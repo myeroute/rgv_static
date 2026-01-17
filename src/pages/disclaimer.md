@@ -22,4 +22,4 @@ User-generated content, such as comments on the Blog, is the responsibility of t
 <h2>Changes to This Disclaimer</h2>
 We may update this Disclaimer to reflect changes in the Site or legal requirements. Continued use of the Site constitutes your acceptance of the updated terms. Check this page periodically for updates.
 <h2>Contact Us</h2>
-If you have questions about this Disclaimer, email us at support@retrogamingverse.com.
+If you have questions about this Disclaimer, email us at contact@retrogamingverse.com.
