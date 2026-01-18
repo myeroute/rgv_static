@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => post.data.category === 'retro-style-indie-games')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<h1>Retro-Style Indie Games</h1>
+
+<ul class="post-list">
+  {posts.map((post) => (
+    <li class="post-item">
+      <h2>
+        <a href={`/${post.id}/`}>{post.data.title}</a>
+      </h2>
+
+      {post.data.description && (
+        <p class="excerpt">{post.data.description}</p>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .post-list {
+    list-style: none;
+    padding: 0;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .post-item {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .excerpt {
+    color: #555;
+  }
+</style>
