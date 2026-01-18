@@ -2,6 +2,7 @@
 title: "One Hour with Hollow Knight: Feeling Lost from the Very First Steps"
 pubDate: 2025-12-23
 description: "An honest first-hour experience with Hollow Knight, focusing on confusion, exploration, and the uneasy feeling of being lost without guidance."
+category: retro-style-indie-games
 ---
 <!-- wp:paragraph -->
 <p>I started <a href="https://store.steampowered.com/app/367520/Hollow_Knight/">Hollow Knight</a> with a habit I’ve carried for years. As soon as the game began, the first thing I did was remap the controls to match what I usually use in platformers like Mega Man. It’s almost automatic at this point. I thought I was preparing myself for a familiar kind of game, something that relies on timing and reflexes I already know.</p>
