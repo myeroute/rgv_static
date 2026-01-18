@@ -1,18 +1,30 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+const {
+  title = 'Retro Gaming Verse',
+  description = 'Timeless play experiences with retro games and retro-style indie games.',
+  canonical = Astro.url.href,
+  noindex = true, // tạm thời chặn index
+} = Astro.props;
 ---
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <slot name="head" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="canonical" href={canonical} />
+
+    {noindex && (
+      <meta name="robots" content="noindex, nofollow" />
+    )}
   </head>
+
   <body>
-    <Header />
-    <main>
-      <slot />
-    </main>
-    <Footer />
+    <slot />
   </body>
 </html>
