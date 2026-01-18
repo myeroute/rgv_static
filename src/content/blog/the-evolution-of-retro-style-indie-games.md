@@ -2,6 +2,7 @@
 title: "The Evolution of Retro-Style Indie Games: From Pixel Art to Modern Nostalgia"
 pubDate: 2025-12-10
 description: "Discover why retro-style indie games remain timeless as we explore their origins, artistic growth, and the challenges faced by indie creators shaping the genre."
+category: retro-style-indie-games
 ---
 <a href="https://retrogamingverse.com/retro-style-indie-games-explained/">Retro-style indie games</a> keep a special place in gaming culture, even as the industry moves toward more advanced graphics and complex systems. These games look back in visual style while pushing design forward. In this article, I trace how that happened, why it matters, and why retro-style remains relevant today.
 <h2>Early days: indie developers finding their path with retro aesthetics</h2>
