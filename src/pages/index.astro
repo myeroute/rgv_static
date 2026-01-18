@@ -1,56 +1,58 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 8);
 ---
+<BaseLayout>
+  <h1>Latest Posts</h1>
 
-<h1>Latest Posts</h1>
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li class="post-item">
+        <h2>
+          <a href={`/${post.id}/`}>{post.data.title}</a>
+        </h2>
 
-<ul class="post-list">
-  {posts.map((post) => (
-    <li class="post-item">
-      <h2>
-        <a href={`/${post.id}/`}>{post.data.title}</a>
-      </h2>
+        {post.data.description && (
+          <p class="excerpt">{post.data.description}</p>
+        )}
 
-      {post.data.description && (
-        <p class="excerpt">{post.data.description}</p>
-      )}
+        <a class="read-more" href={`/${post.id}/`}>
+          Read →
+        </a>
+      </li>
+    ))}
+  </ul>
 
-      <a class="read-more" href={`/${post.id}/`}>
-        Read →
-      </a>
-    </li>
-  ))}
-</ul>
+  <style>
+    .post-list {
+      list-style: none;
+      padding: 0;
+      max-width: 720px;
+      margin: 0 auto;
+    }
 
-<style>
-  .post-list {
-    list-style: none;
-    padding: 0;
-    max-width: 720px;
-    margin: 0 auto;
-  }
+    .post-item {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #eee;
+    }
 
-  .post-item {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid #eee;
-  }
+    .post-item h2 {
+      margin-bottom: 0.5rem;
+    }
 
-  .post-item h2 {
-    margin-bottom: 0.5rem;
-  }
+    .excerpt {
+      color: #555;
+      margin-bottom: 0.75rem;
+    }
 
-  .excerpt {
-    color: #555;
-    margin-bottom: 0.75rem;
-  }
-
-  .read-more {
-    font-weight: 500;
-    text-decoration: none;
-  }
-</style>
+    .read-more {
+      font-weight: 500;
+      text-decoration: none;
+    }
+  </style>
+</BaseLayout>
