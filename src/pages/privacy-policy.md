@@ -1,5 +1,6 @@
 ---
 title: "Privacy Policy"
+layout: ../layouts/StaticPageLayout.astro
 ---
 <h2>Introduction</h2>
 <section>At Retro Gaming Verse (the "Blog"), operated by Steven, your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website retrogamingverse.com, or any other media form related to the Blog (collectively, the "Sites"). Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.
