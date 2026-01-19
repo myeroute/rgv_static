@@ -21,12 +21,12 @@ const { title, excerpt, image, url } = Astro.props;
 </article>
 
 <style>
-/* --- Tổng thể: tạo nhịp dọc, không “card” --- */
+/* --- Nhịp dọc chung --- */
 .post-card {
   padding: 3.5rem 0;
 }
 
-/* --- Link bao toàn bài, không CTA --- */
+/* --- Link bao toàn bài --- */
 .post-card__link {
   display: block;
   text-decoration: none;
@@ -34,27 +34,32 @@ const { title, excerpt, image, url } = Astro.props;
   max-width: 680px;
 }
 
-/* --- Ảnh: giống ảnh minh hoạ bài viết, không thumbnail --- */
+/* --- Ảnh: giảm dominance --- */
 .post-card__image {
-  margin: 0 0 1.75rem;
+  margin: 0 0 2.25rem;
 }
 
 .post-card__image img {
   width: 100%;
   height: auto;
   display: block;
+
+  /* Làm ảnh “lùi lại” */
+  opacity: 0.92;
+  filter: saturate(0.95) contrast(0.97);
+
   border-radius: 4px;
 }
 
-/* --- Title: editorial, thoáng, không headline gắt --- */
+/* --- Title: trở thành điểm dẫn chính --- */
 .post-card__title {
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   line-height: 1.45;
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.9rem;
   font-weight: 500;
 }
 
-/* --- Excerpt: rất nhẹ, chỉ để dẫn nhịp --- */
+/* --- Excerpt: rất nhẹ --- */
 .post-card__excerpt {
   font-size: 1rem;
   line-height: 1.75;
@@ -63,7 +68,7 @@ const { title, excerpt, image, url } = Astro.props;
   max-width: 38rem;
 }
 
-/* --- Tách bài rất nhẹ, không viền --- */
+/* --- Tách bài cực nhẹ --- */
 .post-card + .post-card {
   border-top: 1px solid #f0f0f0;
 }
