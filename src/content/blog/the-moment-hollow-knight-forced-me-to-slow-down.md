@@ -2,6 +2,7 @@
 title: "The Moment Hollow Knight Forced Me to Slow Down"
 pubDate: 2025-12-26
 description: "Playing Hollow Knight after fast platformers felt fine at first, until the game began to block my progress and force me to slow down."
+category: retro-style-indie-games
 ---
 <article>
 <p>After writing <a href="https://retrogamingverse.com/one-hour-with-hollow-knight/"><em>One Hour with Hollow Knight</em></a>, I still thought I was in a normal learning phase. I did not fully understand the systems yet. I did not know the map well. But everything still felt acceptable. Hollow Knight was slow and slightly vague, but not enough to make me question how I was playing.</p>
