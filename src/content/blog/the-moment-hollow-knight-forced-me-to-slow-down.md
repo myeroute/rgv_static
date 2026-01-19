@@ -2,6 +2,7 @@
 title: "The Moment Hollow Knight Forced Me to Slow Down"
 pubDate: 2025-12-26
 description: "Playing Hollow Knight after fast platformers felt fine at first, until the game began to block my progress and force me to slow down."
+heroImage: 'https://images.retrogamingverse.com/r1/1225/26/hollow-knight-resting-at-bench.webp'
 category: retro-style-indie-games
 ---
 <article>
