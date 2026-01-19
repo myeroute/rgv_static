@@ -1,34 +1,52 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import PostCard from '../components/PostCard.astro';
-import { categories } from '../config/categories';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
 
-const category = categories['retro-games'];
+/**
+ * Category: Retro Games
+ * - Lọc theo game = "retro-games"
+ * - Không pagination
+ * - Không sidebar (tạm)
+ */
 
-const posts = (await getCollection('blog'))
-  .filter((post) => post.data.category === category.slug)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const toSlug = (post) => `/${post.id.split('/').pop()}/`;
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .filter((post) => post.data.game === "retro-games")
+  .sort(
+    (a, b) =>
+      new Date(b.data.pubDate).getTime() -
+      new Date(a.data.pubDate).getTime()
+  );
 ---
 
-<BaseLayout title={category.title}>
-  <main class="category-wrapper">
-    <header class="category-header">
-      <h1>{category.title}</h1>
-      <p class="category-description">{category.description}</p>
-    </header>
+<BaseLayout title="Retro Games – RetroGamingVerse">
+  <main class="category">
+    <h1>Retro Games</h1>
 
-    <section class="category-posts">
+    <section class="post-list">
       {posts.map((post) => (
         <PostCard
           title={post.data.title}
+          href={`/${post.slug}/`}
           excerpt={post.data.description}
           image={post.data.heroImage}
-          url={toSlug(post)}
+          category={post.data.game}
         />
       ))}
     </section>
   </main>
 </BaseLayout>
+
+<style>
+.category {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+}
+</style>
