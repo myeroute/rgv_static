@@ -3,10 +3,8 @@ import { getCollection } from "astro:content";
 import PostCard from "../components/PostCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-// Lấy toàn bộ bài blog
 const posts = await getCollection("blog");
 
-// Sort mới → cũ (nếu có pubDate)
 const sortedPosts = posts
   .filter((p) => p.data)
   .sort((a, b) => {
@@ -16,22 +14,20 @@ const sortedPosts = posts
   });
 ---
 
-<main class="home">
-  <section class="post-list">
-    {sortedPosts.map((post) => (
-      <PostCard post={post} />
-    ))}
-  </section>
-</main>
+<BaseLayout>
+  <main class="home">
+    <section class="post-list">
+      {sortedPosts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </section>
+  </main>
+</BaseLayout>
 
 <style>
 .home {
   max-width: 920px;
   margin: 0 auto;
   padding: 32px 16px;
-}
-
-.post-list {
-  display: block;
 }
 </style>
