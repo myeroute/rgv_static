@@ -9,13 +9,19 @@ export async function getStaticPaths() {
     params: {
       slug: post.slug,
     },
-    props: {
-      post,
-    },
   }));
 }
 
-const { post } = Astro.props;
+const { slug } = Astro.params;
+
+// tìm post tương ứng với slug
+const posts = await getCollection('blog');
+const post = posts.find((p) => p.slug === slug);
+
+if (!post) {
+  throw new Error(`Post not found: ${slug}`);
+}
+
 const { Content } = await post.render();
 ---
 
