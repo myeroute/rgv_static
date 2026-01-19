@@ -1,5 +1,6 @@
 ---
 title: "About RetroGamingVerse"
+layout: ../layouts/StaticPageLayout.astro
 ---
 Welcome to Retro Gaming Verse.
 I’m Steven.
