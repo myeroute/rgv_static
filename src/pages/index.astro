@@ -1,12 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 
-// Lấy toàn bộ bài blog
 const posts = await getCollection('blog');
 
-// Sort mới → cũ
 posts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
@@ -16,11 +13,23 @@ posts.sort(
   <main class="container">
     <h1 class="page-title">Latest Posts</h1>
 
-    <div class="post-list">
-      {posts.map((post) => (
-        <PostCard post={post} />
-      ))}
-    </div>
+    {posts.map((post) => (
+      <article class="post-item">
+        <h2>
+          <a href={`/${post.slug}/`}>
+            {post.data.title}
+          </a>
+        </h2>
+
+        {post.data.description && (
+          <p class="excerpt">{post.data.description}</p>
+        )}
+
+        <a class="read-more" href={`/${post.slug}/`}>
+          Read More →
+        </a>
+      </article>
+    ))}
   </main>
 </BaseLayout>
 
@@ -36,9 +45,24 @@ posts.sort(
   margin-bottom: 2rem;
 }
 
-.post-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
+.post-item {
+  margin-bottom: 3rem;
+}
+
+.post-item h2 {
+  margin-bottom: 0.5rem;
+}
+
+.post-item a {
+  text-decoration: none;
+}
+
+.excerpt {
+  margin: 0.5rem 0 1rem;
+  color: #444;
+}
+
+.read-more {
+  font-weight: 600;
 }
 </style>
