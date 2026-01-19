@@ -19,69 +19,99 @@ const posts = (await getCollection('blog'))
     <link rel="stylesheet" href="/wp-theme.css" />
   </head>
 
-  <body class="home cs-sidebar-disabled">
+  <body class="home cs-sidebar-disabled cs-metabar-disabled">
 
-    <main class="cs-site-content">
+  <div id="page" class="site">
+
+    <header id="masthead" class="cs-site-header">
       <div class="cs-container">
-
-        <div class="cs-main-content">
-          <div class="cs-content-area">
-
-            <section class="cs-posts-area cs-archive-list">
-              <div class="cs-posts-area__main">
-
-                {posts.map((post) => (
-                  <article class="cs-entry">
-                    <div class="cs-entry__outer">
-
-                      <!-- Thumbnail -->
-                      <div
-                        class="cs-entry__inner cs-entry__thumbnail cs-entry__overlay cs-overlay-ratio cs-ratio-landscape-16-9"
-                        data-scheme="inverse"
-                      >
-                        <img
-                          src={post.data.heroImage}
-                          alt={post.data.title}
-                          loading="lazy"
-                        />
-                      </div>
-
-                      <!-- Content -->
-                      <div class="cs-entry__content">
-
-                        <h2 class="cs-entry__title">
-                          <a href={`/${post.id}/`}>
-                            {post.data.title}
-                          </a>
-                        </h2>
-
-                        <div class="cs-entry__excerpt">
-                          <p>{post.data.description}</p>
-                        </div>
-
-                        <div class="cs-entry__discover-more">
-                          <a
-                            class="cs-button"
-                            href={`/${post.id}/`}
-                            title={`Discover More: ${post.data.title}`}
-                          >
-                            Discover More
-                          </a>
-                        </div>
-
-                      </div>
-                    </div>
-                  </article>
-                ))}
-
-              </div>
-            </section>
-
+        <div class="cs-header-inner">
+          <div class="cs-site-branding">
+            <a href="/" class="cs-site-title">Retro Gaming Verse</a>
           </div>
         </div>
-
       </div>
+    </header>
+
+    <main id="main" class="cs-site-primary">
+
+      <div class="cs-site-content cs-sidebar-disabled cs-metabar-disabled">
+        <div class="cs-container">
+
+          <div class="cs-main-content">
+
+            <div id="primary" class="cs-content-area">
+
+              <section class="cs-posts-area cs-posts-area-posts">
+
+                <div class="cs-posts-area__outer">
+
+                  <div class="cs-posts-area__main cs-archive-grid cs-posts-area__archive cs-posts-area__grid cs-desktop-column-3">
+
+                    {posts.map((post) => (
+                      <article class="cs-entry">
+                        <div class="cs-entry__outer">
+
+                          <div
+                            class="cs-entry__inner cs-entry__thumbnail cs-entry__overlay cs-overlay-ratio cs-ratio-landscape-16-9"
+                            data-scheme="inverse"
+                          >
+                            <img
+                              src={post.data.heroImage}
+                              alt={post.data.title}
+                              loading="lazy"
+                            />
+                          </div>
+
+                          <div class="cs-entry__content">
+
+                            <h2 class="cs-entry__title">
+                              <a href={`/${post.id}/`}>
+                                {post.data.title}
+                              </a>
+                            </h2>
+
+                            <div class="cs-entry__excerpt">
+                              <p>{post.data.description}</p>
+                            </div>
+
+                            <div class="cs-entry__discover-more">
+                              <a
+                                class="cs-button"
+                                href={`/${post.id}/`}
+                                title={`Discover More: ${post.data.title}`}
+                              >
+                                Discover More
+                              </a>
+                            </div>
+
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+
+                  </div>
+                </div>
+              </section>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </main>
 
-  </body>
+    <footer class="cs-site-footer">
+      <div class="cs-container">
+        <div class="cs-footer-inner">
+          <p>© Retro Gaming Verse</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+
 </html>
