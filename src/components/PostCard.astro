@@ -1,43 +1,65 @@
 ---
-const {
-  title,
-  excerpt,
-  image,
-  slug,
-} = Astro.props;
+const { post } = Astro.props;
 
-// Bắt buộc phải có slug
-if (!slug) {
-  throw new Error("PostCard: missing slug");
+if (!post) {
+  throw new Error('PostCard: post is undefined');
 }
 
-const postUrl = `/${slug}`;
+const title = post.data.title;
+const description = post.data.description;
+const image = post.data.image;
+const slug = post.slug;
+
+if (!slug) {
+  throw new Error('PostCard: missing slug');
+}
 ---
 
 <article class="post-card">
-  <a href={postUrl} class="post-card__link">
-    {image && (
-      <div class="post-card__thumb">
-        <img
-          src={image}
-          alt={title}
-          loading="lazy"
-        />
-      </div>
-    )}
+  {image && (
+    <a href={`/${slug}`} class="thumb">
+      <img src={image} alt={title} loading="lazy" />
+    </a>
+  )}
 
-    <div class="post-card__content">
-      <h2 class="post-card__title">{title}</h2>
+  <div class="content">
+    <h2 class="title">
+      <a href={`/${slug}`}>{title}</a>
+    </h2>
 
-      {excerpt && (
-        <p class="post-card__excerpt">
-          {excerpt}
-        </p>
-      )}
+    {description && <p class="excerpt">{description}</p>}
 
-      <span class="post-card__button">
-        Read More →
-      </span>
-    </div>
-  </a>
+    <a class="read-more" href={`/${slug}`}>Read More →</a>
+  </div>
 </article>
+
+<style>
+.post-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.thumb img {
+  width: 260px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.content {
+  max-width: 640px;
+}
+
+.title {
+  font-size: 1.4rem;
+  margin: 0 0 0.5rem;
+}
+
+.excerpt {
+  margin-bottom: 0.75rem;
+}
+
+.read-more {
+  font-weight: 500;
+}
+</style>
