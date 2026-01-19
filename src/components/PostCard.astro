@@ -1,37 +1,85 @@
 ---
+/**
+ * PostCard – SAFE VERSION
+ * - KHÔNG throw error
+ * - KHÔNG giả định đủ field
+ * - Dùng được cho: index, category, archive
+ */
+
 const { post } = Astro.props;
 
-if (!post?.slug || !post?.data) {
-  throw new Error("PostCard: invalid post data");
+// Guard mềm – nếu không có post thì render rỗng
+if (!post) {
+  return null;
 }
 
-const {
-  title,
-  description,
-  heroImage,
-} = post.data;
+// Chuẩn Astro content collection
+const slug = post.slug ?? "";
+const data = post.data ?? {};
 
-const url = `/${post.slug}`;
+const title = data.title ?? "Untitled";
+const description = data.description ?? "";
+const heroImage = data.heroImage ?? null;
+const pubDate = data.pubDate ?? null;
 ---
 
 <article class="post-card">
   {heroImage && (
-    <a href={url} class="post-card-image">
-      <img src={heroImage} alt={title} loading="lazy" />
+    <a href={`/${slug}/`} class="post-card-thumb">
+      <img
+        src={heroImage}
+        alt={title}
+        loading="lazy"
+      />
     </a>
   )}
 
-  <div class="post-card-content">
+  <div class="post-card-body">
     <h2 class="post-card-title">
-      <a href={url}>{title}</a>
+      <a href={`/${slug}/`}>{title}</a>
     </h2>
 
     {description && (
-      <p class="post-card-excerpt">{description}</p>
+      <p class="post-card-desc">{description}</p>
     )}
 
-    <a href={url} class="post-card-readmore">
-      Read more →
-    </a>
+    {pubDate && (
+      <time class="post-card-date">
+        {new Date(pubDate).toLocaleDateString()}
+      </time>
+    )}
   </div>
 </article>
+
+<style>
+.post-card {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.post-card-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.post-card-title {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.post-card-desc {
+  margin: 0;
+  opacity: 0.85;
+  font-size: 0.95rem;
+}
+
+.post-card-date {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+</style>
