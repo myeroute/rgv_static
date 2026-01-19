@@ -2,6 +2,7 @@
 title: "Why Hollow Knight Lost Me, Even After I Started Enjoying It"
 pubDate: 2026-01-07
 description: "I started to enjoy Hollow Knight, then slowly grew tired and stopped. This is a personal experience about fatigue, pacing, and knowing when to walk away."
+heroImage: 'https://images.retrogamingverse.com/r1/0126/07/hollow-knight-stillness-before-pressure.webp'
 category: retro-style-indie-games
 ---
 <article>There was a moment while playing Hollow Knight when I started to think, “Maybe this game is finally opening up to me.”This wasn’t my first hour with Hollow Knight. At the beginning, I was mostly confused and cautious, trying to understand what kind of game this really was. I spent that early time simply observing, learning the rhythm, and figuring out whether I even wanted to continue. You can read about that initial experience in my article <a href="https://retrogamingverse.com/one-hour-with-hollow-knight/">One Hour With Hollow Knight</a>. After a slow and confusing beginning, after gradually understanding its systems, after accepting that I needed to slow down and play on its terms, Hollow Knight gave me a new ability: dash.That moment created a very natural sense of hope. The game gave me speed. It gave me more control over movement. It gave me a familiar feeling, the kind I remembered from platformers I used to love. For the first time, I thought Hollow Knight might finally allow me to play at my own pace.
