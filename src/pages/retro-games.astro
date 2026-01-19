@@ -22,7 +22,7 @@ const posts = (await getCollection('blog'))
     <PostCard
       title={post.data.title}
       excerpt={post.data.description}
-      image={post.data.image}
+      image={post.data.heroImage}
       url={`/${post.id}/`}
     />
   ))}
