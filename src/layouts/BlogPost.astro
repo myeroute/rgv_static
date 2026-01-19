@@ -1,6 +1,5 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { Image } from 'astro:assets';
 
 const { post } = Astro.props;
 const { title, description, pubDate, category, heroImage } = post.data;
@@ -27,12 +26,7 @@ const { title, description, pubDate, category, heroImage } = post.data;
 
       {heroImage && (
         <div class="hero-image">
-          <Image
-            src={heroImage}
-            alt={title}
-            widths={[800, 1200]}
-            sizes="(min-width: 1024px) 50vw, 100vw"
-          />
+          <img src={heroImage.src ?? heroImage} alt={title} loading="eager" />
         </div>
       )}
     </header>
@@ -51,7 +45,6 @@ const { title, description, pubDate, category, heroImage } = post.data;
 
         <div class="post-nav">
           <p class="label">Previous Article</p>
-          <!-- TẠM HARDCODE – SAU SẼ LÀM LOGIC -->
           <a href="/">Where ROM Hacks Actually Cross the Legal Line</a>
         </div>
       </main>
@@ -117,7 +110,9 @@ const { title, description, pubDate, category, heroImage } = post.data;
 
 .hero-image img {
   width: 100%;
+  height: auto;
   border-radius: 20px;
+  display: block;
 }
 
 .post-layout {
