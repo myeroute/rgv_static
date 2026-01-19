@@ -31,24 +31,28 @@ const { title, description, pubDate, category, heroImage } = post.data;
 
       {heroImage && (
         <div class="hero-image">
-          <img src={heroImage.src ?? heroImage} alt={title} loading="eager" />
+          <img
+            src={heroImage.src ?? heroImage}
+            alt={title}
+            loading="eager"
+          />
         </div>
       )}
     </header>
 
-    <!-- BODY -->
-    <div class="post-layout">
-      <main class="post-content">
-        <slot />
+    <!-- BODY (KHÔNG SIDEBAR Ở ĐÂY) -->
+    <main class="post-content">
+      <slot />
 
-        <div class="post-meta">
-          {category && <span class="category">{category}</span>}
+      <div class="post-meta">
+        {category && <span class="category">{category}</span>}
+        {pubDate && (
           <time datetime={pubDate.toISOString()}>
             {pubDate.toLocaleDateString()}
           </time>
-        </div>
-      </main>
-    </div>
+        )}
+      </div>
+    </main>
 
   </article>
 </BaseLayout>
@@ -95,12 +99,8 @@ const { title, description, pubDate, category, heroImage } = post.data;
   display: block;
 }
 
-.post-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 700px);
-}
-
 .post-content {
+  max-width: 700px;
   line-height: 1.75;
 }
 
