@@ -2,6 +2,7 @@
 title: "Pokémon The Last Fire Red Playthrough"
 pubDate: 2026-01-12
 description: "A personal playthrough of Pokémon The Last Fire Red, written alongside real gameplay. Covers the journey without walkthroughs or optimization."
+heroImage: 'https://images.retrogamingverse.com/r1/0126/12/pokemon-the-last-fire-red-start-screen.webp'
 category: retro-games
 ---
 <h2>About this playthrough</h2>
