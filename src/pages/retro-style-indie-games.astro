@@ -1,34 +1,31 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-import PostCard from '../components/PostCard.astro';
-import { categories } from '../config/categories';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
 
-const category = categories['retro-style-indie-games'];
+const posts = await getCollection("blog");
 
-const posts = (await getCollection('blog'))
-  .filter((post) => post.data.category === category.slug)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const toSlug = (post) => `/${post.id.split('/').pop()}/`;
+// LỌC ĐÚNG SHAPE – KHÔNG MAP, KHÔNG BIẾN DẠNG
+const retroStyleIndiePosts = posts.filter(
+  (post) => post.data?.category === "retro-style-indie-games"
+);
 ---
 
-<BaseLayout title={category.title}>
-  <main class="category-wrapper">
-    <header class="category-header">
-      <h1>{category.title}</h1>
-      <p class="category-description">{category.description}</p>
+<BaseLayout title="Retro-style Indie Games">
+  <main class="container">
+    <header class="page-header">
+      <h1>Retro-style Indie Games</h1>
+      <p>Indie games inspired by classic retro aesthetics and design.</p>
     </header>
 
-    <section class="category-posts">
-      {posts.map((post) => (
-        <PostCard
-          title={post.data.title}
-          excerpt={post.data.description}
-          image={post.data.heroImage}
-          url={toSlug(post)}
-        />
-      ))}
-    </section>
+    {retroStyleIndiePosts.length === 0 ? (
+      <p>No posts yet.</p>
+    ) : (
+      <section class="post-grid">
+        {retroStyleIndiePosts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </section>
+    )}
   </main>
 </BaseLayout>
