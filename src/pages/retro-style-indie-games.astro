@@ -1,4 +1,5 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import PostCard from '../components/PostCard.astro';
 import { categories } from '../config/categories';
@@ -53,7 +54,7 @@ const posts = (await getCollection('blog'))
   line-height: 1.7;
 }
 
-/* ===== GRID (WORDPRESS ARCHIVE STYLE) ===== */
+/* ===== GRID ===== */
 .category-posts {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -112,4 +113,3 @@ const posts = (await getCollection('blog'))
   padding: 0.6rem 1.1rem;
 }
 </style>
-
