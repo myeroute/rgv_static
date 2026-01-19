@@ -104,5 +104,17 @@ const posts = (await getCollection('blog'))
 .category-posts :global(.post-card__button) {
   margin-top: auto;
 }
+/* ===== FIX TEXT ALIGN (GIỐNG WP) ===== */
+.category-posts :global(.post-card__content) {
+  align-items: flex-start;
+  max-width: 90%;
+}
+
+/* ===== FIX BUTTON WIDTH ===== */
+.category-posts :global(.post-card__button) {
+  align-self: flex-start;
+  width: auto;
+  padding: 0.6rem 1.1rem;
+}
 
 </style>
