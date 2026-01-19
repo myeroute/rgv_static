@@ -2,6 +2,7 @@
 title: "Replaying Mega Man X4 After Zero: Hardcore as a Choice, Not a Requirement"
 pubDate: 2025-12-23
 description: "A personal reflection on replaying Mega Man X4 after Mega Man Zero, focusing on familiarity, player choice, and how different Mega Man eras treat difficulty."
+heroImage: 'https://images.retrogamingverse.com/r1/1225/23/mega-man-x4-player-select-screen.webp'
 category: retro-games
 ---
 <article>
