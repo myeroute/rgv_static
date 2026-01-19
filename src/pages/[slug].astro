@@ -1,13 +1,20 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BlogPost from '../layouts/BlogPost.astro';
+import path from 'node:path';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+
+  return posts.map((post) => {
+    // LẤY TÊN FILE, BỎ FOLDER
+    const slug = path.basename(post.id);
+
+    return {
+      params: { slug },
+      props: { post },
+    };
+  });
 }
 
 const { post } = Astro.props;
