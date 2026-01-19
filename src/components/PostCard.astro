@@ -1,5 +1,9 @@
 ---
-import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
 
 const { post } = Astro.props;
 
@@ -7,35 +11,22 @@ if (!post?.slug) {
   throw new Error('PostCard: missing post.slug');
 }
 
-const {
-  title,
-  description,
-  heroImage,
-} = post.data;
+const { title, description, heroImage } = post.data;
 ---
 
 <article class="post-card">
   {heroImage && (
-    <a href={`/${post.slug}/`} class="thumb">
-      <Image
-        src={heroImage}
-        alt={title}
-        width={800}
-        height={450}
-        format="webp"
-        loading="lazy"
-      />
+    <a href={`/${post.slug}/`} class="thumbnail">
+      <img src={heroImage.src} alt={title} loading="lazy" />
     </a>
   )}
 
   <div class="content">
-    <h2 class="title">
+    <h2>
       <a href={`/${post.slug}/`}>{title}</a>
     </h2>
 
-    {description && (
-      <p class="excerpt">{description}</p>
-    )}
+    {description && <p>{description}</p>}
 
     <a class="read-more" href={`/${post.slug}/`}>
       Read More →
@@ -46,39 +37,23 @@ const {
 <style>
 .post-card {
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 2rem;
-  align-items: start;
+  grid-template-columns: 240px 1fr;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
 }
 
-.thumb img {
+.thumbnail img {
   width: 100%;
   height: auto;
-  border-radius: 8px;
-  display: block;
+  border-radius: 6px;
 }
 
-.title {
+.content h2 {
   margin: 0 0 0.5rem;
 }
 
-.title a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.excerpt {
-  margin: 0 0 1rem;
-  line-height: 1.6;
-}
-
 .read-more {
-  font-weight: 500;
-}
-
-@media (max-width: 768px) {
-  .post-card {
-    grid-template-columns: 1fr;
-  }
+  display: inline-block;
+  margin-top: 0.5rem;
 }
 </style>
