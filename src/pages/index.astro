@@ -16,7 +16,8 @@ const posts = (await getCollection('blog'))
   <div class="home-layout">
     <main>
       {posts.map((post) => {
-        const slug = post.id.split('/').pop();
+        const slug = post.id.replace(/\.mdx?$/, '').split('/').pop();
+
         return (
           <PostCard
             title={post.data.title}
