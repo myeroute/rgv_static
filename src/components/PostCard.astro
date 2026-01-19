@@ -5,70 +5,83 @@ const { title, excerpt, image, url } = Astro.props;
 <article class="post-card">
   <a href={url} class="post-card__link">
     {image && (
-      <figure class="post-card__image">
+      <div class="post-card__thumb">
         <img src={image} alt={title} loading="lazy" />
-      </figure>
+      </div>
     )}
 
-    <h2 class="post-card__title">{title}</h2>
+    <div class="post-card__content">
+      <h2 class="post-card__title">{title}</h2>
 
-    {excerpt && (
-      <p class="post-card__excerpt">
-        {excerpt}
-      </p>
-    )}
+      {excerpt && (
+        <p class="post-card__excerpt">
+          {excerpt}
+        </p>
+      )}
+
+      <span class="post-card__read">
+        Read →
+      </span>
+    </div>
   </a>
 </article>
 
 <style>
+/* ====== WRAPPER ====== */
+
 .post-card {
-  padding: 3.5rem 0;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid #eee;
 }
 
-/* vùng đọc chữ */
+/* ====== LINK ====== */
+
 .post-card__link {
-  display: block;
+  display: flex;
+  gap: 1.5rem;
   text-decoration: none;
   color: inherit;
-  max-width: 680px;
+  align-items: flex-start;
 }
 
-/* ẢNH KHÔNG ĐƯỢC FULL-WIDTH */
-.post-card__image {
-  margin: 0 0 2rem;
-  max-width: 520px;      /* 🔑 QUAN TRỌNG */
+/* ====== THUMBNAIL ====== */
+
+.post-card__thumb {
+  flex-shrink: 0;
+  width: 220px;
 }
 
-/* ảnh nằm trong vùng đọc, không chiếm sân */
-.post-card__image img {
+.post-card__thumb img {
   width: 100%;
   height: auto;
   display: block;
-
-  opacity: 0.95;
-  filter: saturate(0.95) contrast(0.97);
   border-radius: 4px;
 }
 
-/* Title dẫn nhịp */
+/* ====== CONTENT ====== */
+
+.post-card__content {
+  max-width: 420px;
+}
+
 .post-card__title {
-  font-size: 1.55rem;
-  line-height: 1.45;
-  margin: 0 0 0.9rem;
-  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin: 0 0 0.6rem;
+  font-weight: 600;
 }
 
-/* Excerpt nhẹ */
 .post-card__excerpt {
-  font-size: 1rem;
-  line-height: 1.75;
-  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin: 0 0 0.6rem;
   color: #666;
-  max-width: 38rem;
 }
 
-/* tách bài rất nhẹ */
-.post-card + .post-card {
-  border-top: 1px solid #f0f0f0;
+/* ====== READ LINK ====== */
+
+.post-card__read {
+  font-size: 0.9rem;
+  color: #555;
 }
 </style>
