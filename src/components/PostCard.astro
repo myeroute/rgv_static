@@ -21,12 +21,11 @@ const { title, excerpt, image, url } = Astro.props;
 </article>
 
 <style>
-/* --- Nhịp dọc chung --- */
 .post-card {
   padding: 3.5rem 0;
 }
 
-/* --- Link bao toàn bài --- */
+/* vùng đọc chữ */
 .post-card__link {
   display: block;
   text-decoration: none;
@@ -34,24 +33,24 @@ const { title, excerpt, image, url } = Astro.props;
   max-width: 680px;
 }
 
-/* --- Ảnh: giảm dominance --- */
+/* ẢNH KHÔNG ĐƯỢC FULL-WIDTH */
 .post-card__image {
-  margin: 0 0 2.25rem;
+  margin: 0 0 2rem;
+  max-width: 520px;      /* 🔑 QUAN TRỌNG */
 }
 
+/* ảnh nằm trong vùng đọc, không chiếm sân */
 .post-card__image img {
   width: 100%;
   height: auto;
   display: block;
 
-  /* Làm ảnh “lùi lại” */
-  opacity: 0.92;
+  opacity: 0.95;
   filter: saturate(0.95) contrast(0.97);
-
   border-radius: 4px;
 }
 
-/* --- Title: trở thành điểm dẫn chính --- */
+/* Title dẫn nhịp */
 .post-card__title {
   font-size: 1.55rem;
   line-height: 1.45;
@@ -59,7 +58,7 @@ const { title, excerpt, image, url } = Astro.props;
   font-weight: 500;
 }
 
-/* --- Excerpt: rất nhẹ --- */
+/* Excerpt nhẹ */
 .post-card__excerpt {
   font-size: 1rem;
   line-height: 1.75;
@@ -68,7 +67,7 @@ const { title, excerpt, image, url } = Astro.props;
   max-width: 38rem;
 }
 
-/* --- Tách bài cực nhẹ --- */
+/* tách bài rất nhẹ */
 .post-card + .post-card {
   border-top: 1px solid #f0f0f0;
 }
