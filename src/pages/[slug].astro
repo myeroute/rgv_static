@@ -3,15 +3,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Sidebar from '../components/Sidebar.astro';
 import { getCollection } from 'astro:content';
 
+/**
+ * Generate static paths for ALL blog posts
+ * URL format: /post-name
+ */
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
-  return posts
-    .filter((post) => typeof post.slug === 'string' && post.slug.length > 0)
-    .map((post) => ({
-      params: { slug: post.slug },
-      props: { post },
-    }));
+  return posts.map((post) => ({
+    params: {
+      slug: post.slug, // ví dụ: "coming-back-to-mega-man"
+    },
+    props: {
+      post,
+    },
+  }));
 }
 
 const { post } = Astro.props;
@@ -23,8 +29,11 @@ const Content = post.Content;
     <article class="post-content">
       <header class="post-header">
         <h1>{post.data.title}</h1>
+
         {post.data.description && (
-          <p class="post-description">{post.data.description}</p>
+          <p class="post-description">
+            {post.data.description}
+          </p>
         )}
       </header>
 
