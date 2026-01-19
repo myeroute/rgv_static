@@ -2,6 +2,7 @@
 title: "Where ROM Hacks Actually Cross the Legal Line"
 pubDate: 2026-01-13
 description: "An explanation of where ROM hacks usually cross the legal line, focusing on presentation, distribution, and how players often misunderstand the risks."
+heroImage: 'https://images.retrogamingverse.com/r1/0126/13/pokemon-fire-red-rom-hack-title-screen.webp'
 category: retro-games
 ---
 When players ask whether ROM hacks are illegal, they are usually not looking for a legal definition. What they really want to know is something much simpler: where is the line, and am I already close to it?
