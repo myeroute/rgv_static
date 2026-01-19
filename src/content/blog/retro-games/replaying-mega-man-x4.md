@@ -4,6 +4,7 @@ pubDate: 2025-12-23
 description: "A personal reflection on replaying Mega Man X4 after Mega Man Zero, focusing on familiarity, player choice, and how different Mega Man eras treat difficulty."
 heroImage: 'https://images.retrogamingverse.com/r1/1225/23/cutscene-in-megaman-x4.webp'
 category: retro-games
+game: mega man
 ---
 <article>
 <h2>Replaying Mega Man X4</h2>
