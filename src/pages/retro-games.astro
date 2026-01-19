@@ -1,42 +1,29 @@
 ---
 import { getCollection } from 'astro:content';
+import PostCard from '../components/PostCard.astro';
+import { categories } from '../config/categories';
+
+const category = categories['retro-games'];
 
 const posts = (await getCollection('blog'))
-  .filter((post) => post.data.category === 'retro-games')
+  .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
+<section class="category-header">
+  <h1>{category.title}</h1>
 
-<h1>Retro Games</h1>
+  <p class="category-description">
+    {category.description}
+  </p>
+</section>
 
-<ul class="post-list">
+<section class="category-posts">
   {posts.map((post) => (
-    <li class="post-item">
-      <h2>
-        <a href={`/${post.id}/`}>{post.data.title}</a>
-      </h2>
-
-      {post.data.description && (
-        <p class="excerpt">{post.data.description}</p>
-      )}
-    </li>
+    <PostCard
+      title={post.data.title}
+      excerpt={post.data.description}
+      image={post.data.image}
+      url={`/${post.id}/`}
+    />
   ))}
-</ul>
-
-<style>
-  .post-list {
-    list-style: none;
-    padding: 0;
-    max-width: 720px;
-    margin: 0 auto;
-  }
-
-  .post-item {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid #eee;
-  }
-
-  .excerpt {
-    color: #555;
-  }
-</style>
+</section>
