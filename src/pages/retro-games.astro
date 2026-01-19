@@ -1,7 +1,7 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import PostCard from '../components/PostCard.astro';
-import BaseLayout from '../layouts/BaseLayout.astro';
 import { categories } from '../config/categories';
 
 const category = categories['retro-games'];
@@ -10,29 +10,31 @@ const posts = (await getCollection('blog'))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
-<section class="category-wrapper">
-  <section class="category-header">
-    <h1>{category.title}</h1>
 
-    <p class="category-description">
-      {category.description}
-    </p>
-  </section>
+<BaseLayout title={category.title}>
+  <main class="category-wrapper">
+    <section class="category-header">
+      <h1>{category.title}</h1>
+      <p class="category-description">
+        {category.description}
+      </p>
+    </section>
 
-  <section class="category-posts">
-    {posts.map((post) => (
-      <PostCard
-        title={post.data.title}
-        excerpt={post.data.description}
-        image={post.data.heroImage}
-        url={`/${post.id}/`}
-      />
-    ))}
-  </section>
-</section>
+    <section class="category-posts">
+      {posts.map((post) => (
+        <PostCard
+          title={post.data.title}
+          excerpt={post.data.description}
+          image={post.data.heroImage}
+          url={`/${post.slug}/`}
+        />
+      ))}
+    </section>
+  </main>
+</BaseLayout>
 
 <style>
-  /* ===== CONTAINER ===== */
+/* ===== CONTAINER ===== */
 .category-wrapper {
   max-width: 1200px;
   margin: 0 auto;
@@ -66,14 +68,14 @@ const posts = (await getCollection('blog'))
   border-bottom: none;
 }
 
-/* ===== CARD LAYOUT: DỌC + FLEX ===== */
+/* ===== CARD LAYOUT ===== */
 .category-posts :global(.post-card__link) {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* ===== THUMBNAIL: ÉP ĐỀU (WP STYLE) ===== */
+/* ===== THUMBNAIL ===== */
 .category-posts :global(.post-card__thumb) {
   height: 200px;
   overflow: hidden;
@@ -91,6 +93,8 @@ const posts = (await getCollection('blog'))
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  align-items: flex-start;
+  max-width: 90%;
 }
 
 .category-posts :global(.post-card__title) {
@@ -101,21 +105,11 @@ const posts = (await getCollection('blog'))
   margin-bottom: 1.25rem;
 }
 
-/* ===== BUTTON: ĐẨY XUỐNG ĐÁY (WP TRICK) ===== */
+/* ===== BUTTON ===== */
 .category-posts :global(.post-card__button) {
   margin-top: auto;
-}
-/* ===== FIX TEXT ALIGN (GIỐNG WP) ===== */
-.category-posts :global(.post-card__content) {
-  align-items: flex-start;
-  max-width: 90%;
-}
-
-/* ===== FIX BUTTON WIDTH ===== */
-.category-posts :global(.post-card__button) {
   align-self: flex-start;
   width: auto;
   padding: 0.6rem 1.1rem;
 }
-
 </style>
