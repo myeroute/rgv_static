@@ -12,31 +12,92 @@ const posts = (await getCollection('blog'))
   title="Retro Gaming Verse – Slow Play, Deep Experience"
   description="A personal journal about retro games and retro-style indie games, played slowly and thoughtfully."
 >
-  <h1>Latest Posts</h1>
+  <div class="home-layout">
+    <!-- MAIN CONTENT -->
+    <main class="home-main">
+      <h1>Latest Posts</h1>
 
-  <section class="post-list">
-    {posts.map((post) => {
-      const slug = post.id.split('/').pop();
-      const url = `/${slug}/`;
+      {posts.map((post) => {
+        const slug = post.id.split('/').pop();
+        const url = `/${slug}/`;
 
-      return (
-        <PostCard
-          title={post.data.title}
-          excerpt={post.data.description}
-          image={post.data.heroImage}
-          url={url}
-        />
-      );
-    })}
-  </section>
+        return (
+          <PostCard
+            title={post.data.title}
+            excerpt={post.data.description}
+            image={post.data.heroImage}
+            url={url}
+          />
+        );
+      })}
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="home-sidebar">
+      <section class="sidebar-box">
+        <h3>Search</h3>
+        <input type="text" placeholder="Search..." />
+      </section>
+
+      <section class="sidebar-box">
+        <h3>About</h3>
+        <p>
+          Retro Gaming Verse is a personal journal about time spent with retro
+          games and retro-style indie games, written slowly and thoughtfully.
+        </p>
+      </section>
+    </aside>
+  </div>
 </BaseLayout>
 
 <style>
-  h1 {
-    margin-bottom: 3rem;
-  }
+/* ====== LAYOUT WRAPPER ====== */
 
-  .post-list {
-    max-width: 720px;
-  }
+.home-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ====== MAIN ====== */
+
+.home-main h1 {
+  margin-bottom: 3rem;
+}
+
+/* ====== SIDEBAR ====== */
+
+.home-sidebar {
+  position: relative;
+}
+
+.sidebar-box {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+
+.sidebar-box h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.sidebar-box p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+.sidebar-box input {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  font-size: 0.9rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
 </style>
