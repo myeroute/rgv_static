@@ -9,6 +9,9 @@ const category = categories['retro-style-indie-games'];
 const posts = (await getCollection('blog'))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// helper tạo slug an toàn
+const toSlug = (post) => `/${post.id.split('/').pop()}/`;
 ---
 
 <BaseLayout title={category.title}>
@@ -26,7 +29,7 @@ const posts = (await getCollection('blog'))
           title={post.data.title}
           excerpt={post.data.description}
           image={post.data.heroImage}
-          url={`/${post.slug}/`}
+          url={toSlug(post)}
         />
       ))}
     </section>
@@ -34,14 +37,12 @@ const posts = (await getCollection('blog'))
 </BaseLayout>
 
 <style>
-/* ===== CONTAINER ===== */
 .category-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-/* ===== HEADER ===== */
 .category-header {
   max-width: 720px;
 }
@@ -54,7 +55,6 @@ const posts = (await getCollection('blog'))
   line-height: 1.7;
 }
 
-/* ===== GRID ===== */
 .category-posts {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -62,20 +62,17 @@ const posts = (await getCollection('blog'))
   margin-top: 3.5rem;
 }
 
-/* ===== POST CARD RESET ===== */
 .category-posts :global(.post-card) {
   padding: 0;
   border-bottom: none;
 }
 
-/* ===== CARD LAYOUT ===== */
 .category-posts :global(.post-card__link) {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* ===== THUMBNAIL ===== */
 .category-posts :global(.post-card__thumb) {
   height: 200px;
   overflow: hidden;
@@ -88,7 +85,6 @@ const posts = (await getCollection('blog'))
   display: block;
 }
 
-/* ===== CONTENT ===== */
 .category-posts :global(.post-card__content) {
   display: flex;
   flex-direction: column;
@@ -105,7 +101,6 @@ const posts = (await getCollection('blog'))
   margin-bottom: 1.25rem;
 }
 
-/* ===== BUTTON ===== */
 .category-posts :global(.post-card__button) {
   margin-top: auto;
   align-self: flex-start;
