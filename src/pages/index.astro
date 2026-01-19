@@ -1,38 +1,44 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 
-// LẤY TẤT CẢ BÀI
+// Lấy toàn bộ bài blog
 const posts = await getCollection('blog');
 
-// sort theo ngày
+// Sort mới → cũ
 posts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
 <BaseLayout title="Home">
-  <main style="max-width: 900px; margin: 2rem auto;">
-    <h1>Posts ({posts.length})</h1>
+  <main class="container">
+    <h1 class="page-title">Latest Posts</h1>
 
-    {posts.map((post) => {
-      // slug CHUẨN, không đoán
-      const slug = post.id.replace(/\.mdx?$/, '').split('/').pop();
-
-      return (
-        <article style="margin-bottom: 2rem;">
-          <h2>
-            <a href={`/${slug}/`}>{post.data.title}</a>
-          </h2>
-
-          <p>{post.data.description}</p>
-
-          <small>
-            slug: {slug} <br />
-            category: {post.data.category}
-          </small>
-        </article>
-      );
-    })}
+    <div class="post-list">
+      {posts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
   </main>
 </BaseLayout>
+
+<style>
+.container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+</style>
