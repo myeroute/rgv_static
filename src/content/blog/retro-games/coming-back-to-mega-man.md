@@ -5,7 +5,7 @@ description: "Coming back to Mega Man after years away, sharing which games stil
 heroImage: 'https://images.retrogamingverse.com/r1/1225/29/mega-man-x4-player-select-screen.webp'
 category: retro-games
 ---
-I came back to Mega Man mostly because of nostalgia. Not the loud, overwhelming kind, but a quieter feeling. The kind that reminds you of something that once felt very familiar. Something tied to long afternoons, to moments of frustration, turning the console off, then turning it back on again not long after, knowing full well you might fail all over again.
+I came back to Mega Man mostly because of nostalgia. Not the loud, overwhelming kind, but a quieter feeling. The kind that reminds you of something that once felt very familiar. Something tied to long afternoons, to moments of frustration, turning the console off, then turning it back on again not long after, knowing full well you might fail all over again..
 
 I did consider trying games that tried to carry that spirit forward, like <a href="http://www.mightyno9.com/">Mighty No. 9</a>. But the feeling wasn’t quite there. Not because the game was bad. It just didn’t pull me in the same way. Maybe I wasn’t looking for something that felt exactly like the past anymore. I just wanted to see whether Mega Man, the series I actually played back then, still had something to say to me now.
 
