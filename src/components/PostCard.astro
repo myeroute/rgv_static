@@ -1,103 +1,37 @@
 ---
-/**
- * PostCard – version đơn giản, an toàn, static-first
- * KHÔNG dùng post object
- * KHÔNG phụ thuộc collection
- * KHÔNG throw error
- */
+const { post } = Astro.props;
 
-interface Props {
-  title: string;
-  href: string;
-  excerpt?: string;
-  image?: string;
-  category?: string;
+if (!post?.slug || !post?.data) {
+  throw new Error("PostCard: invalid post data");
 }
 
 const {
   title,
-  href,
-  excerpt = "",
-  image = "",
-  category = "",
-} = Astro.props;
+  description,
+  heroImage,
+} = post.data;
+
+const url = `/${post.slug}`;
 ---
 
 <article class="post-card">
-  {image && (
-    <a href={href} class="post-card__image">
-      <img src={image} alt={title} loading="lazy" />
+  {heroImage && (
+    <a href={url} class="post-card-image">
+      <img src={heroImage} alt={title} loading="lazy" />
     </a>
   )}
 
-  <div class="post-card__content">
-    {category && (
-      <div class="post-card__category">
-        {category}
-      </div>
-    )}
-
-    <h2 class="post-card__title">
-      <a href={href}>{title}</a>
+  <div class="post-card-content">
+    <h2 class="post-card-title">
+      <a href={url}>{title}</a>
     </h2>
 
-    {excerpt && (
-      <p class="post-card__excerpt">
-        {excerpt}
-      </p>
+    {description && (
+      <p class="post-card-excerpt">{description}</p>
     )}
 
-    <a href={href} class="post-card__readmore">
+    <a href={url} class="post-card-readmore">
       Read more →
     </a>
   </div>
 </article>
-
-<style>
-.post-card {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.post-card__image img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-.post-card__category {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  opacity: 0.6;
-  margin-bottom: 0.25rem;
-}
-
-.post-card__title {
-  margin: 0 0 0.5rem;
-  font-size: 1.25rem;
-  line-height: 1.4;
-}
-
-.post-card__title a {
-  text-decoration: none;
-}
-
-.post-card__excerpt {
-  margin: 0 0 0.75rem;
-  line-height: 1.6;
-  opacity: 0.9;
-}
-
-.post-card__readmore {
-  font-size: 0.9rem;
-}
-
-@media (max-width: 768px) {
-  .post-card {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
