@@ -1,20 +1,28 @@
 ---
-const { post } = Astro.props;
-
-// slug CHUẨN – dùng ở mọi page
-const slug = post.id.replace(/\.mdx?$/, '').split('/').pop();
+const {
+  title,
+  excerpt,
+  image,
+  url
+} = Astro.props;
 ---
 
 <article class="post-card">
-  <a href={`/${slug}/`}>
-    {post.data.heroImage && (
-      <img src={post.data.heroImage} alt={post.data.title} />
+  <a href={url} class="post-card__link">
+    {image && (
+      <div class="post-card__thumb">
+        <img src={image} alt={title} loading="lazy" />
+      </div>
     )}
 
-    <h2>{post.data.title}</h2>
-  </a>
+    <div class="post-card__content">
+      <h2 class="post-card__title">{title}</h2>
 
-  {post.data.description && (
-    <p>{post.data.description}</p>
-  )}
+      {excerpt && (
+        <p class="post-card__excerpt">{excerpt}</p>
+      )}
+
+      <span class="post-card__button">Read More</span>
+    </div>
+  </a>
 </article>
