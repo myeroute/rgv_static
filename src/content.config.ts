@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
-  // Load Markdown and MDX files in src/content/blog/
+  // Load all Markdown / MDX files, including subfolders
   loader: glob({
     base: './src/content/blog',
     pattern: '**/*.{md,mdx}',
@@ -15,9 +15,8 @@ const blog = defineCollection({
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
 
-      category: z
-        .enum(['retro-games', 'retro-style-indie-games'])
-        .optional(),
+      // Không khóa enum để tránh fail khi migrate / move file
+      category: z.string().optional(),
 
       heroImage: image().optional(),
     }),
