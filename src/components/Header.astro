@@ -1,6 +1,70 @@
-<nav class="site-nav">
-  <a href="/">Home</a>
-  <a href="/retro-games/">Retro Games</a>
-  <a href="/retro-style-indie-games/">Retro-Style Indie Games</a>
-  <a href="/about/">About</a>
-</nav>
+---
+---
+<header class="site-header">
+  <div class="header-inner">
+    <!-- LEFT: Logo -->
+    <div class="header-left">
+      <a href="/" class="site-logo">Retro Gaming Verse</a>
+    </div>
+
+    <!-- CENTER: Navigation -->
+    <nav class="header-center">
+      <a href="/">Home</a>
+      <a href="/retro-games/">Retro Games</a>
+      <a href="/retro-style-indie-games/">Retro-Style Indie Games</a>
+      <a href="/about/">About</a>
+    </nav>
+
+    <!-- RIGHT: Empty placeholder (future use) -->
+    <div class="header-right"></div>
+  </div>
+</header>
+
+<style>
+.site-header {
+  width: 100%;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  flex: 0 0 auto;
+}
+
+.site-logo {
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #1f2937;
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+
+.header-center a {
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.header-center a:hover {
+  color: #4f46e5;
+}
+
+.header-right {
+  flex: 0 0 auto;
+}
+</style>
