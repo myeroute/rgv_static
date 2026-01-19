@@ -1,52 +1,26 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import Layout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
-/**
- * Category: Retro Games
- * - Lọc theo game = "retro-games"
- * - Không pagination
- * - Không sidebar (tạm)
- */
-
-const posts = (await getCollection("blog"))
-  .filter((post) => !post.data.draft)
-  .filter((post) => post.data.game === "retro-games")
-  .sort(
-    (a, b) =>
-      new Date(b.data.pubDate).getTime() -
-      new Date(a.data.pubDate).getTime()
-  );
+const posts = await getCollection("blog", ({ data }) => {
+  return data.category === "retro-games";
+});
 ---
 
-<BaseLayout title="Retro Games – RetroGamingVerse">
-  <main class="category">
+<Layout title="Retro Games">
+  <section class="container">
     <h1>Retro Games</h1>
 
-    <section class="post-list">
+    <p>
+      This category is a space where I revisit older games and write down what
+      it actually feels like to play them again today.
+    </p>
+
+    <div class="post-list">
       {posts.map((post) => (
-        <PostCard
-          title={post.data.title}
-          href={`/${post.slug}/`}
-          excerpt={post.data.description}
-          image={post.data.heroImage}
-          category={post.data.game}
-        />
+        <PostCard post={post} />
       ))}
-    </section>
-  </main>
-</BaseLayout>
-
-<style>
-.category {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.post-list {
-  display: flex;
-  flex-direction: column;
-}
-</style>
+    </div>
+  </section>
+</Layout>
