@@ -1,0 +1,141 @@
+---
+import { getCollection } from 'astro:content';
+
+const {
+  variant = 'home', // 'home' | 'post'
+  post = null,
+} = Astro.props;
+
+// Recent posts (always)
+const recentPosts = (await getCollection('blog'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+
+// Logic: More from this topic
+let relatedPosts = [];
+let relatedTitle = '';
+
+if (variant === 'post' && post) {
+  const allPosts = await getCollection('blog');
+  const currentSlug = post.id.split('/').pop();
+
+  if (post.data.game) {
+    relatedTitle = `More from ${post.data.game}`;
+    relatedPosts = allPosts.filter(
+      (p) =>
+        p.id !== post.id &&
+        p.data.game === post.data.game
+    );
+  } else if (post.data.tag) {
+    relatedTitle = `More ${post.data.tag}`;
+    relatedPosts = allPosts.filter(
+      (p) =>
+        p.id !== post.id &&
+        p.data.tag === post.data.tag
+    );
+  }
+
+  relatedPosts = relatedPosts
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 5);
+}
+---
+
+<aside class="sidebar">
+  <!-- Search -->
+  <section class="sidebar-box">
+    <h3>Search</h3>
+    <input type="text" placeholder="Search..." />
+  </section>
+
+  <!-- More from this topic (post only, conditional) -->
+  {variant === 'post' && relatedPosts.length > 0 && (
+    <section class="sidebar-box">
+      <h3>{relatedTitle}</h3>
+      <ul class="sidebar-list">
+        {relatedPosts.map((p) => {
+          const slug = p.id.split('/').pop();
+          return (
+            <li>
+              <a href={`/${slug}/`}>{p.data.title}</a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )}
+
+  <!-- Recent posts -->
+  <section class="sidebar-box">
+    <h3>Recent Posts</h3>
+    <ul class="sidebar-list">
+      {recentPosts.map((p) => {
+        const slug = p.id.split('/').pop();
+        return (
+          <li>
+            <a href={`/${slug}/`}>{p.data.title}</a>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+
+  <!-- Author -->
+  <section class="sidebar-box">
+    <h3>About</h3>
+    <p>
+      Retro Gaming Verse is a personal journal about time spent with retro games
+      and retro-style indie games, written slowly and thoughtfully.
+    </p>
+  </section>
+</aside>
+
+<style>
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-box {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar-box h3 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.sidebar-box p {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.sidebar-box input {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sidebar-list li {
+  margin-bottom: 0.6rem;
+}
+
+.sidebar-list a {
+  text-decoration: none;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.sidebar-list a:hover {
+  color: #4f46e5;
+}
+</style>
