@@ -1,35 +1,49 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PostCard from '../components/PostCard.astro';
-import { getCollection } from 'astro:content';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getCollection } from "astro:content";
 
-const posts = await getCollection('blog');
+/**
+ * Homepage:
+ * - Lấy bài từ collection blog
+ * - Sort mới → cũ
+ * - Render bằng PostCard (props tường minh)
+ */
 
-posts.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort(
+    (a, b) =>
+      new Date(b.data.pubDate).getTime() -
+      new Date(a.data.pubDate).getTime()
+  );
 ---
 
-<BaseLayout title="Retro Gaming Verse">
-  <main class="container">
-    <div class="post-list">
+<BaseLayout title="RetroGamingVerse">
+  <main class="home">
+    <section class="post-list">
       {posts.map((post) => (
-        <PostCard post={post} />
+        <PostCard
+          title={post.data.title}
+          href={`/${post.slug}/`}
+          excerpt={post.data.description}
+          image={post.data.heroImage}
+          category={post.data.game ?? post.data.tag}
+        />
       ))}
-    </div>
+    </section>
   </main>
 </BaseLayout>
 
 <style>
-.container {
-  max-width: 1200px;
-  margin: 3rem auto;
-  padding: 0 1rem;
+.home {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
 .post-list {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
 }
 </style>
