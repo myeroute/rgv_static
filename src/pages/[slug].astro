@@ -4,24 +4,21 @@ import Sidebar from '../components/Sidebar.astro';
 import { getCollection } from 'astro:content';
 
 /**
- * Generate static paths for ALL blog posts
- * URL format: /post-name
+ * Static paths: domain.com/post-name
  */
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
   return posts.map((post) => ({
-    params: {
-      slug: post.slug, // ví dụ: "coming-back-to-mega-man"
-    },
-    props: {
-      post,
-    },
+    params: { slug: post.slug },
+    props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const Content = post.Content;
+
+// ⬅️ CHỖ QUAN TRỌNG
+const { Content } = await post.render();
 ---
 
 <BaseLayout title={post.data.title} sidebar="post">
