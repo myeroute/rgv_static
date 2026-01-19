@@ -5,7 +5,12 @@ const { post } = Astro.props;
 const { title, description, pubDate, category, heroImage } = post.data;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout
+  title={title}
+  description={description}
+  sidebar="post"
+  post={post}
+>
   <article class="post">
 
     <!-- HERO -->
@@ -31,7 +36,7 @@ const { title, description, pubDate, category, heroImage } = post.data;
       )}
     </header>
 
-    <!-- BODY + SIDEBAR -->
+    <!-- BODY -->
     <div class="post-layout">
       <main class="post-content">
         <slot />
@@ -42,34 +47,9 @@ const { title, description, pubDate, category, heroImage } = post.data;
             {pubDate.toLocaleDateString()}
           </time>
         </div>
-
-        <div class="post-nav">
-          <p class="label">Previous Article</p>
-          <a href="/">Where ROM Hacks Actually Cross the Legal Line</a>
-        </div>
       </main>
-
-      <aside class="post-sidebar">
-        <section class="widget">
-          <h3>Search</h3>
-          <input type="text" placeholder="Search..." />
-          <button>Search</button>
-        </section>
-
-        <section class="widget">
-          <h3>About</h3>
-          <p>
-            Retro Gaming Verse is a personal journal about time spent with retro
-            games and retro-style indie games, written slowly and thoughtfully.
-          </p>
-        </section>
-
-        <section class="widget">
-          <h3>More from this game</h3>
-          <p>Pokémon The Last FireRed Playthrough</p>
-        </section>
-      </aside>
     </div>
+
   </article>
 </BaseLayout>
 
@@ -117,8 +97,7 @@ const { title, description, pubDate, category, heroImage } = post.data;
 
 .post-layout {
   display: grid;
-  grid-template-columns: minmax(0, 700px) 300px;
-  gap: 3rem;
+  grid-template-columns: minmax(0, 700px);
 }
 
 .post-content {
@@ -135,34 +114,5 @@ const { title, description, pubDate, category, heroImage } = post.data;
   gap: 1rem;
   font-size: 0.9rem;
   color: #777;
-}
-
-.post-nav {
-  margin-top: 3rem;
-  padding: 2rem;
-  background: #f7f8ff;
-  border-radius: 16px;
-}
-
-.post-sidebar .widget {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 16px;
-  margin-bottom: 2rem;
-}
-
-.post-sidebar input {
-  width: 100%;
-  padding: 0.6rem;
-  margin-bottom: 0.75rem;
-}
-
-.post-sidebar button {
-  width: 100%;
-  padding: 0.6rem;
-  background: #6c63ff;
-  color: white;
-  border: none;
-  border-radius: 8px;
 }
 </style>
