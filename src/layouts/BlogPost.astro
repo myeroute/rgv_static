@@ -1,110 +1,173 @@
 ---
+import BaseLayout from './BaseLayout.astro';
+import { Image } from 'astro:assets';
+
 const { post } = Astro.props;
-const {
-  title,
-  description,
-  heroImage,
-  category,
-  pubDate,
-} = post.data;
+const { title, description, pubDate, category, heroImage } = post.data;
 ---
 
-<article class="blog-post">
+<BaseLayout title={title} description={description}>
+  <article class="post">
 
-  <!-- HERO -->
-  {heroImage && (
-    <div class="hero">
-      <img src={heroImage} alt={title} />
+    <!-- HERO -->
+    <header class="post-hero">
+      <div class="hero-text">
+        <p class="author">Steven</p>
+
+        <h1>{title}</h1>
+
+        {description && (
+          <p class="excerpt">{description}</p>
+        )}
+
+        {category && (
+          <span class="category">{category}</span>
+        )}
+      </div>
+
+      {heroImage && (
+        <div class="hero-image">
+          <Image
+            src={heroImage}
+            alt={title}
+            widths={[800, 1200]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+          />
+        </div>
+      )}
+    </header>
+
+    <!-- BODY + SIDEBAR -->
+    <div class="post-layout">
+      <main class="post-content">
+        <slot />
+
+        <div class="post-meta">
+          {category && <span class="category">{category}</span>}
+          <time datetime={pubDate.toISOString()}>
+            {pubDate.toLocaleDateString()}
+          </time>
+        </div>
+
+        <div class="post-nav">
+          <p class="label">Previous Article</p>
+          <!-- TẠM HARDCODE – SAU SẼ LÀM LOGIC -->
+          <a href="/">Where ROM Hacks Actually Cross the Legal Line</a>
+        </div>
+      </main>
+
+      <aside class="post-sidebar">
+        <section class="widget">
+          <h3>Search</h3>
+          <input type="text" placeholder="Search..." />
+          <button>Search</button>
+        </section>
+
+        <section class="widget">
+          <h3>About</h3>
+          <p>
+            Retro Gaming Verse is a personal journal about time spent with retro
+            games and retro-style indie games, written slowly and thoughtfully.
+          </p>
+        </section>
+
+        <section class="widget">
+          <h3>More from this game</h3>
+          <p>Pokémon The Last FireRed Playthrough</p>
+        </section>
+      </aside>
     </div>
-  )}
-
-  <!-- HEADER -->
-  <header class="post-header">
-    <a class="author">Steven</a>
-    <h1>{title}</h1>
-    {description && <p class="excerpt">{description}</p>}
-
-    {category && (
-      <span class="tag">{category}</span>
-    )}
-  </header>
-
-  <!-- CONTENT + SIDEBAR -->
-  <div class="post-layout">
-    <main class="content">
-      <slot />
-    </main>
-
-    <aside class="sidebar">
-      <section class="widget">
-        <h3>Search</h3>
-        <input type="text" placeholder="Search..." />
-        <button>Search</button>
-      </section>
-
-      <section class="widget">
-        <h3>About</h3>
-        <p>
-          Retro Gaming Verse is a personal journal about time spent
-          with retro games and retro-style indie games.
-        </p>
-      </section>
-    </aside>
-  </div>
-
-</article>
+  </article>
+</BaseLayout>
 
 <style>
-.blog-post {
+.post {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 4rem 1.5rem;
 }
 
-.hero img {
-  width: 100%;
-  border-radius: 16px;
+.post-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 5rem;
 }
 
-.post-header {
-  max-width: 720px;
-  margin-top: 3rem;
-}
-
-.post-header h1 {
+.hero-text h1 {
   font-size: 3rem;
   line-height: 1.2;
+  margin-bottom: 1.5rem;
 }
 
 .excerpt {
-  color: #666;
-  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
 }
 
-.tag {
+.category {
   display: inline-block;
-  margin-top: 1.5rem;
-  padding: 0.4rem 0.9rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 999px;
-  background: #f2f2ff;
-  font-size: 0.85rem;
+  background: #eef;
+  font-size: 0.8rem;
+}
+
+.hero-image img {
+  width: 100%;
+  border-radius: 20px;
 }
 
 .post-layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: minmax(0, 700px) 300px;
   gap: 3rem;
-  margin-top: 4rem;
 }
 
-.content {
-  max-width: 720px;
+.post-content {
+  line-height: 1.75;
 }
 
-.sidebar .widget {
-  background: #fafafa;
+.post-content p {
+  margin-bottom: 1.5rem;
+}
+
+.post-meta {
+  margin-top: 3rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.post-nav {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: #f7f8ff;
+  border-radius: 16px;
+}
+
+.post-sidebar .widget {
+  background: #fff;
   padding: 1.5rem;
   border-radius: 16px;
   margin-bottom: 2rem;
+}
+
+.post-sidebar input {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.post-sidebar button {
+  width: 100%;
+  padding: 0.6rem;
+  background: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
 }
 </style>
