@@ -27,60 +27,64 @@ const { title, excerpt, image, url } = Astro.props;
 </article>
 
 <style>
-/* ====== WRAPPER ====== */
+/* ====== CARD WRAPPER ====== */
 
 .post-card {
-  padding: 2.5rem 0;
+  padding: 2.75rem 0;
   border-bottom: 1px solid #eee;
 }
 
-/* ====== LINK ====== */
+/* ====== GRID LAYOUT (QUAN TRỌNG) ====== */
 
 .post-card__link {
-  display: flex;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: 240px 1fr; /* thumbnail | text */
+  gap: 1.75rem;
+  align-items: stretch; /* 🔑 ảnh stretch theo text */
   text-decoration: none;
   color: inherit;
-  align-items: flex-start;
 }
 
 /* ====== THUMBNAIL ====== */
 
 .post-card__thumb {
-  flex-shrink: 0;
-  width: 220px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
 }
 
 .post-card__thumb img {
   width: 100%;
-  height: auto;
+  height: 100%;          /* 🔑 ảnh cao bằng text */
+  object-fit: cover;     /* crop giống WordPress */
   display: block;
-  border-radius: 4px;
 }
 
 /* ====== CONTENT ====== */
 
 .post-card__content {
-  max-width: 420px;
+  max-width: 440px;
 }
 
 .post-card__title {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   line-height: 1.4;
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.75rem;
   font-weight: 600;
 }
 
 .post-card__excerpt {
   font-size: 0.95rem;
   line-height: 1.65;
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.75rem;
   color: #666;
 }
 
-/* ====== READ LINK ====== */
+/* ====== READ BUTTON (GIẢ WP) ====== */
 
 .post-card__read {
+  display: inline-block;
+  margin-top: auto;
   font-size: 0.9rem;
   color: #555;
 }
