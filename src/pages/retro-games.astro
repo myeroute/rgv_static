@@ -9,33 +9,62 @@ const posts = (await getCollection('blog'))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
-<section class="category-header">
-  <h1>{category.title}</h1>
+<section class="category-wrapper">
+  <section class="category-header">
+    <h1>{category.title}</h1>
 
-  <p class="category-description">
-    {category.description}
-  </p>
+    <p class="category-description">
+      {category.description}
+    </p>
+  </section>
+
+  <section class="category-posts">
+    {posts.map((post) => (
+      <PostCard
+        title={post.data.title}
+        excerpt={post.data.description}
+        image={post.data.heroImage}
+        url={`/${post.id}/`}
+      />
+    ))}
+  </section>
 </section>
 
-<section class="category-posts">
-  {posts.map((post) => (
-    <PostCard
-      title={post.data.title}
-      excerpt={post.data.description}
-      image={post.data.heroImage}
-      url={`/${post.id}/`}
-    />
-  ))}
-</section>
 <style>
+  /* ===== CONTAINER ===== */
+  .category-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* ===== HEADER ===== */
+  .category-header {
+    max-width: 720px;
+  }
+
+  .category-header h1 {
+    margin-bottom: 1rem;
+  }
+
+  .category-description {
+    line-height: 1.7;
+  }
+
+  /* ===== GRID ===== */
   .category-posts {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 3rem 2.5rem;
-    margin-top: 3rem;
+    margin-top: 3.5rem;
   }
 
-  /* 🔴 ÉP PostCard về layout dọc */
+  /* ===== POST CARD OVERRIDE (GRID CONTEXT) ===== */
+  .category-posts :global(.post-card) {
+    padding: 0;
+    border-bottom: none;
+  }
+
   .category-posts :global(.post-card__link) {
     display: block;
   }
@@ -47,10 +76,4 @@ const posts = (await getCollection('blog'))
   .category-posts :global(.post-card__content) {
     max-width: none;
   }
-
-  .category-posts :global(.post-card) {
-    padding: 0;
-    border-bottom: none;
-  }
 </style>
-
