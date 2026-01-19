@@ -20,6 +20,7 @@ const {
   </head>
 
   <body>
+    <!-- HEADER -->
     <header class="site-header">
       <div class="header-inner">
         <div class="site-logo">
@@ -34,9 +35,40 @@ const {
       </div>
     </header>
 
+    <!-- MAIN -->
     <main>
       <slot />
     </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-about">
+          <h4>Retro Gaming Verse</h4>
+          <p>
+            Timeless play experiences. A place to document real experiences with
+            retro games and retro-inspired indie games, played slowly and
+            without rushing.
+          </p>
+          <p class="footer-copy">
+            © 2026 Retro Gaming Verse. All rights reserved.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <h4>Helpful Links</h4>
+          <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+        </div>
+
+        <div class="footer-links">
+          <h4>Policies</h4>
+          <a href="/privacy-policy/">Privacy Policy</a>
+          <a href="/terms-of-service/">Terms of Service</a>
+          <a href="/disclaimer/">Disclaimer</a>
+        </div>
+      </div>
+    </footer>
   </body>
 
   <style is:global>
@@ -83,6 +115,54 @@ const {
     }
 
     .site-nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== FOOTER ===== */
+
+    .site-footer {
+      margin-top: 5rem;
+      padding: 4rem 1rem;
+      background: #fafbff; /* rất nhẹ */
+      border-top: 1px solid #eee;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .site-footer h4 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .site-footer p {
+      font-size: 0.95rem;
+      color: #666;
+      margin: 0 0 1rem;
+      line-height: 1.6;
+    }
+
+    .footer-copy {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: #999;
+    }
+
+    .footer-links a {
+      display: block;
+      font-size: 0.9rem;
+      color: #555;
+      text-decoration: none;
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-links a:hover {
       text-decoration: underline;
     }
   </style>
