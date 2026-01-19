@@ -4,18 +4,23 @@ import { getCollection } from 'astro:content';
 import PostCard from '../components/PostCard.astro';
 import Sidebar from '../components/Sidebar.astro';
 
-const posts = (await getCollection('blog'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 8);
+// LẤY TẤT CẢ BÀI
+const posts = await getCollection('blog');
+
+// SORT THEO DATE
+posts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
 <BaseLayout
   title="Retro Gaming Verse – Slow Play, Deep Experience"
-  description="A personal journal about retro games and retro-style indie games."
+  description="Personal experiences with retro games and retro-style indie games."
 >
   <div class="home-layout">
     <main>
       {posts.map((post) => {
+        // slug chuẩn: lấy tên file, bỏ folder
         const slug = post.id.replace(/\.mdx?$/, '').split('/').pop();
 
         return (
