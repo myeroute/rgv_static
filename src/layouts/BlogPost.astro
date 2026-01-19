@@ -1,118 +1,79 @@
 ---
-import BaseLayout from './BaseLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
 
 const { post } = Astro.props;
-const { title, description, pubDate, category, heroImage } = post.data;
 ---
 
 <BaseLayout
-  title={title}
-  description={description}
+  title={post.data.title}
+  description={post.data.description}
   sidebar="post"
   post={post}
 >
   <article class="post">
+    <header class="post-header">
+      <p class="post-author">Steven</p>
+      <h1>{post.data.title}</h1>
 
-    <!-- HERO -->
-    <header class="post-hero">
-      <div class="hero-text">
-        <p class="author">Steven</p>
+      {post.data.heroImage && (
+        <img
+          src={post.data.heroImage}
+          alt={post.data.title}
+          class="post-hero"
+        />
+      )}
 
-        <h1>{title}</h1>
-
-        {description && (
-          <p class="excerpt">{description}</p>
-        )}
-
-        {category && (
-          <span class="category">{category}</span>
-        )}
-      </div>
-
-      {heroImage && (
-        <div class="hero-image">
-          <img
-            src={heroImage.src ?? heroImage}
-            alt={title}
-            loading="eager"
-          />
-        </div>
+      {post.data.description && (
+        <p class="post-excerpt">{post.data.description}</p>
       )}
     </header>
 
-    <!-- BODY (KHÔNG SIDEBAR Ở ĐÂY) -->
-    <main class="post-content">
-      <slot />
-
-      <div class="post-meta">
-        {category && <span class="category">{category}</span>}
-        {pubDate && (
-          <time datetime={pubDate.toISOString()}>
-            {pubDate.toLocaleDateString()}
-          </time>
-        )}
-      </div>
-    </main>
-
+    <div class="post-content">
+      <post.Content />
+    </div>
   </article>
 </BaseLayout>
 
 <style>
 .post {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 4rem 1.5rem;
+  max-width: 720px;
+}
+
+.post-header h1 {
+  font-size: 2.6rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.post-author {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.75rem;
 }
 
 .post-hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-  margin-bottom: 5rem;
-}
-
-.hero-text h1 {
-  font-size: 3rem;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
-}
-
-.excerpt {
-  font-size: 1.1rem;
-  color: #555;
-  margin-bottom: 1.5rem;
-}
-
-.category {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border-radius: 999px;
-  background: #eef;
-  font-size: 0.8rem;
-}
-
-.hero-image img {
   width: 100%;
-  height: auto;
-  border-radius: 20px;
-  display: block;
+  border-radius: 12px;
+  margin: 2rem 0;
+}
+
+.post-excerpt {
+  font-size: 1.05rem;
+  color: #555;
 }
 
 .post-content {
-  max-width: 700px;
-  line-height: 1.75;
-}
-
-.post-content p {
-  margin-bottom: 1.5rem;
-}
-
-.post-meta {
   margin-top: 3rem;
-  display: flex;
-  gap: 1rem;
-  font-size: 0.9rem;
-  color: #777;
+  line-height: 1.8;
 }
 </style>
