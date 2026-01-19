@@ -1,12 +1,16 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Sidebar from '../components/Sidebar.astro'; // NEW
 
 const {
   title = 'Retro Gaming Verse',
   description = 'Timeless play experiences with retro games and retro-style indie games.',
   canonical = Astro.url.href,
   noindex = true, // đang test → chặn index
+
+  sidebar = null, // NEW: 'home' | 'post' | null
+  post = null,    // NEW: blog post data
 } = Astro.props;
 ---
 
@@ -36,9 +40,21 @@ const {
     </header>
 
     <!-- MAIN -->
-    <main>
-      <slot />
-    </main>
+    {sidebar ? (
+      <div class="layout-with-sidebar">  <!-- NEW -->
+        <main class="layout-content">
+          <slot />
+        </main>
+
+        <aside class="layout-sidebar">
+          <Sidebar variant={sidebar} post={post} />  <!-- NEW -->
+        </aside>
+      </div>
+    ) : (
+      <main>
+        <slot />
+      </main>
+    )}
 
     <!-- FOOTER -->
     <footer class="site-footer">
@@ -118,12 +134,31 @@ const {
       text-decoration: underline;
     }
 
+    /* ===== LAYOUT WITH SIDEBAR ===== */ /* NEW */
+
+    .layout-with-sidebar {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 3rem;
+    }
+
+    .layout-content {
+      min-width: 0;
+    }
+
+    .layout-sidebar {
+      min-width: 0;
+    }
+
     /* ===== FOOTER ===== */
 
     .site-footer {
       margin-top: 5rem;
       padding: 4rem 1rem;
-      background: #fafbff; /* rất nhẹ */
+      background: #fafbff;
       border-top: 1px solid #eee;
     }
 
