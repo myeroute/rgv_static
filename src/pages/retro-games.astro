@@ -35,9 +35,22 @@ const posts = (await getCollection('blog'))
     margin-top: 3rem;
   }
 
-  /* Giữ card không bị kéo giãn quá rộng */
+  /* 🔴 ÉP PostCard về layout dọc */
+  .category-posts :global(.post-card__link) {
+    display: block;
+  }
+
+  .category-posts :global(.post-card__thumb) {
+    margin-bottom: 1rem;
+  }
+
+  .category-posts :global(.post-card__content) {
+    max-width: none;
+  }
+
   .category-posts :global(.post-card) {
     padding: 0;
     border-bottom: none;
   }
 </style>
+
