@@ -3,18 +3,32 @@ import { getCollection, render } from 'astro:content';
 import BlogPost from '../layouts/BlogPost.astro';
 import path from 'node:path';
 
+/**
+ * Slugs dành riêng cho page/category,
+ * KHÔNG được để dynamic route xử lý
+ */
+const RESERVED_SLUGS = [
+  'retro-games',
+  'retro-style-indie-games',
+];
+
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
 
-  return posts.map((post) => {
-    // LẤY TÊN FILE, BỎ FOLDER
-    const slug = path.basename(post.id);
+  return posts
+    .filter((post) => {
+      // Lấy tên file cuối cùng làm slug
+      const slug = path.basename(post.id);
+      return !RESERVED_SLUGS.includes(slug);
+    })
+    .map((post) => {
+      const slug = path.basename(post.id);
 
-    return {
-      params: { slug },
-      props: { post },
-    };
-  });
+      return {
+        params: { slug },
+        props: { post },
+      };
+    });
 }
 
 const { post } = Astro.props;
