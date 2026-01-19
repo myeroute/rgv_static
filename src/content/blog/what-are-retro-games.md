@@ -2,6 +2,7 @@
 title: "What Are Retro Games and Why Do They Still Feel So Special?"
 pubDate: 2025-12-03
 description: "Discover what retro games truly are and why they remain special after twenty years. A personal look at timeless design, pixel art, and the joy of classic play."
+heroImage: 'https://images.retrogamingverse.com/r1/1225/03/Pokemon-Emerald-GBA-game.webp'
 ---
 <article><header>
 <h2>Introduction</h2>
