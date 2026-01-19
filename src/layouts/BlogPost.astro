@@ -7,11 +7,14 @@ export async function getStaticPaths() {
 
   return posts.map((post) => ({
     params: { slug: post.slug },
-    props: { post },
+    props: {
+      post,
+      Content: post.render().Content,
+    },
   }));
 }
 
-const { post } = Astro.props;
+const { post, Content } = Astro.props;
 ---
 
 <BaseLayout
@@ -23,6 +26,7 @@ const { post } = Astro.props;
   <article class="post">
     <header class="post-header">
       <p class="post-author">Steven</p>
+
       <h1>{post.data.title}</h1>
 
       {post.data.heroImage && (
@@ -39,7 +43,7 @@ const { post } = Astro.props;
     </header>
 
     <div class="post-content">
-      <post.Content />
+      <Content />
     </div>
   </article>
 </BaseLayout>
