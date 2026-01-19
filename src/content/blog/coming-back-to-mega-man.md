@@ -2,6 +2,7 @@
 title: "Coming Back to Mega Man: Choosing the Right Game Instead of Playing Them All"
 pubDate: 2025-12-29
 description: "Coming back to Mega Man after years away, sharing which games still feel welcoming and which ones feel overwhelming for casual players today."
+heroImage: 'https://images.retrogamingverse.com/r1/1225/29/mega-man-x4-player-select-screen.webp'
 category: retro-games
 ---
 I came back to Mega Man mostly because of nostalgia. Not the loud, overwhelming kind, but a quieter feeling. The kind that reminds you of something that once felt very familiar. Something tied to long afternoons, to moments of frustration, turning the console off, then turning it back on again not long after, knowing full well you might fail all over again.
