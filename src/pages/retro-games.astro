@@ -10,18 +10,15 @@ const posts = (await getCollection('blog'))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-// helper tạo slug an toàn
 const toSlug = (post) => `/${post.id.split('/').pop()}/`;
 ---
 
 <BaseLayout title={category.title}>
   <main class="category-wrapper">
-    <section class="category-header">
+    <header class="category-header">
       <h1>{category.title}</h1>
-      <p class="category-description">
-        {category.description}
-      </p>
-    </section>
+      <p class="category-description">{category.description}</p>
+    </header>
 
     <section class="category-posts">
       {posts.map((post) => (
@@ -35,76 +32,3 @@ const toSlug = (post) => `/${post.id.split('/').pop()}/`;
     </section>
   </main>
 </BaseLayout>
-
-<style>
-.category-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-.category-header {
-  max-width: 720px;
-}
-
-.category-header h1 {
-  margin-bottom: 1rem;
-}
-
-.category-description {
-  line-height: 1.7;
-}
-
-.category-posts {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 3rem 2.5rem;
-  margin-top: 3.5rem;
-}
-
-.category-posts :global(.post-card) {
-  padding: 0;
-  border-bottom: none;
-}
-
-.category-posts :global(.post-card__link) {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.category-posts :global(.post-card__thumb) {
-  height: 200px;
-  overflow: hidden;
-}
-
-.category-posts :global(.post-card__thumb img) {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.category-posts :global(.post-card__content) {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  align-items: flex-start;
-  max-width: 90%;
-}
-
-.category-posts :global(.post-card__title) {
-  margin-bottom: 0.75rem;
-}
-
-.category-posts :global(.post-card__excerpt) {
-  margin-bottom: 1.25rem;
-}
-
-.category-posts :global(.post-card__button) {
-  margin-top: auto;
-  align-self: flex-start;
-  width: auto;
-  padding: 0.6rem 1.1rem;
-}
-</style>
