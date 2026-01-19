@@ -17,53 +17,54 @@ const { title, excerpt, image, url } = Astro.props;
         {excerpt}
       </p>
     )}
-
-    <span class="post-card__read">
-      Read →
-    </span>
   </a>
 </article>
 
 <style>
+/* --- Tổng thể: tạo nhịp dọc, không “card” --- */
 .post-card {
-  padding: 2.5rem 0;
-  border-bottom: 1px solid #eee;
+  padding: 3.5rem 0;
 }
 
+/* --- Link bao toàn bài, không CTA --- */
 .post-card__link {
+  display: block;
   text-decoration: none;
   color: inherit;
-  display: block;
   max-width: 680px;
 }
 
+/* --- Ảnh: giống ảnh minh hoạ bài viết, không thumbnail --- */
 .post-card__image {
-  margin: 0 0 1.25rem;
+  margin: 0 0 1.75rem;
 }
 
 .post-card__image img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
+/* --- Title: editorial, thoáng, không headline gắt --- */
 .post-card__title {
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   line-height: 1.45;
   margin: 0 0 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
+/* --- Excerpt: rất nhẹ, chỉ để dẫn nhịp --- */
 .post-card__excerpt {
   font-size: 1rem;
-  line-height: 1.7;
-  color: #555;
-  margin: 0 0 0.75rem;
+  line-height: 1.75;
+  margin: 0;
+  color: #666;
+  max-width: 38rem;
 }
 
-.post-card__read {
-  font-size: 0.9rem;
-  color: #6b5cff;
+/* --- Tách bài rất nhẹ, không viền --- */
+.post-card + .post-card {
+  border-top: 1px solid #f0f0f0;
 }
 </style>
