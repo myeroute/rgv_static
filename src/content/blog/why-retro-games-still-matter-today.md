@@ -2,6 +2,7 @@
 title: "Why Retro Games Still Matter Today?"
 pubDate: 2025-12-08
 description: "Not a guide or a review, but a soft look at why retro games still matter today. Nostalgia, simplicity, and small memories from childhood all come together in this personal story."
+heroImage: 'https://images.retrogamingverse.com/r1/1225/08/gba-pokemon-firered-start-screen.webp'
 category: retro-games
 ---
 <p class="lead">Sometimes I find myself going back to old retro games without any real reason. Maybe it is a quiet night with nothing to do, or maybe it is a song that suddenly reminds me of something from years ago. The truth is, I have never been a skilled gamer. My experience is limited, my reflexes are average, and I have always played more like a noob than anything else. When I was a kid, I only knew how to open the GBA emulator my older brother installed for me. I played Fire Emblem 8, a few Mega Man titles, and mostly just pressed buttons until things worked.</p>
