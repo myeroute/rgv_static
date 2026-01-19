@@ -2,6 +2,7 @@
 title: "Mega Man Zero Walkthrough From A First-Time Player’s Experience"
 pubDate: 2025-12-19
 description: "This Mega Man Zero walkthrough is written from a first-time player’s experience, highlighting confusing moments and easy-to-miss mechanics while leaving room for exploration."
+category: retro-games
 ---
 <h2>Introduction to This Mega Man Zero Walkthrough</h2>
 This is not a complete or optimized Mega Man Zero walkthrough. It is a record of my first-time experience with the game, written while I was actually playing and getting stuck along the way. Instead of listing every step or explaining every mechanic, this walkthrough focuses only on moments that confused me, slowed me down, or made me stop and figure things out.
