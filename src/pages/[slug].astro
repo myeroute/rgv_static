@@ -1,51 +1,87 @@
 ---
-import { getCollection, render } from 'astro:content';
-import BlogPost from '../layouts/BlogPost.astro';
-import Sidebar from '../components/Sidebar.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const RESERVED_SLUGS = [
-    'retro-games',
-    'retro-style-indie-games',
-  ];
-
   const posts = await getCollection('blog');
 
-  return posts
-    .filter((post) => {
-      const slug = post.id.split('/').pop();
-      return !RESERVED_SLUGS.includes(slug);
-    })
-    .map((post) => {
-      const slug = post.id.split('/').pop();
-      return {
-        params: { slug },
-        props: { post },
-      };
-    });
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { slug } = Astro.params;
+const posts = await getCollection('blog');
+const post = posts.find((p) => p.slug === slug);
+
+if (!post) {
+  throw new Error(`Post not found: ${slug}`);
+}
+
+const { Content } = await post.render();
 ---
 
-<BlogPost post={post}>
-  <div class="post-layout">
-    <article>
-      <Content />
-    </article>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  sidebar="post"
+  post={post}
+>
+  <article class="post">
+    <header class="post-header">
+      <p class="post-author">Steven</p>
 
-    <Sidebar variant="post" post={post} />
-  </div>
-</BlogPost>
+      <h1>{post.data.title}</h1>
+
+      {post.data.heroImage && (
+        <img
+          src={post.data.heroImage}
+          alt={post.data.title}
+          class="post-hero"
+        />
+      )}
+
+      {post.data.description && (
+        <p class="post-excerpt">{post.data.description}</p>
+      )}
+    </header>
+
+    <div class="post-content">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
 
 <style>
-.post-layout {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2.5rem 1rem;
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 3rem;
+.post {
+  max-width: 720px;
+}
+
+.post-header h1 {
+  font-size: 2.6rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.post-author {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.75rem;
+}
+
+.post-hero {
+  width: 100%;
+  border-radius: 12px;
+  margin: 2rem 0;
+}
+
+.post-excerpt {
+  font-size: 1.05rem;
+  color: #555;
+}
+
+.post-content {
+  margin-top: 3rem;
+  line-height: 1.8;
 }
 </style>
