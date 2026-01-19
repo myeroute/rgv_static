@@ -1,0 +1,50 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const { title } = Astro.props;
+---
+
+<BaseLayout title={title}>
+  <main class="static-page">
+    <article class="static-content">
+      <slot />
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+.static-page {
+  padding: 3rem 0;
+}
+
+.static-content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.static-content h1 {
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+}
+
+.static-content h2 {
+  font-size: 1.4rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.static-content p {
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+}
+
+.static-content ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.static-content li {
+  margin-bottom: 0.5rem;
+}
+</style>
