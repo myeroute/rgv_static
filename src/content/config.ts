@@ -2,18 +2,17 @@ import { defineCollection, z } from 'astro:content';
 
 const blog = defineCollection({
   type: 'content',
-  schema: z.object({
-    title: z.string(),
-    description: z.string().optional(),
-    pubDate: z.date().optional(),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string().optional(),
 
-    // metadata dùng cho sidebar / category
-    game: z.string().optional(),
-    tag: z.string().optional(),
+      // ❗ BẮT BUỘC PHẢI CÓ DÒNG NÀY
+      heroImage: image().optional(),
 
-    // KHÔNG khai báo slug ở đây
-    // slug sẽ được Astro tự sinh từ filename
-  }),
+      pubDate: z.date(),
+      category: z.string().optional(),
+    }),
 });
 
 export const collections = {
