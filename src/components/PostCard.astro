@@ -1,13 +1,21 @@
 ---
 const { post } = Astro.props;
 
-// 🔒 SAFE SLUG — không còn crash build
+// 🛑 HARD GUARD – nếu không có post thì render rỗng
+if (!post) {
+  return null;
+}
+
+// ✅ SAFE SLUG – hoạt động cho:
+// - root posts
+// - folder posts (retro-games/xxx.md)
+// - mọi collection
 const slug =
   post.slug ??
   post.id?.split("/").pop();
 
 if (!slug) {
-  throw new Error("PostCard: cannot resolve slug");
+  return null;
 }
 ---
 
