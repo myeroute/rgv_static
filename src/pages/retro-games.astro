@@ -27,3 +27,17 @@ const posts = (await getCollection('blog'))
     />
   ))}
 </section>
+<style>
+  .category-posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 3rem 2.5rem;
+    margin-top: 3rem;
+  }
+
+  /* Giữ card không bị kéo giãn quá rộng */
+  .category-posts :global(.post-card) {
+    padding: 0;
+    border-bottom: none;
+  }
+</style>
