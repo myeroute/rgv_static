@@ -1,282 +1,110 @@
 ---
+const { post } = Astro.props;
 const {
   title,
   description,
-  pubDate,
-  category,
   heroImage,
-  children,
-} = Astro.props;
+  category,
+  pubDate,
+} = post.data;
 ---
 
-<article class="post">
+<article class="blog-post">
 
   <!-- HERO -->
-  <header class="post-hero">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <p class="post-author">Steven</p>
-
-        <h1 class="post-title">{title}</h1>
-
-        {description && (
-          <p class="post-excerpt">{description}</p>
-        )}
-
-        {category && (
-          <span class="post-category">{category.replace('-', ' ')}</span>
-        )}
-      </div>
-
-      {heroImage && (
-        <div class="hero-image">
-          <img src={heroImage.src} alt={title} />
-        </div>
-      )}
+  {heroImage && (
+    <div class="hero">
+      <img src={heroImage} alt={title} />
     </div>
+  )}
+
+  <!-- HEADER -->
+  <header class="post-header">
+    <a class="author">Steven</a>
+    <h1>{title}</h1>
+    {description && <p class="excerpt">{description}</p>}
+
+    {category && (
+      <span class="tag">{category}</span>
+    )}
   </header>
 
-  <!-- BODY + SIDEBAR -->
+  <!-- CONTENT + SIDEBAR -->
   <div class="post-layout">
-    <main class="post-content">
-      {children}
+    <main class="content">
+      <slot />
     </main>
 
-    <aside class="post-sidebar">
-      <section class="sidebar-box">
+    <aside class="sidebar">
+      <section class="widget">
         <h3>Search</h3>
         <input type="text" placeholder="Search..." />
         <button>Search</button>
       </section>
 
-      <section class="sidebar-box">
+      <section class="widget">
         <h3>About</h3>
         <p>
-          Retro Gaming Verse is a personal journal about time spent with retro
-          games and retro-style indie games, written slowly and thoughtfully.
-        </p>
-      </section>
-
-      <section class="sidebar-box">
-        <h3>More from this game</h3>
-        <p>
-          Pokémon The Last FireRed Playthrough
+          Retro Gaming Verse is a personal journal about time spent
+          with retro games and retro-style indie games.
         </p>
       </section>
     </aside>
   </div>
 
-  <!-- POST FOOTER -->
-  <footer class="post-footer">
-    <div class="post-meta">
-      <span class="meta-category">{category?.replace('-', ' ')}</span>
-      <span class="meta-date">
-        {pubDate && new Date(pubDate).toLocaleDateString()}
-      </span>
-    </div>
-
-    <div class="post-navigation">
-      <div class="prev-post">
-        <span class="label">Previous Article</span>
-        <strong>Where ROM Hacks Actually Cross the Legal Line</strong>
-      </div>
-    </div>
-  </footer>
-
 </article>
 
 <style>
-/* ===== ROOT ===== */
-.post {
-  background: #fafbff;
-}
-
-/* ===== HERO ===== */
-.post-hero {
-  padding: 5rem 1.5rem 4rem;
-}
-
-.hero-inner {
+.blog-post {
   max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
+  padding: 4rem 2rem;
 }
 
-.post-author {
-  color: #6b6bff;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.post-title {
-  font-size: 3rem;
-  line-height: 1.15;
-  margin-bottom: 1.5rem;
-}
-
-.post-excerpt {
-  font-size: 1.1rem;
-  color: #666;
-  max-width: 520px;
-  margin-bottom: 1.5rem;
-}
-
-.post-category {
-  display: inline-block;
-  padding: 0.35rem 0.75rem;
-  border-radius: 999px;
-  background: #eef0ff;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-/* ===== HERO IMAGE ===== */
-.hero-image img {
+.hero img {
   width: 100%;
-  border-radius: 14px;
-  display: block;
+  border-radius: 16px;
 }
 
-/* ===== BODY ===== */
+.post-header {
+  max-width: 720px;
+  margin-top: 3rem;
+}
+
+.post-header h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+}
+
+.excerpt {
+  color: #666;
+  margin-top: 1rem;
+}
+
+.tag {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: #f2f2ff;
+  font-size: 0.85rem;
+}
+
 .post-layout {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem;
   display: grid;
   grid-template-columns: 1fr 320px;
-  gap: 4rem;
+  gap: 3rem;
+  margin-top: 4rem;
 }
 
-.post-content {
-  max-width: 700px;
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: #222;
+.content {
+  max-width: 720px;
 }
 
-/* Typography giống WordPress */
-.post-content p {
-  margin-bottom: 1.6rem;
-}
-
-.post-content h2 {
-  font-size: 1.8rem;
-  margin: 3rem 0 1.25rem;
-}
-
-.post-content h3 {
-  font-size: 1.4rem;
-  margin: 2.5rem 0 1rem;
-}
-
-.post-content img {
-  display: block;
-  max-width: 100%;
-  margin: 2.5rem auto;
-  border-radius: 8px;
-}
-
-/* ===== SIDEBAR ===== */
-.post-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.sidebar-box {
-  background: #fff;
-  border-radius: 12px;
-  padding: 1.75rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-}
-
-.sidebar-box h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.sidebar-box p {
-  font-size: 0.95rem;
-  color: #555;
-}
-
-.sidebar-box input {
-  width: 100%;
-  padding: 0.6rem;
-  margin-bottom: 0.75rem;
-}
-
-.sidebar-box button {
-  width: 100%;
-  padding: 0.6rem;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(180deg, #7a74ff, #5f59f7);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* ===== FOOTER ===== */
-.post-footer {
-  max-width: 1200px;
-  margin: 4rem auto 0;
-  padding: 3rem 1.5rem 5rem;
-  border-top: 1px solid #eee;
-}
-
-.post-meta {
-  display: flex;
-  gap: 1.5rem;
-  font-size: 0.85rem;
-  color: #666;
+.sidebar .widget {
+  background: #fafafa;
+  padding: 1.5rem;
+  border-radius: 16px;
   margin-bottom: 2rem;
-}
-
-.meta-category {
-  background: #eef0ff;
-  padding: 0.3rem 0.75rem;
-  border-radius: 999px;
-}
-
-.post-navigation {
-  background: #fff;
-  border-radius: 14px;
-  padding: 2rem;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.04);
-}
-
-.post-navigation .label {
-  display: block;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #888;
-  margin-bottom: 0.5rem;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
-  .hero-inner {
-    grid-template-columns: 1fr;
-  }
-
-  .post-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .post-sidebar {
-    display: none;
-  }
-
-  .post-title {
-    font-size: 2.2rem;
-  }
 }
 </style>
