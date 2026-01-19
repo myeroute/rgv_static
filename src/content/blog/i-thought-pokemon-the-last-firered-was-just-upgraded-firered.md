@@ -2,6 +2,7 @@
 title: "I Thought Pokémon The Last FireRed Was Just an Upgraded FireRed"
 pubDate: 2026-01-15
 description: "I thought Pokémon The Last FireRed was just an upgraded FireRed. This article explores where that assumption breaks, and what the game demands once old habits stop working."
+category: retro-games
 ---
 <em>A new game, but the price for old habits arrived sooner than I expected.</em>
 
