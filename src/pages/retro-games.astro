@@ -32,48 +32,77 @@ const posts = (await getCollection('blog'))
 
 <style>
   /* ===== CONTAINER ===== */
-  .category-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
+.category-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
 
-  /* ===== HEADER ===== */
-  .category-header {
-    max-width: 720px;
-  }
+/* ===== HEADER ===== */
+.category-header {
+  max-width: 720px;
+}
 
-  .category-header h1 {
-    margin-bottom: 1rem;
-  }
+.category-header h1 {
+  margin-bottom: 1rem;
+}
 
-  .category-description {
-    line-height: 1.7;
-  }
+.category-description {
+  line-height: 1.7;
+}
 
-  /* ===== GRID ===== */
-  .category-posts {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 3rem 2.5rem;
-    margin-top: 3.5rem;
-  }
+/* ===== GRID (WORDPRESS ARCHIVE STYLE) ===== */
+.category-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 3rem 2.5rem;
+  margin-top: 3.5rem;
+}
 
-  /* ===== POST CARD OVERRIDE (GRID CONTEXT) ===== */
-  .category-posts :global(.post-card) {
-    padding: 0;
-    border-bottom: none;
-  }
+/* ===== POST CARD RESET ===== */
+.category-posts :global(.post-card) {
+  padding: 0;
+  border-bottom: none;
+}
 
-  .category-posts :global(.post-card__link) {
-    display: block;
-  }
+/* ===== CARD LAYOUT: DỌC + FLEX ===== */
+.category-posts :global(.post-card__link) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
-  .category-posts :global(.post-card__thumb) {
-    margin-bottom: 1rem;
-  }
+/* ===== THUMBNAIL: ÉP ĐỀU (WP STYLE) ===== */
+.category-posts :global(.post-card__thumb) {
+  height: 200px;
+  overflow: hidden;
+}
 
-  .category-posts :global(.post-card__content) {
-    max-width: none;
-  }
+.category-posts :global(.post-card__thumb img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== CONTENT ===== */
+.category-posts :global(.post-card__content) {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.category-posts :global(.post-card__title) {
+  margin-bottom: 0.75rem;
+}
+
+.category-posts :global(.post-card__excerpt) {
+  margin-bottom: 1.25rem;
+}
+
+/* ===== BUTTON: ĐẨY XUỐNG ĐÁY (WP TRICK) ===== */
+.category-posts :global(.post-card__button) {
+  margin-top: auto;
+}
+
 </style>
