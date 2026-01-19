@@ -2,6 +2,7 @@
 title: "The Golden Eras of Retro Gaming: From 8-bit to the Early Days of 3D"
 pubDate: 2025-12-07
 description: "Explore the golden eras of retro gaming (8-bit, 16-bit, 32-bit, and early 3D) and discover how they inspire today’s indie developers."
+category: retro-games
 ---
 When people talk about retro gaming, they usually picture pixel visuals, chiptune melodies, or simple challenges that refuse to fade from memory. Retro is all of those things, but it is also much more. It is a journey across multiple eras, each one carrying its own creative limits, technological boundaries, and distinct identity. Together, these eras shaped the foundation of modern gaming and continue to influence the retro-style indie scene today. If you want a broader introduction before diving into the eras themselves, you can check out a broader look at <a href="https://retrogamingverse.com/what-are-retro-games/">what retro games actually are</a>.
 
