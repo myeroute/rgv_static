@@ -2,6 +2,7 @@
 title: "One Hour with Hollow Knight: Feeling Lost from the Very First Steps"
 pubDate: 2025-12-23
 description: "An honest first-hour experience with Hollow Knight, focusing on confusion, exploration, and the uneasy feeling of being lost without guidance."
+heroImage: 'https://images.retrogamingverse.com/r1/1225/23/first-moment-in-game.webp'
 category: retro-style-indie-games
 ---
 <!-- wp:paragraph -->
