@@ -2,6 +2,7 @@
 title: "Pokémon The Last Fire Red Playthrough"
 pubDate: 2026-01-12
 description: "A personal playthrough of Pokémon The Last Fire Red, written alongside real gameplay. Covers the journey without walkthroughs or optimization."
+category: retro-games
 ---
 <h2>About this playthrough</h2>
 This playthrough was written in parallel with my actual gameplay, not after completing the game. I did not read walkthroughs in advance, did not optimize my route from the start, and did not know beforehand what changes <em>Pokémon The Last Fire Red</em> would introduce compared to the original Fire Red.
