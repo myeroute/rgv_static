@@ -1,65 +1,58 @@
 ---
 const { post } = Astro.props;
 
-if (!post) {
-  throw new Error('PostCard: post is undefined');
+if (!post?.slug) {
+  throw new Error("PostCard: missing slug");
 }
 
-const title = post.data.title;
-const description = post.data.description;
-const image = post.data.image;
-const slug = post.slug;
-
-if (!slug) {
-  throw new Error('PostCard: missing slug');
-}
+const { title, description, heroImage } = post.data;
 ---
 
 <article class="post-card">
-  {image && (
-    <a href={`/${slug}`} class="thumb">
-      <img src={image} alt={title} loading="lazy" />
+  {heroImage && (
+    <a href={`/${post.slug}/`} class="post-thumb">
+      <img
+        src={heroImage}
+        alt={title}
+        loading="lazy"
+      />
     </a>
   )}
 
-  <div class="content">
-    <h2 class="title">
-      <a href={`/${slug}`}>{title}</a>
+  <div class="post-content">
+    <h2 class="post-title">
+      <a href={`/${post.slug}/`}>{title}</a>
     </h2>
 
-    {description && <p class="excerpt">{description}</p>}
+    {description && (
+      <p class="post-excerpt">{description}</p>
+    )}
 
-    <a class="read-more" href={`/${slug}`}>Read More →</a>
+    <a class="read-more" href={`/${post.slug}/`}>
+      Read More →
+    </a>
   </div>
 </article>
 
 <style>
 .post-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: 220px 1fr;
   gap: 1.5rem;
-  align-items: flex-start;
+  margin-bottom: 3rem;
 }
 
-.thumb img {
-  width: 260px;
+.post-thumb img {
+  width: 100%;
   height: auto;
-  border-radius: 8px;
+  display: block;
 }
 
-.content {
-  max-width: 640px;
-}
-
-.title {
-  font-size: 1.4rem;
+.post-title {
   margin: 0 0 0.5rem;
 }
 
-.excerpt {
-  margin-bottom: 0.75rem;
-}
-
-.read-more {
-  font-weight: 500;
+.post-excerpt {
+  margin: 0 0 0.75rem;
 }
 </style>
