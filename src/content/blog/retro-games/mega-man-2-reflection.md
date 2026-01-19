@@ -4,6 +4,7 @@ pubDate: 2025-12-25
 description: "Replaying Mega Man 2 on Normal difficulty as an adult reveals a different kind of challenge. A personal reflection on pressure, punishment, and how classic difficulty feels today."
 heroImage: 'https://images.retrogamingverse.com/r1/1225/25/mega-man-2-quick-man-boss-pressure.webp'
 category: retro-games
+game: mega man
 ---
 <article>I recently tried playing <a href="https://en.wikipedia.org/wiki/Mega_Man_2"><strong>Mega Man 2</strong></a> again, a game I remembered from childhood with only one vague impression: it was brutally hard.Back then, I never got very far. I would play a few stages, fail repeatedly, and stop. I did not understand what the game expected from me, my hands were not trained for it, and I certainly did not have the patience to keep trying. What stayed with me was the feeling that this game simply was not meant for me.
 
