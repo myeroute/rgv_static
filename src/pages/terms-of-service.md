@@ -1,5 +1,6 @@
 ---
 title: "Terms of Service"
+layout: ../layouts/StaticPageLayout.astro
 ---
 <h2>Acceptance of Terms</h2>
 <section>Welcome to Retro Gaming Verse (the "Blog"). These Terms of Service ("Terms") govern your access to and use of our website retrogamingverse.com and any other media form related to the Blog (collectively, the "Sites"). By accessing or using the Sites, you agree to be bound by these Terms. If you do not agree, do not use the Sites.</section><section>
