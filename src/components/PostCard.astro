@@ -1,4 +1,11 @@
 ---
+/**
+ * Props chuẩn:
+ * - title
+ * - excerpt
+ * - image
+ * - url  → BẮT BUỘC là /post-name
+ */
 const { title, excerpt, image, url } = Astro.props;
 ---
 
@@ -28,11 +35,11 @@ const { title, excerpt, image, url } = Astro.props;
   border-bottom: 1px solid #eee;
 }
 
-/* ===== GRID ===== */
+/* ===== LINK / LAYOUT ===== */
 
 .post-card__link {
   display: grid;
-  grid-template-columns: 320px 1fr; /* 🔼 thumbnail rộng hơn */
+  grid-template-columns: 320px 1fr;
   gap: 2rem;
   text-decoration: none;
   color: inherit;
@@ -55,7 +62,7 @@ const { title, excerpt, image, url } = Astro.props;
 /* ===== CONTENT ===== */
 
 .post-card__content {
-  max-width: 420px; /* 🔽 chữ gọn lại */
+  max-width: 420px;
 }
 
 .post-card__title {
