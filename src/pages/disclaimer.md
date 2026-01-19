@@ -1,5 +1,6 @@
 ---
 title: "Disclaimer"
+layout: ../layouts/StaticPageLayout.astro
 ---
 <h2>General Disclaimer</h2>
 The content on Retro Gaming Verse (the "Blog"), including all text, images, videos, reviews, analyses, game guides, and other materials (collectively, "Content"), is provided for informational and entertainment purposes only. The Blog does not provide professional advice or official recommendations regarding games or related topics. Any opinions expressed are based on personal experiences and do not represent professional, legal, medical, or financial counsel.
