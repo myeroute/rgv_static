@@ -3,15 +3,26 @@ const {
   title,
   excerpt,
   image,
-  url
+  slug,
 } = Astro.props;
+
+// Bắt buộc phải có slug
+if (!slug) {
+  throw new Error("PostCard: missing slug");
+}
+
+const postUrl = `/${slug}`;
 ---
 
 <article class="post-card">
-  <a href={url} class="post-card__link">
+  <a href={postUrl} class="post-card__link">
     {image && (
       <div class="post-card__thumb">
-        <img src={image} alt={title} loading="lazy" />
+        <img
+          src={image}
+          alt={title}
+          loading="lazy"
+        />
       </div>
     )}
 
@@ -19,10 +30,14 @@ const {
       <h2 class="post-card__title">{title}</h2>
 
       {excerpt && (
-        <p class="post-card__excerpt">{excerpt}</p>
+        <p class="post-card__excerpt">
+          {excerpt}
+        </p>
       )}
 
-      <span class="post-card__button">Read More</span>
+      <span class="post-card__button">
+        Read More →
+      </span>
     </div>
   </a>
 </article>
