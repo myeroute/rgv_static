@@ -9,21 +9,112 @@ const posts = (await getCollection('blog'))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
-<section class="category-header">
-  <h1>{category.title}</h1>
+<section class="category-wrapper">
+  <section class="category-header">
+    <h1>{category.title}</h1>
 
-  <p class="category-description">
-    {category.description}
-  </p>
+    <p class="category-description">
+      {category.description}
+    </p>
+  </section>
+
+  <section class="category-posts">
+    {posts.map((post) => (
+      <PostCard
+        title={post.data.title}
+        excerpt={post.data.description}
+        image={post.data.heroImage}
+        url={`/${post.id}/`}
+      />
+    ))}
+  </section>
 </section>
 
-<section class="category-posts">
-  {posts.map((post) => (
-    <PostCard
-      title={post.data.title}
-      excerpt={post.data.description}
-      image={post.data.heroImage}
-      url={`/${post.id}/`}
-    />
-  ))}
-</section>
+<style>
+  /* ===== CONTAINER ===== */
+.category-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ===== HEADER ===== */
+.category-header {
+  max-width: 720px;
+}
+
+.category-header h1 {
+  margin-bottom: 1rem;
+}
+
+.category-description {
+  line-height: 1.7;
+}
+
+/* ===== GRID (WORDPRESS ARCHIVE STYLE) ===== */
+.category-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 3rem 2.5rem;
+  margin-top: 3.5rem;
+}
+
+/* ===== POST CARD RESET ===== */
+.category-posts :global(.post-card) {
+  padding: 0;
+  border-bottom: none;
+}
+
+/* ===== CARD LAYOUT: DỌC + FLEX ===== */
+.category-posts :global(.post-card__link) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ===== THUMBNAIL: ÉP ĐỀU (WP STYLE) ===== */
+.category-posts :global(.post-card__thumb) {
+  height: 200px;
+  overflow: hidden;
+}
+
+.category-posts :global(.post-card__thumb img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== CONTENT ===== */
+.category-posts :global(.post-card__content) {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.category-posts :global(.post-card__title) {
+  margin-bottom: 0.75rem;
+}
+
+.category-posts :global(.post-card__excerpt) {
+  margin-bottom: 1.25rem;
+}
+
+/* ===== BUTTON: ĐẨY XUỐNG ĐÁY (WP TRICK) ===== */
+.category-posts :global(.post-card__button) {
+  margin-top: auto;
+}
+/* ===== FIX TEXT ALIGN (GIỐNG WP) ===== */
+.category-posts :global(.post-card__content) {
+  align-items: flex-start;
+  max-width: 90%;
+}
+
+/* ===== FIX BUTTON WIDTH ===== */
+.category-posts :global(.post-card__button) {
+  align-self: flex-start;
+  width: auto;
+  padding: 0.6rem 1.1rem;
+}
+
+</style>
