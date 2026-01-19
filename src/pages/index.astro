@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import PostCard from '../components/PostCard.astro';
 
 const posts = (await getCollection('blog'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -13,23 +14,21 @@ const posts = (await getCollection('blog'))
 >
   <h1>Latest Posts</h1>
 
-  <ul class="post-list">
-    {posts.map((post) => (
-      <li class="post-item">
-        <h2>
-          <a href={`/${post.id}/`}>{post.data.title}</a>
-        </h2>
+  <section class="post-list">
+    {posts.map((post) => {
+      const slug = post.id.split('/').pop();
+      const url = `/${slug}/`;
 
-        {post.data.description && (
-          <p class="excerpt">{post.data.description}</p>
-        )}
-
-        <a class="read-more" href={`/${post.id}/`}>
-          Read →
-        </a>
-      </li>
-    ))}
-  </ul>
+      return (
+        <PostCard
+          title={post.data.title}
+          excerpt={post.data.description}
+          image={post.data.heroImage}
+          url={url}
+        />
+      );
+    })}
+  </section>
 </BaseLayout>
 
 <style>
@@ -38,24 +37,6 @@ const posts = (await getCollection('blog'))
   }
 
   .post-list {
-    list-style: none;
-    padding: 0;
     max-width: 720px;
-  }
-
-  .post-item {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid #eee;
-  }
-
-  .excerpt {
-    color: #555;
-    margin-bottom: 0.75rem;
-  }
-
-  .read-more {
-    font-weight: 500;
-    text-decoration: none;
   }
 </style>
