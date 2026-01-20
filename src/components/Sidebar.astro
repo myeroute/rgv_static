@@ -31,7 +31,7 @@ if (post && post.data) {
 }
 ---
 
-<aside class="sidebar" data-sidebar>
+<aside class="sidebar">
 
   <!-- Search -->
   <section class="sidebar-box">
@@ -39,7 +39,7 @@ if (post && post.data) {
     <input
       type="text"
       placeholder="Search posts..."
-      data-search-input
+      id="sidebar-search"
     />
   </section>
 
@@ -47,10 +47,10 @@ if (post && post.data) {
   {post && relatedPosts.length > 0 && (
     <section class="sidebar-box">
       <h3>More from this topic</h3>
-      <ul class="sidebar-list" data-search-list>
+      <ul class="sidebar-list">
         {relatedPosts.map((p) => (
-          <li data-search-item>
-            <a href={`/${p.slug}/`} data-search-title>
+          <li class="search-item">
+            <a href={`/${p.slug}/`}>
               {p.data.title}
             </a>
           </li>
@@ -62,10 +62,10 @@ if (post && post.data) {
   <!-- Recent posts -->
   <section class="sidebar-box">
     <h3>Recent Posts</h3>
-    <ul class="sidebar-list" data-search-list>
+    <ul class="sidebar-list">
       {recentPosts.map((p) => (
-        <li data-search-item>
-          <a href={`/${p.slug}/`} data-search-title>
+        <li class="search-item">
+          <a href={`/${p.slug}/`}>
             {p.data.title}
           </a>
         </li>
@@ -84,18 +84,17 @@ if (post && post.data) {
 </aside>
 
 <script>
-  const input = document.querySelector('[data-search-input]');
-  const items = document.querySelectorAll('[data-search-item]');
+  const input = document.getElementById("sidebar-search");
 
   if (input) {
-    input.addEventListener('input', () => {
+    input.addEventListener("input", () => {
       const query = input.value.toLowerCase().trim();
+      const items = document.querySelectorAll(".search-item");
 
       items.forEach((item) => {
-        const titleEl = item.querySelector('[data-search-title]');
-        const title = titleEl?.textContent.toLowerCase() || '';
-
-        item.style.display = title.includes(query) ? '' : 'none';
+        const text = item.textContent.toLowerCase();
+        item.style.display =
+          query === "" || text.includes(query) ? "" : "none";
       });
     });
   }
