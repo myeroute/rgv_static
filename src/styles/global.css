@@ -153,3 +153,96 @@ hr {
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }
+/* =========================================================
+   HEADER OVERRIDES – MOBILE FIRST (NO TYPO TOUCH)
+   ========================================================= */
+
+/* header container safety */
+.site-header {
+  position: relative;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+/* keep desktop structure */
+.header-inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+/* hide checkbox */
+.nav-toggle {
+  display: none;
+}
+
+/* hamburger button (mobile only) */
+.nav-toggle-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.nav-toggle-btn span {
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  display: block;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  /* show hamburger */
+  .nav-toggle-btn {
+    display: flex;
+  }
+
+  /* center logo */
+  .site-logo {
+    text-align: center;
+  }
+
+  /* hide desktop nav */
+  .site-nav {
+    display: none;
+  }
+
+  /* dropdown menu */
+  .nav-toggle:checked ~ .site-nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    z-index: 20;
+  }
+
+  .nav-toggle:checked ~ .site-nav a {
+    padding: 0.9rem 1rem;
+    border-top: 1px solid #f0f0f0;
+  }
+}
+
+/* ================= DESKTOP ================= */
+
+@media (min-width: 769px) {
+  /* hide hamburger on desktop */
+  .nav-toggle-btn {
+    display: none;
+  }
+
+  /* force nav back to original layout */
+  .site-nav {
+    display: flex !important;
+  }
+}
+
