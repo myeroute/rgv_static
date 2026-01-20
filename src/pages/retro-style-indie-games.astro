@@ -4,11 +4,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import { categories } from '../config/categories';
 
+const POSTS_PER_PAGE = 9;
+
 const category = categories['retro-style-indie-games'];
 
-const posts = (await getCollection('blog'))
+const allPosts = (await getCollection('blog'))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const totalPosts = allPosts.length;
+const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+
+// Page 1 chỉ lấy 9 bài
+const posts = allPosts.slice(0, POSTS_PER_PAGE);
+
+const nextPage =
+  totalPages > 1
+    ? '/retro-style-indie-games/page/2/'
+    : null;
 ---
 
 <BaseLayout
@@ -29,6 +42,16 @@ const posts = (await getCollection('blog'))
         <PostCard post={post} variant="grid" />
       ))}
     </section>
+
+    {nextPage && (
+      <nav class="pagination">
+        <span class="pagination-info">
+          Page 1 of {totalPages}
+        </span>
+
+        <a href={nextPage}>Next →</a>
+      </nav>
+    )}
   </section>
 </BaseLayout>
 
@@ -51,11 +74,33 @@ const posts = (await getCollection('blog'))
   line-height: 1.7;
 }
 
-/* GRID ARCHIVE */
+/* GRID */
 .category-posts {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 3rem 2.5rem;
   margin-top: 3.5rem;
+}
+
+/* PAGINATION */
+.pagination {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+.pagination-info {
+  opacity: 0.7;
 }
 </style>
