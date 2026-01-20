@@ -32,9 +32,9 @@ const posts = (await getCollection("blog")).map((p) => ({
     {JSON.stringify(posts)}
   </script>
 
-  <!-- SCRIPT TỰ ĐỘNG ĐỔ QUERY VÀ LỌC -->
+  <!-- SEARCH SCRIPT -->
   <script is:inline>
-    (function () {
+    (() => {
       const input = document.getElementById("search-input");
       const results = document.getElementById("search-results");
       const dataEl = document.getElementById("search-data");
@@ -43,18 +43,13 @@ const posts = (await getCollection("blog")).map((p) => ({
 
       const POSTS = JSON.parse(dataEl.textContent);
 
-      // Lấy q từ URL
-      const params = new URLSearchParams(window.location.search);
-      const qstr = params.get("q") || "";
-      input.value = qstr;
-
-      function render(matches) {
+      function renderList(list) {
         results.innerHTML = "";
-        if (!matches.length) {
+        if (!list.length) {
           results.innerHTML = "<li>No results found.</li>";
           return;
         }
-        matches.forEach((p) => {
+        list.forEach((p) => {
           const li = document.createElement("li");
           li.innerHTML = `
             <a href="/${p.slug}/">
@@ -66,37 +61,51 @@ const posts = (await getCollection("blog")).map((p) => ({
         });
       }
 
-      function search(query) {
+      function doSearch(query) {
         const q = query.toLowerCase().trim();
-        if (q.length < 2) {
-          render([]);
+        if (!q || q.length < 2) {
+          renderList([]);
           return;
         }
         const matches = POSTS.filter((p) =>
           p.title.toLowerCase().includes(q)
         );
-        render(matches);
+        renderList(matches);
       }
 
-      // search ban đầu
-      if (qstr) search(qstr);
+      // === READ q FROM URL ON PAGE LOAD ===
+      const params = new URLSearchParams(window.location.search);
+      const qstr = params.get("q") || "";
+      if (qstr) {
+        input.value = qstr;
+        doSearch(qstr);
+      }
 
-      // live search nếu bạn muốn
-      input.addEventListener("input", () => search(input.value));
+      // === LIVE SEARCH ON INPUT ===
+      input.addEventListener("input", () => {
+        doSearch(input.value);
+      });
     })();
   </script>
 
   <style>
     .search-page {
       max-width: 700px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
+    }
+
+    .search-page h1 {
+      margin-bottom: 1.5rem;
     }
 
     #search-input {
       width: 100%;
       padding: 0.75rem;
+      font-size: 1rem;
       margin-bottom: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
 
     .search-results {
@@ -110,13 +119,20 @@ const posts = (await getCollection("blog")).map((p) => ({
     }
 
     .search-results a {
-      display: block;
       text-decoration: none;
       color: inherit;
+      display: block;
     }
 
     .search-results strong {
-      font-size: 1.05rem;
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .search-results .desc {
+      font-size: 0.9rem;
+      color: #555;
     }
   </style>
 </BaseLayout>
