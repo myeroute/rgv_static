@@ -1,52 +1,46 @@
-/**
- * PostCard – WORDPRESS-STYLE LIST & GRID
- *
- * NOTE:
- * Styles live in src/styles/post-card.css
- * This component is layout-only.
- */
-
+---
 const { post, variant = "list" } = Astro.props;
-if (!post) return null;
 
-const slug = post.slug ?? "";
-const data = post.data ?? {};
+const slug = post?.slug ?? "";
+const data = post?.data ?? {};
 
 const title = data.title ?? "Untitled";
 const description = data.description ?? "";
 const heroImage = data.heroImage ?? null;
 ---
 
-<article class={`post-card post-card--${variant}`}>
-  {heroImage && (
-    <a
-      href={`/${slug}/`}
-      class="post-card-thumb"
-      aria-label={title}
-    >
-      <span class="post-card-thumb-inner">
-        <img
-          src={heroImage}
-          alt={title}
-          loading="lazy"
-        />
-      </span>
-    </a>
-  )}
-
-  <div class="post-card-body">
-    <h2 class="post-card-title">
-      <a href={`/${slug}/`} class="post-card-title-link">
-        {title}
+{post && (
+  <article class={`post-card post-card--${variant}`}>
+    {heroImage && (
+      <a
+        href={`/${slug}/`}
+        class="post-card-thumb"
+        aria-label={title}
+      >
+        <span class="post-card-thumb-inner">
+          <img
+            src={heroImage}
+            alt={title}
+            loading="lazy"
+          />
+        </span>
       </a>
-    </h2>
-
-    {description && (
-      <p class="post-card-desc">{description}</p>
     )}
 
-    <a href={`/${slug}/`} class="post-card-button">
-      Read More
-    </a>
-  </div>
-</article>
+    <div class="post-card-body">
+      <h2 class="post-card-title">
+        <a href={`/${slug}/`} class="post-card-title-link">
+          {title}
+        </a>
+      </h2>
+
+      {description && (
+        <p class="post-card-desc">{description}</p>
+      )}
+
+      <a href={`/${slug}/`} class="post-card-button">
+        Read More
+      </a>
+    </div>
+  </article>
+)}
