@@ -1,13 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
-/* ================= REPLACE JSON WITHOUT BASE64 ================ */
-const rawPosts = await getCollection("blog");
-const posts = rawPosts.map((p) => ({
-  title: p.data.title,
-  description: p.data.description,
+const allPosts = await getCollection("blog");
+
+const posts = allPosts.map((p) => ({
   slug: p.slug,
+  data: p.data,
 }));
 ---
 
@@ -24,110 +24,176 @@ const posts = rawPosts.map((p) => ({
       id="search-input"
       placeholder="Type to search posts..."
       autocomplete="off"
-      data-posts={JSON.stringify(posts)}  <!-- dataset chứa JSON -->
     />
 
-    <ul id="search-results" class="search-results"></ul>
+    <!-- RESULTS -->
+    <div id="search-results" class="search-results"></div>
   </section>
 
-  <!-- ===== SEARCH SCRIPT ===== -->
+  <!-- SEARCH SCRIPT -->
   <script is:inline>
     (() => {
       const input = document.getElementById("search-input");
       const results = document.getElementById("search-results");
+
       if (!input || !results) return;
 
-      // Lấy dữ liệu JSON từ dataset
+      const POSTS = JSON.parse(
+        `{${""}}`
+      );
+    })();
+  </script>
+
+  <!-- DATA SCRIPT (SAFE) -->
+  <script type="application/json" id="search-data">
+    {JSON.stringify(posts).replace(/</g, "\\u003c")}
+  </script>
+
+  <script is:inline>
+    (() => {
+      const input = document.getElementById("search-input");
+      const results = document.getElementById("search-results");
+      const dataEl = document.getElementById("search-data");
+
+      if (!input || !results || !dataEl) return;
+
       let POSTS = [];
       try {
-        const raw = input.dataset.posts;
-        if (raw) {
-          POSTS = JSON.parse(raw);
-        }
-      } catch (err) {
-        console.error("Search parse error:", err);
+        POSTS = JSON.parse(dataEl.textContent);
+      } catch (e) {
+        console.error("Search JSON parse error", e);
         return;
       }
 
       function render(list) {
         results.innerHTML = "";
+
         if (!list.length) {
-          results.innerHTML = "<li>No results found.</li>";
+          results.innerHTML = "<p>No results found.</p>";
           return;
         }
-        list.forEach((p) => {
-          const li = document.createElement("li");
-          li.innerHTML = `
-            <a href="/${p.slug}/">
-              <strong>${p.title}</strong>
-              <div class="desc">${p.description || ""}</div>
+
+        list.forEach((post) => {
+          const wrapper = document.createElement("div");
+          wrapper.className = "search-card";
+
+          wrapper.innerHTML = `
+            <a href="/${post.slug}/" class="search-card-link">
+              <img src="${post.data.heroImage}" alt="${post.data.title}" />
+              <h2>${post.data.title}</h2>
+              <p>${post.data.description || ""}</p>
+              <span class="read-more">Read More</span>
             </a>
           `;
-          results.appendChild(li);
+
+          results.appendChild(wrapper);
         });
       }
 
-      function searchQuery(q) {
-        const term = q.toLowerCase().trim();
-        if (!term || term.length < 2) {
+      function search(query) {
+        const q = query.toLowerCase().trim();
+        if (q.length < 2) {
           render([]);
           return;
         }
-        const found = POSTS.filter((p) =>
-          p.title.toLowerCase().includes(term)
+
+        const matches = POSTS.filter((p) =>
+          p.data.title.toLowerCase().includes(q)
         );
-        render(found);
+
+        render(matches);
       }
 
-      // Read URL query on load
+      // read ?q= on load
       const params = new URLSearchParams(window.location.search);
       const qstr = params.get("q") || "";
+
       if (qstr) {
         input.value = qstr;
-        searchQuery(qstr);
+        search(qstr);
       }
 
-      // Live search on input
       input.addEventListener("input", () => {
-        searchQuery(input.value);
+        search(input.value);
       });
     })();
   </script>
 
   <style>
     .search-page {
-      max-width: 700px;
+      max-width: 1200px;
       margin: 2rem auto 4rem;
       padding: 0 1rem;
     }
+
     #search-input {
       width: 100%;
       padding: 0.75rem;
       font-size: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
+
+    /* === RESULTS LAYOUT === */
+
     .search-results {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
     }
-    .search-results li {
-      margin-bottom: 1.25rem;
+
+    /* === CARD === */
+
+    .search-card {
+      display: flex;
+      flex-direction: column;
     }
-    .search-results a {
+
+    .search-card-link {
       text-decoration: none;
       color: inherit;
     }
-    .search-results strong {
-      display: block;
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
+
+    .search-card img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 1rem;
     }
-    .search-results .desc {
-      font-size: 0.9rem;
+
+    .search-card h2 {
+      font-size: 1.1rem;
+      margin: 0 0 0.5rem;
+      line-height: 1.4;
+    }
+
+    .search-card p {
+      font-size: 0.95rem;
       color: #555;
+      line-height: 1.6;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+
+      margin-bottom: 0.75rem;
+    }
+
+    .read-more {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #4f46e5;
+    }
+
+    /* === MOBILE === */
+
+    @media (max-width: 768px) {
+      .search-results {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </BaseLayout>
