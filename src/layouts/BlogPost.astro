@@ -1,12 +1,83 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { Content } from "astro:content";
+import { getCollection } from "astro:content";
 
-const { post } = Astro.props;
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Lấy game từ frontmatter
+const game = entry.data.game;
+
+// Lấy các bài cùng game (trừ bài hiện tại)
+const allPosts = await getCollection("blog");
+const relatedPosts = game
+  ? allPosts.filter(
+      (post) =>
+        post.slug !== entry.slug &&
+        post.data.game === game
+    )
+  : [];
 ---
 
-<BaseLayout sidebar="post" post={post}>
-  <article>
-    <Content />
+<BaseLayout>
+  <article class="blog-post">
+    <header class="post-header">
+      <h1>{entry.data.title}</h1>
+      {entry.data.description && (
+        <p class="post-description">{entry.data.description}</p>
+      )}
+    </header>
+
+    <div class="post-content">
+      <Content />
+    </div>
+
+    {relatedPosts.length > 0 && (
+      <section class="related-posts">
+        <h2>More from this topic</h2>
+        <ul>
+          {relatedPosts.map((post) => (
+            <li>
+              <a href={`/posts/${post.slug}/`}>
+                {post.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
   </article>
 </BaseLayout>
+
+<style>
+.blog-post {
+  max-width: 720px;
+}
+
+.post-header {
+  margin-bottom: 2rem;
+}
+
+.post-description {
+  color: #555;
+}
+
+.related-posts {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.related-posts h2 {
+  margin-bottom: 1rem;
+}
+
+.related-posts ul {
+  list-style: none;
+  padding: 0;
+}
+
+.related-posts li {
+  margin-bottom: 0.5rem;
+}
+</style>
