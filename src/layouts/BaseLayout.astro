@@ -2,17 +2,14 @@
 import Sidebar from "../components/Sidebar.astro";
 import GlobalStyles from "../components/GlobalStyles.astro";
 
-/*
-  KHÔNG import global.css ở đây nữa
-  Global CSS sẽ được giữ thông qua GlobalStyles component
-*/
-
 const {
   title = "Retro Gaming Verse",
   description = "Timeless play experiences with retro games and retro-style indie games.",
-  sidebar = null, // 'home' | 'post' | null
+  sidebar = null, // "home" | "post" | null
   post = null,
 } = Astro.props;
+
+const isHome = sidebar === "home";
 ---
 
 <!DOCTYPE html>
@@ -25,26 +22,11 @@ const {
   </head>
 
   <body>
-    <!-- 🔴 BẮT BUỘC: gắn GlobalStyles để Astro giữ global.css -->
     <GlobalStyles />
 
     <!-- ================= HEADER ================= -->
     <header class="site-header">
       <div class="header-inner">
-        <!-- Mobile nav toggle -->
-        <input
-          type="checkbox"
-          id="nav-toggle"
-          class="nav-toggle"
-          aria-hidden="true"
-        />
-
-        <label for="nav-toggle" class="nav-toggle-btn" aria-label="Open menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </label>
-
         <div class="site-logo">
           <a href="/">Retro Gaming Verse</a>
         </div>
@@ -56,73 +38,41 @@ const {
         </nav>
 
         <div class="header-search">
-          <a href="/search/" aria-label="Search">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </a>
+          <a href="/search/" aria-label="Search">🔍</a>
         </div>
       </div>
     </header>
 
     <!-- ================= CONTENT ================= -->
-    <div class="site-content">
-      {sidebar ? (
-        <div class="layout-with-sidebar">
-          <main class="layout-content">
-            <slot />
-          </main>
 
-          <aside class="layout-sidebar">
-            <Sidebar variant={sidebar} post={post} />
-          </aside>
-        </div>
-      ) : (
-        <main>
+    {isHome ? (
+      <!-- 🔴 HOMEPAGE: KHÔNG DÙNG <main> -->
+      <div class="site-content page-home">
+        <slot />
+      </div>
+    ) : sidebar ? (
+      <!-- CONTENT + SIDEBAR -->
+      <div class="site-content layout-with-sidebar">
+        <main class="layout-content">
           <slot />
         </main>
-      )}
 
-      <!-- ================= FOOTER ================= -->
-      <footer class="site-footer">
-        <div class="footer-inner">
-          <div class="footer-about">
-            <h4>Retro Gaming Verse</h4>
-            <p>
-              Timeless play experiences. A place to document real experiences with
-              retro games and retro-inspired indie games, played slowly and
-              without rushing.
-            </p>
-            <p class="footer-copy">
-              © 2026 Retro Gaming Verse. All rights reserved.
-            </p>
-          </div>
+        <aside class="layout-sidebar">
+          <Sidebar variant={sidebar} post={post} />
+        </aside>
+      </div>
+    ) : (
+      <!-- NORMAL PAGE -->
+      <main class="site-content">
+        <slot />
+      </main>
+    )}
 
-          <div class="footer-links">
-            <h4>Helpful Links</h4>
-            <a href="/about/">About</a>
-            <a href="/contact/">Contact</a>
-          </div>
-
-          <div class="footer-links">
-            <h4>Policies</h4>
-            <a href="/privacy-policy/">Privacy Policy</a>
-            <a href="/terms-of-service/">Terms of Service</a>
-            <a href="/disclaimer/">Disclaimer</a>
-          </div>
-        </div>
-      </footer>
-    </div>
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p>© 2026 Retro Gaming Verse</p>
+      </div>
+    </footer>
   </body>
 </html>
