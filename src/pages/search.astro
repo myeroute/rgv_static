@@ -3,12 +3,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
+const query = Astro.url.searchParams.get("q") || "";
+
 const allPosts = await getCollection("blog");
 
-const posts = allPosts.map((p) => ({
-  slug: p.slug,
-  data: p.data,
-}));
+const results =
+  query.length >= 2
+    ? allPosts.filter((post) =>
+        post.data.title.toLowerCase().includes(query.toLowerCase())
+      )
+    : [];
 ---
 
 <BaseLayout
@@ -19,105 +23,32 @@ const posts = allPosts.map((p) => ({
   <section class="search-page">
     <h1>Search</h1>
 
-    <input
-      type="text"
-      id="search-input"
-      placeholder="Type to search posts..."
-      autocomplete="off"
-    />
+    <form method="get" action="/search">
+      <input
+        type="text"
+        name="q"
+        placeholder="Type to search posts..."
+        value={query}
+        autocomplete="off"
+      />
+    </form>
 
-    <!-- RESULTS -->
-    <div id="search-results" class="search-results"></div>
+    {query && (
+      <p class="search-meta">
+        {results.length} result{results.length !== 1 && "s"} for “{query}”
+      </p>
+    )}
+
+    {results.length > 0 ? (
+      <div class="search-results">
+        {results.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    ) : (
+      query && <p>No results found.</p>
+    )}
   </section>
-
-  <!-- SEARCH SCRIPT -->
-  <script is:inline>
-    (() => {
-      const input = document.getElementById("search-input");
-      const results = document.getElementById("search-results");
-
-      if (!input || !results) return;
-
-      const POSTS = JSON.parse(
-        `{${""}}`
-      );
-    })();
-  </script>
-
-  <!-- DATA SCRIPT (SAFE) -->
-  <script type="application/json" id="search-data">
-    {JSON.stringify(posts).replace(/</g, "\\u003c")}
-  </script>
-
-  <script is:inline>
-    (() => {
-      const input = document.getElementById("search-input");
-      const results = document.getElementById("search-results");
-      const dataEl = document.getElementById("search-data");
-
-      if (!input || !results || !dataEl) return;
-
-      let POSTS = [];
-      try {
-        POSTS = JSON.parse(dataEl.textContent);
-      } catch (e) {
-        console.error("Search JSON parse error", e);
-        return;
-      }
-
-      function render(list) {
-        results.innerHTML = "";
-
-        if (!list.length) {
-          results.innerHTML = "<p>No results found.</p>";
-          return;
-        }
-
-        list.forEach((post) => {
-          const wrapper = document.createElement("div");
-          wrapper.className = "search-card";
-
-          wrapper.innerHTML = `
-            <a href="/${post.slug}/" class="search-card-link">
-              <img src="${post.data.heroImage}" alt="${post.data.title}" />
-              <h2>${post.data.title}</h2>
-              <p>${post.data.description || ""}</p>
-              <span class="read-more">Read More</span>
-            </a>
-          `;
-
-          results.appendChild(wrapper);
-        });
-      }
-
-      function search(query) {
-        const q = query.toLowerCase().trim();
-        if (q.length < 2) {
-          render([]);
-          return;
-        }
-
-        const matches = POSTS.filter((p) =>
-          p.data.title.toLowerCase().includes(q)
-        );
-
-        render(matches);
-      }
-
-      // read ?q= on load
-      const params = new URLSearchParams(window.location.search);
-      const qstr = params.get("q") || "";
-
-      if (qstr) {
-        input.value = qstr;
-        search(qstr);
-      }
-
-      input.addEventListener("input", () => {
-        search(input.value);
-      });
-    })();
-  </script>
 
   <style>
     .search-page {
@@ -126,70 +57,32 @@ const posts = allPosts.map((p) => ({
       padding: 0 1rem;
     }
 
-    #search-input {
+    form {
+      margin-bottom: 1.5rem;
+    }
+
+    input {
       width: 100%;
       padding: 0.75rem;
       font-size: 1rem;
-      margin-bottom: 2rem;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
 
-    /* === RESULTS LAYOUT === */
+    .search-meta {
+      margin-bottom: 1.5rem;
+      color: #555;
+      font-size: 0.95rem;
+    }
 
+    /* Desktop: grid like category */
     .search-results {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2rem;
     }
 
-    /* === CARD === */
-
-    .search-card {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .search-card-link {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .search-card img {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      border-radius: 6px;
-      margin-bottom: 1rem;
-    }
-
-    .search-card h2 {
-      font-size: 1.1rem;
-      margin: 0 0 0.5rem;
-      line-height: 1.4;
-    }
-
-    .search-card p {
-      font-size: 0.95rem;
-      color: #555;
-      line-height: 1.6;
-
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-
-      margin-bottom: 0.75rem;
-    }
-
-    .read-more {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #4f46e5;
-    }
-
-    /* === MOBILE === */
-
+    /* Mobile: list */
     @media (max-width: 768px) {
       .search-results {
         grid-template-columns: 1fr;
