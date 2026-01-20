@@ -43,10 +43,11 @@ if (post && post.data) {
     <h3>Search</h3>
     <input
       type="text"
-      placeholder="Search posts..."
       id="sidebar-search"
+      placeholder="Search posts..."
       autocomplete="off"
     />
+
     <ul class="search-dropdown" id="search-results" hidden></ul>
   </section>
 
@@ -86,31 +87,35 @@ if (post && post.data) {
   </section>
 </aside>
 
-<!-- 🔑 DATA PHẢI ĐỨNG TRƯỚC JS -->
-<script type="application/json" id="search-data">
+<!-- 🔑 DATA: HTML THUẦN -->
+<script id="search-data" type="application/json">
 {JSON.stringify(allPosts)}
 </script>
 
+<!-- 🔑 JS: CHẠY Ở BROWSER, KHÔNG QUA ASTRO -->
 <script>
-  const POSTS = JSON.parse(
-    document.getElementById("search-data").textContent
-  );
-
+(function () {
   const input = document.getElementById("sidebar-search");
   const dropdown = document.getElementById("search-results");
+  const dataEl = document.getElementById("search-data");
 
-  input.addEventListener("input", () => {
-    const query = input.value.toLowerCase().trim();
+  if (!input || !dropdown || !dataEl) return;
 
-    if (!query) {
+  const POSTS = JSON.parse(dataEl.textContent);
+
+  input.addEventListener("input", function () {
+    const query = this.value.toLowerCase().trim();
+
+    // 🔒 chỉ search từ 4 ký tự
+    if (query.length < 4) {
       dropdown.hidden = true;
       dropdown.innerHTML = "";
       return;
     }
 
-    const matches = POSTS.filter((p) =>
-      p.title.toLowerCase().includes(query)
-    ).slice(0, 5);
+    const matches = POSTS
+      .filter(p => p.title.toLowerCase().includes(query))
+      .slice(0, 5);
 
     if (matches.length === 0) {
       dropdown.hidden = true;
@@ -119,20 +124,18 @@ if (post && post.data) {
     }
 
     dropdown.innerHTML = matches
-      .map(
-        (p) =>
-          `<li><a href="/${p.slug}/">${p.title}</a></li>`
-      )
+      .map(p => `<li><a href="/${p.slug}/">${p.title}</a></li>`)
       .join("");
 
     dropdown.hidden = false;
   });
 
-  document.addEventListener("click", (e) => {
+  document.addEventListener("click", function (e) {
     if (!e.target.closest(".search-box")) {
       dropdown.hidden = true;
     }
   });
+})();
 </script>
 
 <style>
@@ -149,18 +152,6 @@ if (post && post.data) {
   margin-bottom: 2rem;
 }
 
-.sidebar-box h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-}
-
-.sidebar-box p {
-  font-size: 0.95rem;
-  color: #666;
-  line-height: 1.6;
-}
-
 .sidebar-box input {
   width: 100%;
   padding: 0.55rem 0.6rem;
@@ -170,7 +161,7 @@ if (post && post.data) {
 /* ===== DROPDOWN ===== */
 .search-dropdown {
   position: absolute;
-  top: calc(100% - 1rem);
+  top: calc(100% - 0.5rem);
   left: 1.5rem;
   right: 1.5rem;
   background: #fff;
@@ -179,8 +170,8 @@ if (post && post.data) {
   list-style: none;
   padding: 0.5rem 0;
   margin: 0;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  z-index: 20;
 }
 
 .search-dropdown li {
@@ -188,34 +179,13 @@ if (post && post.data) {
 }
 
 .search-dropdown a {
-  text-decoration: none;
+  display: block;
   font-size: 0.9rem;
   color: #374151;
-  display: block;
+  text-decoration: none;
 }
 
 .search-dropdown a:hover {
   background: #f3f4f6;
-}
-
-/* ===== LIST ===== */
-.sidebar-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.sidebar-list li {
-  margin-bottom: 0.6rem;
-}
-
-.sidebar-list a {
-  text-decoration: none;
-  color: #374151;
-  font-size: 0.95rem;
-}
-
-.sidebar-list a:hover {
-  color: #4f46e5;
 }
 </style>
