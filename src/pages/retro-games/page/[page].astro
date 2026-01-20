@@ -4,13 +4,14 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PostCard from '../../../components/PostCard.astro';
 import { categories } from '../../../config/categories';
 
-const POSTS_PER_PAGE = 9;
-
 /**
  * STATIC PATHS
- * Sinh page 2, 3, 4...
+ * Page 1 = /retro-games/
+ * Page >= 2 = /retro-games/page/[page]/
  */
 export async function getStaticPaths() {
+  const POSTS_PER_PAGE = 9;
+
   const category = categories['retro-games'];
 
   const allPosts = (await getCollection('blog'))
@@ -19,9 +20,9 @@ export async function getStaticPaths() {
 
   const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
 
-  // Page 1 đã là /retro-games/, nên chỉ sinh từ page 2
   const paths = [];
 
+  // chỉ sinh page 2 trở đi
   for (let page = 2; page <= totalPages; page++) {
     paths.push({
       params: { page: String(page) },
@@ -31,6 +32,8 @@ export async function getStaticPaths() {
 
   return paths;
 }
+
+const POSTS_PER_PAGE = 9;
 
 const { page } = Astro.props;
 const currentPage = Number(page);
@@ -78,17 +81,13 @@ const nextPage =
     </section>
 
     <nav class="pagination">
-      {prevPage && (
-        <a href={prevPage}>← Previous</a>
-      )}
+      {prevPage && <a href={prevPage}>← Previous</a>}
 
       <span class="pagination-info">
         Page {currentPage} of {totalPages}
       </span>
 
-      {nextPage && (
-        <a href={nextPage}>Next →</a>
-      )}
+      {nextPage && <a href={nextPage}>Next →</a>}
     </nav>
   </section>
 </BaseLayout>
