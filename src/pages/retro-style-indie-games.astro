@@ -3,29 +3,70 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
-const posts = await getCollection("blog");
+// lấy toàn bộ blog post
+const allPosts = await getCollection("blog");
 
-// LỌC ĐÚNG SHAPE – KHÔNG MAP, KHÔNG BIẾN DẠNG
-const retroStyleIndiePosts = posts.filter(
-  (post) => post.data?.category === "retro-style-indie-games"
-);
+// lọc bài thuộc retro-style-indie-games
+const posts = allPosts
+  .filter((post) => {
+    const tags = post.data.tags ?? [];
+    return tags.includes("retro-style-indie-games");
+  })
+  .sort(
+    (a, b) =>
+      new Date(b.data.pubDate).getTime() -
+      new Date(a.data.pubDate).getTime()
+  );
 ---
 
-<BaseLayout title="Retro-style Indie Games">
-  <main class="container">
+<BaseLayout
+  title="Retro-Style Indie Games"
+  description="Thoughts, reflections, and explanations about retro-style indie games."
+>
+  <section class="page">
     <header class="page-header">
-      <h1>Retro-style Indie Games</h1>
-      <p>Indie games inspired by classic retro aesthetics and design.</p>
+      <h1>Retro-Style Indie Games</h1>
+      <p>
+        Articles focusing on indie games inspired by retro aesthetics, mechanics,
+        and design philosophy.
+      </p>
     </header>
 
-    {retroStyleIndiePosts.length === 0 ? (
-      <p>No posts yet.</p>
+    {posts.length === 0 ? (
+      <p>No posts found.</p>
     ) : (
-      <section class="post-grid">
-        {retroStyleIndiePosts.map((post) => (
+      <div class="post-grid">
+        {posts.map((post) => (
           <PostCard post={post} />
         ))}
-      </section>
+      </div>
     )}
-  </main>
+  </section>
 </BaseLayout>
+
+<style>
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header p {
+    color: var(--text-muted, #777);
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+</style>
