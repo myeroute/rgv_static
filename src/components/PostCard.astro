@@ -1,11 +1,9 @@
----
 /**
  * PostCard – WORDPRESS-STYLE LIST & GRID
  *
  * NOTE:
- * Styles were moved to src/styles/post-card.css
- * This component is now layout-only.
- * Do NOT add styles here unless refactoring global card layout.
+ * Styles live in src/styles/post-card.css
+ * This component is layout-only.
  */
 
 const { post, variant = "list" } = Astro.props;
@@ -21,8 +19,18 @@ const heroImage = data.heroImage ?? null;
 
 <article class={`post-card post-card--${variant}`}>
   {heroImage && (
-    <a href={`/${slug}/`} class="post-card-thumb" aria-label={title}>
-      <img src={heroImage} alt={title} loading="lazy" />
+    <a
+      href={`/${slug}/`}
+      class="post-card-thumb"
+      aria-label={title}
+    >
+      <span class="post-card-thumb-inner">
+        <img
+          src={heroImage}
+          alt={title}
+          loading="lazy"
+        />
+      </span>
     </a>
   )}
 
