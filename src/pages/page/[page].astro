@@ -35,13 +35,13 @@ const { posts, currentPage, totalPages } = Astro.props;
   <nav class="pagination">
     {currentPage > 1 && (
       <a href={currentPage === 2 ? "/" : `/page/${currentPage - 1}/`}>
-        ← Newer
+        ← Previous
       </a>
     )}
 
     {currentPage < totalPages && (
       <a href={`/page/${currentPage + 1}/`}>
-        Older →
+        Next →
       </a>
     )}
   </nav>
