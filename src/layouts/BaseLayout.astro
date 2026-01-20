@@ -2,7 +2,7 @@
 import Sidebar from "../components/Sidebar.astro";
 
 const {
-  sidebar = "default", // "default" | "post"
+  sidebar = "default",
   post = null,
 } = Astro.props;
 ---
@@ -12,22 +12,20 @@ const {
     <slot />
   </main>
 
-  {/* ❌ KHÔNG render sidebar bên phải cho blog post */}
-  {sidebar !== "post" && (
-    <aside class="sidebar-right">
-      <Sidebar />
-    </aside>
-  )}
+  <aside class="sidebar-right">
+    <Sidebar post={post} />
+  </aside>
 </div>
 
 <style>
 .layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: minmax(0, 1fr) 320px;
   gap: 2rem;
+  align-items: start;
 }
 
 .sidebar-right {
-  align-self: start;
+  position: relative;
 }
 </style>
