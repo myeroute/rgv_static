@@ -1,8 +1,7 @@
 ---
-import Footer from '../components/Footer.astro';
 import Sidebar from '../components/Sidebar.astro';
 
-/* LOAD CSS – SINGLE SOURCE OF TRUTH */
+/* 🔴 QUAN TRỌNG: LOAD GLOBAL CSS */
 import '../styles/global.css';
 import '../styles/post-card.css';
 
@@ -24,7 +23,7 @@ const {
   </head>
 
   <body>
-    <!-- ================= HEADER (NO TYPO SCOPE) ================= -->
+    <!-- ================= HEADER ================= -->
     <header class="site-header">
       <div class="header-inner">
         <!-- MOBILE NAV TOGGLE -->
@@ -72,7 +71,7 @@ const {
       </div>
     </header>
 
-    <!-- ================= CONTENT (TYPO / PROSE SCOPE) ================= -->
+    <!-- ================= CONTENT ================= -->
     <div class="site-content">
       {sidebar ? (
         <div class="layout-with-sidebar">
@@ -121,4 +120,3 @@ const {
     </div>
   </body>
 </html>
-
