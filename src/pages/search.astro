@@ -1,0 +1,126 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog")).map((p) => ({
+  title: p.data.title,
+  description: p.data.description,
+  slug: p.slug,
+}));
+---
+
+<BaseLayout
+  title="Search"
+  description="Search posts on Retro Gaming Verse"
+  sidebar={null}
+>
+  <section class="search-page">
+    <h1>Search</h1>
+
+    <input
+      type="text"
+      id="search-input"
+      placeholder="Type to search posts..."
+      autocomplete="off"
+    />
+
+    <ul id="search-results" class="search-results"></ul>
+  </section>
+
+  <!-- SEARCH DATA -->
+  <script type="application/json" id="search-data">
+    {JSON.stringify(posts)}
+  </script>
+
+  <!-- SEARCH SCRIPT -->
+  <script is:inline>
+    (function () {
+      const input = document.getElementById("search-input");
+      const results = document.getElementById("search-results");
+      const dataEl = document.getElementById("search-data");
+
+      if (!input || !results || !dataEl) return;
+
+      const POSTS = JSON.parse(dataEl.textContent);
+
+      input.addEventListener("input", function () {
+        const q = this.value.toLowerCase().trim();
+        results.innerHTML = "";
+
+        if (q.length < 2) return;
+
+        const matches = POSTS.filter((p) =>
+          p.title.toLowerCase().includes(q)
+        );
+
+        if (!matches.length) {
+          results.innerHTML = "<li>No results found.</li>";
+          return;
+        }
+
+        matches.forEach((p) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <a href="/${p.slug}/">
+              <strong>${p.title}</strong>
+              <div class="desc">${p.description || ""}</div>
+            </a>
+          `;
+          results.appendChild(li);
+        });
+      });
+    })();
+  </script>
+
+  <style>
+    .search-page {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .search-page h1 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    #search-input {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-results {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .search-results li {
+      margin-bottom: 1.25rem;
+    }
+
+    .search-results a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .search-results a:hover strong {
+      text-decoration: underline;
+    }
+
+    .search-results strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .search-results .desc {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.5;
+    }
+  </style>
+</BaseLayout>
