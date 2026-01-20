@@ -92,27 +92,26 @@
   border-radius: 6px;
 }
 /* =========================================================
-   FIX: LIMIT THUMBNAIL HEIGHT FOR LIST (HOMEPAGE)
+   FIX: HOMEPAGE / LIST CONTEXT THUMB SIZE
    ========================================================= */
 
-/* LIST view thumbnail should not behave like hero */
-.post-card--list .post-card-thumb {
+/* Limit thumbnail height when post-card is inside layout-with-sidebar */
+.layout-with-sidebar .post-card-thumb {
   height: 220px;
+  overflow: hidden;
 }
 
-/* image already has object-fit: cover */
-.post-card--list .post-card-thumb img {
+.layout-with-sidebar .post-card-thumb img {
+  width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
-/* Mobile: tighter thumbnail */
+/* Mobile reading comfort */
 @media (max-width: 768px) {
-  .post-card--list {
-    grid-template-columns: 1fr;
-  }
-
-  .post-card--list .post-card-thumb {
+  .layout-with-sidebar .post-card-thumb {
     height: 200px;
   }
 }
+
 
