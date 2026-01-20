@@ -16,17 +16,18 @@ let relatedPosts = [];
 
 if (variant === "post" && post) {
   const allPosts = await getCollection("blog");
+  const currentSlug = post.slug;
 
   if (post.data.game) {
     relatedPosts = allPosts.filter(
       (p) =>
-        p.id !== post.id &&
+        p.slug !== currentSlug &&
         p.data.game === post.data.game
     );
   } else if (post.data.tag) {
     relatedPosts = allPosts.filter(
       (p) =>
-        p.id !== post.id &&
+        p.slug !== currentSlug &&
         p.data.tag === post.data.tag
     );
   }
@@ -49,14 +50,11 @@ if (variant === "post" && post) {
     <section class="sidebar-box">
       <h3>More from this topic</h3>
       <ul class="sidebar-list">
-        {relatedPosts.map((p) => {
-          const slug = p.id.split("/").pop();
-          return (
-            <li>
-              <a href={`/${slug}/`}>{p.data.title}</a>
-            </li>
-          );
-        })}
+        {relatedPosts.map((p) => (
+          <li>
+            <a href={`/${p.slug}/`}>{p.data.title}</a>
+          </li>
+        ))}
       </ul>
     </section>
   )}
@@ -65,14 +63,11 @@ if (variant === "post" && post) {
   <section class="sidebar-box">
     <h3>Recent Posts</h3>
     <ul class="sidebar-list">
-      {recentPosts.map((p) => {
-        const slug = p.id.split("/").pop();
-        return (
-          <li>
-            <a href={`/${slug}/`}>{p.data.title}</a>
-          </li>
-        );
-      })}
+      {recentPosts.map((p) => (
+        <li>
+          <a href={`/${p.slug}/`}>{p.data.title}</a>
+        </li>
+      ))}
     </ul>
   </section>
 
@@ -85,55 +80,3 @@ if (variant === "post" && post) {
     </p>
   </section>
 </aside>
-
-<style>
-.sidebar {
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-box {
-  border: 1px solid #eee;
-  border-radius: 6px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.sidebar-box h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-}
-
-.sidebar-box p {
-  font-size: 0.95rem;
-  color: #666;
-  line-height: 1.6;
-}
-
-.sidebar-box input {
-  width: 100%;
-  padding: 0.55rem 0.6rem;
-  font-size: 0.9rem;
-}
-
-.sidebar-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.sidebar-list li {
-  margin-bottom: 0.6rem;
-}
-
-.sidebar-list a {
-  text-decoration: none;
-  color: #374151;
-  font-size: 0.95rem;
-}
-
-.sidebar-list a:hover {
-  color: #4f46e5;
-}
-</style>
