@@ -380,6 +380,26 @@ hr {
     font-size: 1.8rem;
   }
 }
+/* =========================================================
+   HOMEPAGE – LIMIT HERO IMAGE IN POST LIST
+   ========================================================= */
+
+/* Only affect homepage post list images */
+.page-home img {
+  max-height: 420px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 16px;
+}
+
+/* Mobile: tighter crop */
+@media (max-width: 768px) {
+  .page-home img {
+    max-height: 260px;
+    border-radius: 12px;
+  }
+}
+
 
 
 
