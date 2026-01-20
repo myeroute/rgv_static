@@ -1,6 +1,4 @@
 ---
-export const prerender = false;
-
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
@@ -25,7 +23,7 @@ const results =
   <section class="search-page">
     <h1>Search</h1>
 
-    <form method="get" action="/search" class="search-form">
+    <form method="get" action="/search">
       <input
         type="text"
         name="q"
@@ -44,7 +42,7 @@ const results =
     {results.length > 0 && (
       <div class="search-results">
         {results.map((post) => (
-          <PostCard post={post} variant="grid" />
+          <PostCard {...post} />
         ))}
       </div>
     )}
@@ -61,11 +59,11 @@ const results =
       padding: 0 1rem;
     }
 
-    .search-form {
+    form {
       margin-bottom: 1.5rem;
     }
 
-    .search-form input {
+    input {
       width: 100%;
       padding: 0.75rem;
       font-size: 1rem;
@@ -74,7 +72,7 @@ const results =
     }
 
     .search-meta {
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       color: #555;
       font-size: 0.95rem;
     }
@@ -83,10 +81,10 @@ const results =
     .search-results {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2.5rem;
+      gap: 2rem;
     }
 
-    /* Mobile: list như homepage */
+    /* Mobile: list */
     @media (max-width: 768px) {
       .search-results {
         grid-template-columns: 1fr;
