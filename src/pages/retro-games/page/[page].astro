@@ -4,39 +4,49 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PostCard from '../../../components/PostCard.astro';
 import { categories } from '../../../config/categories';
 
-// ===== CONFIG =====
 const POSTS_PER_PAGE = 9;
 
-// ===== GET PAGE PARAM =====
-const { page } = Astro.params;
-const currentPage = Number(page);
+/**
+ * STATIC PATHS
+ * Sinh page 2, 3, 4...
+ */
+export async function getStaticPaths() {
+  const category = categories['retro-games'];
 
-// Guard: page phải là số >= 2
-if (Number.isNaN(currentPage) || currentPage < 2) {
-  throw new Error('Invalid page number');
+  const allPosts = (await getCollection('blog'))
+    .filter((post) => post.data.category === category.slug)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
+
+  // Page 1 đã là /retro-games/, nên chỉ sinh từ page 2
+  const paths = [];
+
+  for (let page = 2; page <= totalPages; page++) {
+    paths.push({
+      params: { page: String(page) },
+      props: { page },
+    });
+  }
+
+  return paths;
 }
 
-// ===== CATEGORY =====
+const { page } = Astro.props;
+const currentPage = Number(page);
+
 const category = categories['retro-games'];
 
-// ===== FETCH + FILTER POSTS =====
 const allPosts = (await getCollection('blog'))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-// ===== PAGINATION LOGIC =====
-const totalPosts = allPosts.length;
-const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
-
-if (currentPage > totalPages) {
-  throw new Error('Page not found');
-}
+const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
 
 const start = (currentPage - 1) * POSTS_PER_PAGE;
 const end = start + POSTS_PER_PAGE;
 const posts = allPosts.slice(start, end);
 
-// ===== PREV / NEXT =====
 const prevPage =
   currentPage === 2
     ? '/retro-games/'
@@ -67,12 +77,9 @@ const nextPage =
       ))}
     </section>
 
-    <!-- PAGINATION -->
     <nav class="pagination">
       {prevPage && (
-        <a class="pagination-prev" href={prevPage}>
-          ← Previous
-        </a>
+        <a href={prevPage}>← Previous</a>
       )}
 
       <span class="pagination-info">
@@ -80,9 +87,7 @@ const nextPage =
       </span>
 
       {nextPage && (
-        <a class="pagination-next" href={nextPage}>
-          Next →
-        </a>
+        <a href={nextPage}>Next →</a>
       )}
     </nav>
   </section>
@@ -107,7 +112,6 @@ const nextPage =
   line-height: 1.7;
 }
 
-/* GRID */
 .category-posts {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -115,7 +119,6 @@ const nextPage =
   margin-top: 3.5rem;
 }
 
-/* PAGINATION */
 .pagination {
   margin-top: 4rem;
   display: flex;
