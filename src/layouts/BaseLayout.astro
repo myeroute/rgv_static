@@ -1,72 +1,74 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Sidebar from '../components/Sidebar.astro'; // NEW
+import Sidebar from '../components/Sidebar.astro';
 
 const {
   title = 'Retro Gaming Verse',
   description = 'Timeless play experiences with retro games and retro-style indie games.',
   canonical = Astro.url.href,
-  noindex = true, // đang test → chặn index
+  noindex = true,
 
-  sidebar = null, // NEW: 'home' | 'post' | null
-  post = null,    // NEW: blog post data
+  sidebar = null, // 'home' | 'post' | null
+  post = null,
 } = Astro.props;
 ---
 
-@@ -36,9 +40,21 @@ const {
-    </header>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+  </head>
 
-    <!-- MAIN -->
-    <main>
-      <slot />
-    </main>
+  <body>
+    <Header />
+
     {sidebar ? (
-      <div class="layout-with-sidebar">  <!-- NEW -->
+      <div class="layout-with-sidebar">
         <main class="layout-content">
           <slot />
         </main>
 
         <aside class="layout-sidebar">
-          <Sidebar variant={sidebar} post={post} />  <!-- NEW -->
+          <Sidebar variant={sidebar} post={post} />
         </aside>
       </div>
     ) : (
-      <main>
+      <main class="layout-single">
         <slot />
       </main>
     )}
 
-    <!-- FOOTER -->
-    <footer class="site-footer">
-@@ -118,12 +134,31 @@ const {
-      text-decoration: underline;
-    }
+    <Footer />
 
-    /* ===== LAYOUT WITH SIDEBAR ===== */ /* NEW */
+    <style>
+      .layout-single {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2.5rem 1rem;
+      }
 
-    .layout-with-sidebar {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2.5rem 1rem;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 300px;
-      gap: 3rem;
-    }
+      .layout-with-sidebar {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2.5rem 1rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 3rem;
+      }
 
-    .layout-content {
-      min-width: 0;
-    }
+      .layout-content {
+        min-width: 0;
+      }
 
-    .layout-sidebar {
-      min-width: 0;
-    }
-
-    /* ===== FOOTER ===== */
-
-    .site-footer {
-      margin-top: 5rem;
-      padding: 4rem 1rem;
-      background: #fafbff; /* rất nhẹ */
-      background: #fafbff;
-      border-top: 1px solid #eee;
+      .layout-sidebar {
+        min-width: 0;
+      }
+    </style>
+  </body>
+</html>
