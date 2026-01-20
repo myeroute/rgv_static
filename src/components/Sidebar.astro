@@ -3,12 +3,6 @@ import { getCollection } from "astro:content";
 
 const { post = null } = Astro.props;
 
-/* ===== ALL POSTS (FOR SEARCH) ===== */
-const allPosts = (await getCollection("blog")).map((p) => ({
-  title: p.data.title,
-  slug: p.slug,
-}));
-
 /* ===== RECENT POSTS ===== */
 const recentPosts = (await getCollection("blog"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -18,14 +12,15 @@ const recentPosts = (await getCollection("blog"))
 let relatedPosts = [];
 
 if (post && post.data) {
+  const allPosts = await getCollection("blog");
   const currentSlug = post.slug;
 
   if (post.data.game) {
-    relatedPosts = (await getCollection("blog")).filter(
+    relatedPosts = allPosts.filter(
       (p) => p.slug !== currentSlug && p.data.game === post.data.game
     );
   } else if (post.data.tag) {
-    relatedPosts = (await getCollection("blog")).filter(
+    relatedPosts = allPosts.filter(
       (p) => p.slug !== currentSlug && p.data.tag === post.data.tag
     );
   }
@@ -38,17 +33,15 @@ if (post && post.data) {
 
 <aside class="sidebar">
 
-  <!-- Search -->
-  <section class="sidebar-box search-box">
+  <!-- Search (UI only, no JS here) -->
+  <section class="sidebar-box">
     <h3>Search</h3>
     <input
       type="text"
-      id="sidebar-search"
       placeholder="Search posts..."
+      id="sidebar-search"
       autocomplete="off"
     />
-
-    <ul class="search-dropdown" id="search-results" hidden></ul>
   </section>
 
   <!-- More from this topic -->
@@ -87,57 +80,6 @@ if (post && post.data) {
   </section>
 </aside>
 
-<!-- 🔑 DATA: HTML THUẦN -->
-<script id="search-data" type="application/json">
-{JSON.stringify(allPosts)}
-</script>
-
-<!-- 🔑 JS: CHẠY Ở BROWSER, KHÔNG QUA ASTRO -->
-<script>
-(function () {
-  const input = document.getElementById("sidebar-search");
-  const dropdown = document.getElementById("search-results");
-  const dataEl = document.getElementById("search-data");
-
-  if (!input || !dropdown || !dataEl) return;
-
-  const POSTS = JSON.parse(dataEl.textContent);
-
-  input.addEventListener("input", function () {
-    const query = this.value.toLowerCase().trim();
-
-    // 🔒 chỉ search từ 4 ký tự
-    if (query.length < 4) {
-      dropdown.hidden = true;
-      dropdown.innerHTML = "";
-      return;
-    }
-
-    const matches = POSTS
-      .filter(p => p.title.toLowerCase().includes(query))
-      .slice(0, 5);
-
-    if (matches.length === 0) {
-      dropdown.hidden = true;
-      dropdown.innerHTML = "";
-      return;
-    }
-
-    dropdown.innerHTML = matches
-      .map(p => `<li><a href="/${p.slug}/">${p.title}</a></li>`)
-      .join("");
-
-    dropdown.hidden = false;
-  });
-
-  document.addEventListener("click", function (e) {
-    if (!e.target.closest(".search-box")) {
-      dropdown.hidden = true;
-    }
-  });
-})();
-</script>
-
 <style>
 .sidebar {
   display: flex;
@@ -145,11 +87,22 @@ if (post && post.data) {
 }
 
 .sidebar-box {
-  position: relative;
   border: 1px solid #eee;
   border-radius: 6px;
   padding: 1.5rem;
   margin-bottom: 2rem;
+}
+
+.sidebar-box h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.sidebar-box p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
 }
 
 .sidebar-box input {
@@ -158,34 +111,23 @@ if (post && post.data) {
   font-size: 0.9rem;
 }
 
-/* ===== DROPDOWN ===== */
-.search-dropdown {
-  position: absolute;
-  top: calc(100% - 0.5rem);
-  left: 1.5rem;
-  right: 1.5rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
+.sidebar-list {
   list-style: none;
-  padding: 0.5rem 0;
+  padding-left: 0;
   margin: 0;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  z-index: 20;
 }
 
-.search-dropdown li {
-  padding: 0.4rem 0.75rem;
+.sidebar-list li {
+  margin-bottom: 0.6rem;
 }
 
-.search-dropdown a {
-  display: block;
-  font-size: 0.9rem;
-  color: #374151;
+.sidebar-list a {
   text-decoration: none;
+  color: #374151;
+  font-size: 0.95rem;
 }
 
-.search-dropdown a:hover {
-  background: #f3f4f6;
+.sidebar-list a:hover {
+  color: #4f46e5;
 }
 </style>
