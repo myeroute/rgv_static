@@ -27,9 +27,9 @@ const posts = (await getCollection("blog")).map((p) => ({
     <ul id="search-results" class="search-results"></ul>
   </section>
 
-  <!-- SEARCH DATA -->
+  <!-- SEARCH DATA – SAFE JSON -->
   <script type="application/json" id="search-data">
-    {JSON.stringify(posts)}
+    {JSON.stringify(posts).replace(/</g, "\\u003c")}
   </script>
 
   <!-- SEARCH SCRIPT -->
@@ -73,7 +73,7 @@ const posts = (await getCollection("blog")).map((p) => ({
         renderList(matches);
       }
 
-      // === READ q FROM URL ON PAGE LOAD ===
+      // READ q FROM URL ON PAGE LOAD
       const params = new URLSearchParams(window.location.search);
       const qstr = params.get("q") || "";
       if (qstr) {
@@ -81,7 +81,7 @@ const posts = (await getCollection("blog")).map((p) => ({
         doSearch(qstr);
       }
 
-      // === LIVE SEARCH ON INPUT ===
+      // LIVE SEARCH ON INPUT
       input.addEventListener("input", () => {
         doSearch(input.value);
       });
@@ -133,6 +133,7 @@ const posts = (await getCollection("blog")).map((p) => ({
     .search-results .desc {
       font-size: 0.9rem;
       color: #555;
+      line-height: 1.4;
     }
   </style>
 </BaseLayout>
