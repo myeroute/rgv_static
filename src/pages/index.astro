@@ -13,16 +13,18 @@ const latestPosts = posts.slice(0, PAGE_SIZE);
 ---
 
 <BaseLayout sidebar="home">
-  <!-- 🔴 Homepage context wrapper -->
   <div class="page-home">
-    <section class="home-post-list">
-      {latestPosts.map((post) => (
-        <PostCard post={post} />
-      ))}
-    </section>
+    <!-- 🔴 CONTAINER QUYẾT ĐỊNH BỀ RỘNG CARD -->
+    <div class="home-container">
+      <section class="home-post-list">
+        {latestPosts.map((post) => (
+          <PostCard post={post} variant="list" />
+        ))}
+      </section>
 
-    <nav class="pagination">
-      <a href="/page/2/">Next →</a>
-    </nav>
+      <nav class="pagination">
+        <a href="/page/2/">Next →</a>
+      </nav>
+    </div>
   </div>
 </BaseLayout>
