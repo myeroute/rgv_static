@@ -173,6 +173,112 @@ hr {
   text-decoration: none;
   font-weight: 500;
 }
+/* =========================================================
+   SITE HEADER – MOBILE FIRST
+   ========================================================= */
+
+.site-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* logo */
+.site-logo a {
+  font-weight: 600;
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;
+}
+
+/* search icon */
+.header-search a {
+  display: flex;
+  align-items: center;
+  color: inherit;
+}
+
+/* hide checkbox */
+.nav-toggle {
+  display: none;
+}
+
+/* hamburger button */
+.nav-toggle-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.nav-toggle-btn span {
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  display: block;
+}
+
+/* nav – hidden by default on mobile */
+.site-nav {
+  display: none;
+}
+
+/* dropdown when checked */
+.nav-toggle:checked ~ .site-nav {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  z-index: 20;
+}
+
+.site-nav a {
+  padding: 0.9rem 1rem;
+  text-decoration: none;
+  color: inherit;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ================= DESKTOP ================= */
+
+@media (min-width: 769px) {
+  .header-inner {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .nav-toggle-btn {
+    display: none;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: 1.75rem;
+    justify-content: center;
+  }
+
+  .site-nav a {
+    border: none;
+    padding: 0;
+  }
+}
+
 
 
 
