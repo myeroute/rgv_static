@@ -9,7 +9,6 @@ const posts = (await getCollection('blog'))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
-
 <section class="category-wrapper">
   <header class="category-header">
     <h1>{category.title}</h1>
@@ -20,20 +19,18 @@ const posts = (await getCollection('blog'))
 
   <section class="category-posts">
     {posts.map((post) => (
-      <PostCard post={post} />
+      <PostCard post={post} variant="grid" />
     ))}
   </section>
 </section>
 
 <style>
-/* ===== CONTAINER ===== */
 .category-wrapper {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-/* ===== HEADER ===== */
 .category-header {
   max-width: 720px;
 }
@@ -46,17 +43,11 @@ const posts = (await getCollection('blog'))
   line-height: 1.7;
 }
 
-/* ===== GRID (WP-STYLE ARCHIVE) ===== */
+/* GRID CONTAINER */
 .category-posts {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 3rem 2.5rem;
   margin-top: 3.5rem;
-}
-
-/* ===== POST CARD RESET ===== */
-.category-posts :global(.post-card) {
-  padding: 0;
-  border-bottom: none;
 }
 </style>
