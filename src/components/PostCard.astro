@@ -1,8 +1,8 @@
 ---
 /**
- * PostCard – FINAL FIX (CTA ALIGNMENT)
- * - Grid cards: Read More always bottom-aligned
- * - List cards (homepage): unchanged
+ * PostCard – HOMEPAGE IMAGE SCALE FIX
+ * - Homepage (list): larger thumbnail, no CTA
+ * - Category (grid): untouched
  */
 
 const { post, variant = "list" } = Astro.props;
@@ -57,17 +57,16 @@ const heroImage = data.heroImage ?? null;
   display: block;
 }
 
-/* ===== BODY FLEX (KEY FIX) ===== */
+/* ===== BODY FLEX ===== */
 .post-card-body {
   display: flex;
   flex-direction: column;
-  flex: 1; /* 🔑 body chiếm hết chiều cao card */
 }
 
 /* ===== TYPOGRAPHY ===== */
 .post-card-title {
   margin: 0 0 0.75rem;
-  font-size: 1.2rem;
+  font-size: 1.35rem; /* ⬅️ hơi lớn hơn cho homepage feel */
   line-height: 1.35;
   font-weight: 600;
 }
@@ -81,15 +80,15 @@ const heroImage = data.heroImage ?? null;
 }
 
 .post-card-desc {
-  margin: 0 0 1.25rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
   color: #444;
 }
 
-/* ===== CTA (ALWAYS BOTTOM) ===== */
+/* ===== CTA ===== */
 .post-card-button {
-  margin-top: auto;           /* 🔑 đẩy nút xuống đáy */
+  margin-top: auto;
   align-self: flex-start;
   padding: 0.55rem 1.25rem;
   background: #6b5cff;
@@ -100,27 +99,25 @@ const heroImage = data.heroImage ?? null;
   white-space: nowrap;
 }
 
-.post-card-button:hover {
-  opacity: 0.9;
-}
-
 /* ===== LIST (HOMEPAGE) ===== */
 .post-card--list {
   display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 16px;
-  margin-bottom: 32px;
+  grid-template-columns: 360px 1fr; /* 🔑 ảnh to lại */
+  gap: 28px;
+  margin-bottom: 48px;
 }
 
-.post-card--list .post-card-body {
-  flex: initial;
+.post-card--list .post-card-thumb img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .post-card--list .post-card-button {
-  display: none;
+  display: none; /* homepage không CTA */
 }
 
-/* ===== GRID (CATEGORY) ===== */
+/* ===== GRID (CATEGORY) – DO NOT TOUCH ===== */
 .post-card--grid {
   display: flex;
   flex-direction: column;
