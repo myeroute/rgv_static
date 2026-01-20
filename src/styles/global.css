@@ -309,6 +309,36 @@ hr {
   width: 100%;
   border-radius: 12px;
 }
+/* =========================================================
+   HOMEPAGE – OVERRIDE BEAR BLOG MAIN TYPOGRAPHY
+   ========================================================= */
+
+.page-home main h1,
+.page-home main h2,
+.page-home main h3 {
+  color: rgb(var(--gray-dark));
+  text-decoration: none;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.page-home main a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page-home .post-card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+@media (min-width: 768px) {
+  .page-home .post-card-title {
+    font-size: 1.6rem;
+  }
+}
+
 
 
 
