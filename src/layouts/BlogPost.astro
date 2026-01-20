@@ -6,27 +6,14 @@ import { Content } from "astro:content";
 const { post } = Astro.props;
 ---
 
-<BaseLayout sidebar="post">
-  <div class="post-layout">
-    <article class="post-content">
-      <Content />
-    </article>
-
-    <aside class="post-sidebar">
-      <Sidebar post={post} />
-    </aside>
-  </div>
+<BaseLayout sidebar={<Sidebar post={post} />}>
+  <article class="post-content">
+    <Content />
+  </article>
 </BaseLayout>
 
 <style>
-.post-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 2rem;
-  align-items: start;
-}
-
-.post-sidebar {
-  position: relative;
+.post-content {
+  max-width: 100%;
 }
 </style>
