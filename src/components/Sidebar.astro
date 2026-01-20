@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 
 const {
-  variant = "home",
   post = null,
 } = Astro.props;
 
@@ -39,13 +38,21 @@ if (post && post.data) {
 ---
 
 <aside class="sidebar">
+
+  <!-- DEBUG (POST ONLY) -->
+  {post && (
+    <div style="font-size:12px;color:red;margin-bottom:1rem;">
+      DEBUG: game = {post.data?.game ?? "undefined"}
+    </div>
+  )}
+
   <!-- Search -->
   <section class="sidebar-box">
     <h3>Search</h3>
     <input type="text" placeholder="Search..." />
   </section>
 
-  <!-- More from this topic (BLOG POST ONLY) -->
+  <!-- More from this topic -->
   {post && relatedPosts.length > 0 && (
     <section class="sidebar-box">
       <h3>More from this topic</h3>
