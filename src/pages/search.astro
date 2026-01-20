@@ -1,18 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
-import { getCollection } from "astro:content";
-
-const query = Astro.url.searchParams.get("q") || "";
-
-const allPosts = await getCollection("blog");
-
-const results =
-  query.length >= 2
-    ? allPosts.filter((post) =>
-        post.data.title.toLowerCase().includes(query.toLowerCase())
-      )
-    : [];
 ---
 
 <BaseLayout
@@ -23,33 +11,18 @@ const results =
   <section class="search-page">
     <h1>Search</h1>
 
-    <form method="get" action="/search">
+    <form class="search-form">
       <input
+        id="search-input"
         type="text"
-        name="q"
         placeholder="Type to search posts..."
-        value={query}
         autocomplete="off"
       />
     </form>
 
-    {query && (
-      <p class="search-meta">
-        {results.length} result{results.length !== 1 && "s"} for “{query}”
-      </p>
-    )}
+    <p id="search-meta" class="search-meta" hidden></p>
 
-    {results.length > 0 && (
-      <div class="search-results">
-        {results.map((post) => (
-          <PostCard {...post} />
-        ))}
-      </div>
-    )}
-
-    {query && results.length === 0 && (
-      <p>No results found.</p>
-    )}
+    <div id="search-results" class="search-results"></div>
   </section>
 
   <style>
@@ -59,11 +32,11 @@ const results =
       padding: 0 1rem;
     }
 
-    form {
+    .search-form {
       margin-bottom: 1.5rem;
     }
 
-    input {
+    .search-form input {
       width: 100%;
       padding: 0.75rem;
       font-size: 1rem;
@@ -72,7 +45,7 @@ const results =
     }
 
     .search-meta {
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       color: #555;
       font-size: 0.95rem;
     }
@@ -81,14 +54,94 @@ const results =
     .search-results {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
+      gap: 2.5rem;
     }
 
-    /* Mobile: list */
+    /* Mobile: list như homepage */
     @media (max-width: 768px) {
       .search-results {
         grid-template-columns: 1fr;
       }
     }
   </style>
+
+  <script type="module">
+    const input = document.getElementById("search-input");
+    const resultsEl = document.getElementById("search-results");
+    const metaEl = document.getElementById("search-meta");
+
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get("q") || "";
+
+    input.value = initialQuery;
+
+    let indexCache = null;
+
+    async function loadIndex() {
+      if (indexCache) return indexCache;
+      const res = await fetch("/search-index.json");
+      indexCache = await res.json();
+      return indexCache;
+    }
+
+    function normalize(text) {
+      return text.toLowerCase();
+    }
+
+    async function runSearch(query) {
+      resultsEl.innerHTML = "";
+      metaEl.hidden = true;
+
+      if (query.length < 2) return;
+
+      const index = await loadIndex();
+      const q = normalize(query);
+
+      const results = index.filter((post) => {
+        return (
+          normalize(post.title).includes(q) ||
+          normalize(post.description).includes(q)
+        );
+      });
+
+      metaEl.textContent = `${results.length} result${results.length !== 1 ? "s" : ""} for “${query}”`;
+      metaEl.hidden = false;
+
+      if (results.length === 0) {
+        resultsEl.innerHTML = "<p>No results found.</p>";
+        return;
+      }
+
+      // Render PostCard bằng HTML giống category
+      results.forEach((post) => {
+        const article = document.createElement("article");
+        article.innerHTML = `
+          <a href="/${post.slug}/" style="text-decoration:none;color:inherit">
+            <div class="post-card post-card--grid">
+              <div class="post-card-thumb">
+                <img src="${post.heroImage}" alt="${post.title}" loading="lazy" />
+              </div>
+              <div class="post-card-content">
+                <h2>${post.title}</h2>
+                <p>${post.description}</p>
+                <span class="read-more">Read More</span>
+              </div>
+            </div>
+          </a>
+        `;
+        resultsEl.appendChild(article);
+      });
+    }
+
+    input.addEventListener("input", (e) => {
+      const q = e.target.value.trim();
+      const url = q ? `/search?q=${encodeURIComponent(q)}` : "/search";
+      window.history.replaceState({}, "", url);
+      runSearch(q);
+    });
+
+    if (initialQuery) {
+      runSearch(initialQuery);
+    }
+  </script>
 </BaseLayout>
