@@ -279,6 +279,37 @@ hr {
     padding: 0;
   }
 }
+/* =========================================================
+   HOMEPAGE – RESET ARTICLE-STYLE GLOBAL CSS
+   ========================================================= */
+
+.page-home h1,
+.page-home h2,
+.page-home h3 {
+  text-decoration: none;
+}
+
+.page-home a {
+  text-decoration: none;
+}
+
+.page-home img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.page-home main > * + *,
+.page-home article > * + * {
+  margin-top: 0;
+}
+
+/* thumbnail cards */
+.page-home .post-card img {
+  width: 100%;
+  border-radius: 12px;
+}
+
 
 
 
