@@ -338,6 +338,49 @@ hr {
     font-size: 1.6rem;
   }
 }
+/* =========================================================
+   HOMEPAGE – BREAK OUT OF ARTICLE <main> CONSTRAINT
+   ========================================================= */
+
+/* Homepage main should NOT behave like article */
+.page-home {
+  width: 100%;
+}
+
+/* Neutralize Bear Blog article layout ONLY on homepage */
+.page-home {
+  margin: 0;
+}
+
+/* Rebuild homepage layout explicitly */
+.page-home .home-post-list {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Make sure post cards don’t look like article content */
+.page-home .post-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.page-home h1,
+.page-home h2,
+.page-home h3 {
+  font-size: 1.6rem;
+  line-height: 1.35;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .page-home h1,
+  .page-home h2,
+  .page-home h3 {
+    font-size: 1.8rem;
+  }
+}
+
 
 
 
