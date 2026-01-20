@@ -1,18 +1,21 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, z } from "astro:content";
 
 const blog = defineCollection({
-  type: 'content',
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      description: z.string().optional(),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    pubDate: z.date(),
+    heroImage: z.string().optional(),
 
-      // ❗ BẮT BUỘC PHẢI CÓ DÒNG NÀY
-      heroImage: image().optional(),
+    category: z.enum([
+      "retro-games",
+      "retro-style-indie-games",
+      "pixel-art",
+    ]),
 
-      pubDate: z.date(),
-      category: z.string().optional(),
-    }),
+    game: z.string().optional(),
+    tag: z.string().optional(),
+  }),
 });
 
 export const collections = {
