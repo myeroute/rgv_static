@@ -37,14 +37,16 @@ if (post && post.data) {
   <section class="sidebar-box">
     <h3>Search</h3>
 
-    <!-- Form redirect đến trang /search?q=... -->
-    <form action="/search" method="get">
+    <form action="/search" method="get" class="sidebar-search">
       <input
         type="text"
         name="q"
         placeholder="Search posts..."
         autocomplete="off"
       />
+      <button type="submit" aria-label="Search">
+        →
+      </button>
     </form>
   </section>
 
@@ -90,6 +92,7 @@ if (post && post.data) {
   flex-direction: column;
 }
 
+/* Box */
 .sidebar-box {
   border: 1px solid #eee;
   border-radius: 6px;
@@ -103,12 +106,34 @@ if (post && post.data) {
   font-size: 1rem;
 }
 
-.sidebar-box input {
-  width: 100%;
+/* Search */
+.sidebar-search {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 92%;
+}
+
+.sidebar-search input {
+  flex: 1;
   padding: 0.55rem 0.6rem;
   font-size: 0.9rem;
 }
 
+.sidebar-search button {
+  padding: 0.5rem 0.6rem;
+  font-size: 0.9rem;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.sidebar-search button:hover {
+  background: #f3f4f6;
+}
+
+/* Lists */
 .sidebar-list {
   list-style: none;
   padding-left: 0;
