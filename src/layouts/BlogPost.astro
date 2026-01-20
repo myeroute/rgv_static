@@ -1,12 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Sidebar from "../components/Sidebar.astro";
 import { Content } from "astro:content";
 
 const { post } = Astro.props;
 ---
 
-<BaseLayout sidebar={<Sidebar post={post} />}>
+<BaseLayout sidebar="post" post={post}>
   <article>
     <Content />
   </article>
