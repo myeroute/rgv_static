@@ -3,6 +3,12 @@ import { getCollection } from "astro:content";
 
 const { post = null } = Astro.props;
 
+/* ===== ALL POSTS (FOR SEARCH) ===== */
+const allPosts = (await getCollection("blog")).map((p) => ({
+  title: p.data.title,
+  slug: p.slug,
+}));
+
 /* ===== RECENT POSTS ===== */
 const recentPosts = (await getCollection("blog"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -12,15 +18,14 @@ const recentPosts = (await getCollection("blog"))
 let relatedPosts = [];
 
 if (post && post.data) {
-  const allPosts = await getCollection("blog");
   const currentSlug = post.slug;
 
   if (post.data.game) {
-    relatedPosts = allPosts.filter(
+    relatedPosts = (await getCollection("blog")).filter(
       (p) => p.slug !== currentSlug && p.data.game === post.data.game
     );
   } else if (post.data.tag) {
-    relatedPosts = allPosts.filter(
+    relatedPosts = (await getCollection("blog")).filter(
       (p) => p.slug !== currentSlug && p.data.tag === post.data.tag
     );
   }
@@ -34,25 +39,26 @@ if (post && post.data) {
 <aside class="sidebar">
 
   <!-- Search -->
-  <section class="sidebar-box">
+  <section class="sidebar-box search-box">
     <h3>Search</h3>
     <input
       type="text"
       placeholder="Search posts..."
       id="sidebar-search"
+      autocomplete="off"
     />
+
+    <ul class="search-dropdown" id="search-results" hidden></ul>
   </section>
 
-  <!-- More from this topic (blog post only) -->
+  <!-- More from this topic -->
   {post && relatedPosts.length > 0 && (
     <section class="sidebar-box">
       <h3>More from this topic</h3>
       <ul class="sidebar-list">
         {relatedPosts.map((p) => (
-          <li class="search-item">
-            <a href={`/${p.slug}/`}>
-              {p.data.title}
-            </a>
+          <li>
+            <a href={`/${p.slug}/`}>{p.data.title}</a>
           </li>
         ))}
       </ul>
@@ -64,10 +70,8 @@ if (post && post.data) {
     <h3>Recent Posts</h3>
     <ul class="sidebar-list">
       {recentPosts.map((p) => (
-        <li class="search-item">
-          <a href={`/${p.slug}/`}>
-            {p.data.title}
-          </a>
+        <li>
+          <a href={`/${p.slug}/`}>{p.data.title}</a>
         </li>
       ))}
     </ul>
@@ -84,20 +88,51 @@ if (post && post.data) {
 </aside>
 
 <script>
+  const POSTS = JSON.parse(
+    document.getElementById("search-data").textContent
+  );
+
   const input = document.getElementById("sidebar-search");
+  const dropdown = document.getElementById("search-results");
 
-  if (input) {
-    input.addEventListener("input", () => {
-      const query = input.value.toLowerCase().trim();
-      const items = document.querySelectorAll(".search-item");
+  input.addEventListener("input", () => {
+    const query = input.value.toLowerCase().trim();
 
-      items.forEach((item) => {
-        const text = item.textContent.toLowerCase();
-        item.style.display =
-          query === "" || text.includes(query) ? "" : "none";
-      });
-    });
-  }
+    if (!query) {
+      dropdown.hidden = true;
+      dropdown.innerHTML = "";
+      return;
+    }
+
+    const matches = POSTS.filter((p) =>
+      p.title.toLowerCase().includes(query)
+    ).slice(0, 5);
+
+    if (matches.length === 0) {
+      dropdown.hidden = true;
+      dropdown.innerHTML = "";
+      return;
+    }
+
+    dropdown.innerHTML = matches
+      .map(
+        (p) =>
+          `<li><a href="/${p.slug}/">${p.title}</a></li>`
+      )
+      .join("");
+
+    dropdown.hidden = false;
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".search-box")) {
+      dropdown.hidden = true;
+    }
+  });
+</script>
+
+<script type="application/json" id="search-data">
+  {JSON.stringify(allPosts)}
 </script>
 
 <style>
@@ -107,6 +142,7 @@ if (post && post.data) {
 }
 
 .sidebar-box {
+  position: relative;
   border: 1px solid #eee;
   border-radius: 6px;
   padding: 1.5rem;
@@ -131,6 +167,38 @@ if (post && post.data) {
   font-size: 0.9rem;
 }
 
+/* ===== DROPDOWN ===== */
+.search-dropdown {
+  position: absolute;
+  top: calc(100% - 1rem);
+  left: 1.5rem;
+  right: 1.5rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+}
+
+.search-dropdown li {
+  padding: 0.4rem 0.75rem;
+}
+
+.search-dropdown a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: #374151;
+  display: block;
+}
+
+.search-dropdown a:hover {
+  background: #f3f4f6;
+}
+
+/* ===== LIST ===== */
 .sidebar-list {
   list-style: none;
   padding-left: 0;
