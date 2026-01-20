@@ -113,5 +113,41 @@
     height: 200px;
   }
 }
+/* =========================================================
+   POST CARD THUMB – HARD CONSTRAINT FIX
+   ========================================================= */
+
+.post-card-thumb {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+}
+
+/* The real image box */
+.post-card-thumb-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+}
+
+.post-card-thumb-inner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Mobile reading comfort */
+@media (max-width: 768px) {
+  .post-card-thumb-inner {
+    aspect-ratio: 4 / 3;
+  }
+}
+
 
 
