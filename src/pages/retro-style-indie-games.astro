@@ -3,15 +3,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
 
-// lấy toàn bộ blog post
+// Lấy toàn bộ bài blog
 const allPosts = await getCollection("blog");
 
-// lọc bài thuộc retro-style-indie-games
+// Lọc theo CATEGORY (KHÔNG phải tag)
 const posts = allPosts
-  .filter((post) => {
-    const tags = post.data.tags ?? [];
-    return tags.includes("retro-style-indie-games");
-  })
+  .filter((post) => post.data.category === "retro-style-indie-games")
   .sort(
     (a, b) =>
       new Date(b.data.pubDate).getTime() -
@@ -21,27 +18,27 @@ const posts = allPosts
 
 <BaseLayout
   title="Retro-Style Indie Games"
-  description="Thoughts, reflections, and explanations about retro-style indie games."
+  description="Articles and reflections on indie games inspired by retro design."
 >
-  <section class="page">
+  <main class="page">
     <header class="page-header">
       <h1>Retro-Style Indie Games</h1>
       <p>
-        Articles focusing on indie games inspired by retro aesthetics, mechanics,
-        and design philosophy.
+        Indie games influenced by retro aesthetics, mechanics, and design
+        philosophy.
       </p>
     </header>
 
     {posts.length === 0 ? (
       <p>No posts found.</p>
     ) : (
-      <div class="post-grid">
+      <section class="post-grid">
         {posts.map((post) => (
           <PostCard post={post} />
         ))}
-      </div>
+      </section>
     )}
-  </section>
+  </main>
 </BaseLayout>
 
 <style>
@@ -61,7 +58,7 @@ const posts = allPosts
   }
 
   .page-header p {
-    color: var(--text-muted, #777);
+    color: #777;
   }
 
   .post-grid {
