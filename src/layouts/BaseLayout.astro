@@ -2,8 +2,7 @@
 import Sidebar from "../components/Sidebar.astro";
 
 const {
-  sidebar = "default",
-  post = null,
+  sidebar = "default", // "default" | "post"
 } = Astro.props;
 ---
 
@@ -12,9 +11,11 @@ const {
     <slot />
   </main>
 
-  <aside class="sidebar-right">
-    <Sidebar post={post} />
-  </aside>
+  {sidebar !== "post" && (
+    <aside class="sidebar-right">
+      <Sidebar />
+    </aside>
+  )}
 </div>
 
 <style>
