@@ -8,26 +8,30 @@ const posts = await getCollection("blog");
 const sortedPosts = posts
   .filter((p) => p.data)
   .sort((a, b) => {
-    const da = a.data.pubDate ? new Date(a.data.pubDate).getTime() : 0;
-    const db = b.data.pubDate ? new Date(b.data.pubDate).getTime() : 0;
+    const da = pDate(a);
+    const db = pDate(b);
     return db - da;
   });
+
+function pDate(post) {
+  return post.data.pubDate
+    ? new Date(post.data.pubDate).getTime()
+    : 0;
+}
 ---
 
-<BaseLayout>
-  <main class="home">
-    <section class="post-list">
-      {sortedPosts.map((post) => (
-        <PostCard post={post} />
-      ))}
-    </section>
-  </main>
+<BaseLayout sidebar="home">
+  <section class="home-post-list">
+    {sortedPosts.map((post) => (
+      <PostCard post={post} />
+    ))}
+  </section>
 </BaseLayout>
 
 <style>
-.home {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 32px 16px;
+.home-post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 </style>
