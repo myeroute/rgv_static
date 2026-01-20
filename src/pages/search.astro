@@ -1,4 +1,6 @@
 ---
+export const prerender = false;
+
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { getCollection } from "astro:content";
@@ -42,10 +44,7 @@ const results =
     {results.length > 0 && (
       <div class="search-results">
         {results.map((post) => (
-          <PostCard
-            post={post}
-            variant="grid"
-          />
+          <PostCard post={post} variant="grid" />
         ))}
       </div>
     )}
@@ -80,29 +79,17 @@ const results =
       font-size: 0.95rem;
     }
 
-    /* ===== DESKTOP: GRID như category ===== */
+    /* Desktop: grid như category */
     .search-results {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2.5rem;
     }
 
-    /* ===== MOBILE: LIST như homepage ===== */
+    /* Mobile: list như homepage */
     @media (max-width: 768px) {
       .search-results {
         grid-template-columns: 1fr;
-      }
-
-      .search-results :global(.post-card) {
-        grid-template-columns: 1fr;
-      }
-
-      .search-results :global(.post-card--grid) {
-        display: block;
-      }
-
-      .search-results :global(.post-card-thumb) {
-        margin-bottom: 1rem;
       }
     }
   </style>
