@@ -1,68 +1,46 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
-import { getCollection } from "astro:content";
 
-// Lấy toàn bộ bài blog
-const allPosts = await getCollection("blog");
+const posts = await getCollection("blog");
 
-// Filter đúng category
-const posts = allPosts
-  .filter((post) => post.data.category === "retro-games")
-  // sort mới → cũ cho gọn
-  .sort(
-    (a, b) =>
-      new Date(b.data.pubDate).getTime() -
-      new Date(a.data.pubDate).getTime()
-  );
+const filteredPosts = posts
+  .filter((post) => post.data?.category === "retro-games")
+  .sort((a, b) => {
+    const da = a.data.pubDate ? new Date(a.data.pubDate).getTime() : 0;
+    const db = b.data.pubDate ? new Date(b.data.pubDate).getTime() : 0;
+    return db - da;
+  });
 ---
 
-<BaseLayout title="Retro Games">
-  <section class="container">
-    <header class="page-header">
+<BaseLayout>
+  <main class="category-page">
+    <header class="category-header">
       <h1>Retro Games</h1>
-      <p>
-        This category is a space where I revisit older games and write down what
-        it actually feels like to play them again today.
-      </p>
     </header>
 
-    {posts.length === 0 && (
-      <p>No posts found in this category.</p>
-    )}
-
-    <div class="post-list">
-      {posts.map((post) => (
+    <section class="post-list">
+      {filteredPosts.map((post) => (
         <PostCard post={post} />
       ))}
-    </div>
-  </section>
+    </section>
+  </main>
 </BaseLayout>
 
 <style>
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-  }
+.category-page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
 
-  .page-header {
-    margin-bottom: 2.5rem;
-  }
+.category-header {
+  margin-bottom: 32px;
+}
 
-  .page-header h1 {
-    font-size: 2.2rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .page-header p {
-    color: #555;
-    max-width: 720px;
-  }
-
-  .post-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-  }
+.category-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+}
 </style>
