@@ -2,7 +2,7 @@
 /**
  * PostCard – WORDPRESS-STYLE LIST LAYOUT
  * - Homepage: image height matches text + button
- * - Category grid: untouched
+ * - Category grid: fixed thumbnail ratio
  */
 
 const { post, variant = "list" } = Astro.props;
@@ -52,9 +52,11 @@ const heroImage = data.heroImage ?? null;
   height: 100%;
 }
 
-/* ===== THUMB ===== */
+/* ===== THUMB (COMMON) ===== */
 .post-card-thumb {
-  height: 100%;
+  display: block;
+  width: 100%;
+  overflow: hidden;
 }
 
 .post-card-thumb img {
@@ -91,7 +93,7 @@ const heroImage = data.heroImage ?? null;
 
 /* ===== CTA ===== */
 .post-card-button {
-  margin-top: auto; /* 🔑 đẩy nút xuống đáy block */
+  margin-top: auto;
   align-self: flex-start;
   padding: 0.55rem 1.25rem;
   background: #6b5cff;
@@ -111,23 +113,22 @@ const heroImage = data.heroImage ?? null;
   grid-template-columns: 360px 1fr;
   gap: 28px;
   margin-bottom: 56px;
-  align-items: stretch; /* 🔑 hai cột cao bằng nhau */
+  align-items: stretch;
 }
 
 .post-card--list .post-card-thumb {
   border-radius: 10px;
-  overflow: hidden;
 }
 
-/* ===== GRID (CATEGORY) – DO NOT TOUCH ===== */
+/* ===== GRID (CATEGORY) ===== */
 .post-card--grid {
   display: flex;
   flex-direction: column;
 }
 
-.post-card--grid .post-card-thumb img {
+/* 🔒 KHÓA TỶ LỆ NGAY CONTAINER */
+.post-card--grid .post-card-thumb {
   aspect-ratio: 16 / 9;
-  object-fit: cover;
   border-radius: 6px;
 }
 </style>
