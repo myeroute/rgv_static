@@ -9,15 +9,13 @@ const posts = (await getCollection('blog'))
   .filter((post) => post.data.category === category.slug)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
-
 <section class="category-wrapper">
-  <section class="category-header">
+  <header class="category-header">
     <h1>{category.title}</h1>
-
     <p class="category-description">
       {category.description}
     </p>
-  </section>
+  </header>
 
   <section class="category-posts">
     {posts.map((post) => (
@@ -52,7 +50,7 @@ const posts = (await getCollection('blog'))
   line-height: 1.7;
 }
 
-/* ===== GRID (WORDPRESS ARCHIVE STYLE) ===== */
+/* ===== GRID (WP-STYLE ARCHIVE) ===== */
 .category-posts {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
