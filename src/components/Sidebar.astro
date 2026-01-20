@@ -33,18 +33,22 @@ if (post && post.data) {
 
 <aside class="sidebar">
 
-  <!-- Search (UI only, no JS here) -->
+  <!-- Search -->
   <section class="sidebar-box">
     <h3>Search</h3>
-    <input
-      type="text"
-      placeholder="Search posts..."
-      id="sidebar-search"
-      autocomplete="off"
-    />
+
+    <!-- Form redirect đến trang /search?q=... -->
+    <form action="/search" method="get">
+      <input
+        type="text"
+        name="q"
+        placeholder="Search posts..."
+        autocomplete="off"
+      />
+    </form>
   </section>
 
-  <!-- More from this topic -->
+  <!-- More from this topic (blog post only) -->
   {post && relatedPosts.length > 0 && (
     <section class="sidebar-box">
       <h3>More from this topic</h3>
@@ -97,12 +101,6 @@ if (post && post.data) {
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 1rem;
-}
-
-.sidebar-box p {
-  font-size: 0.95rem;
-  color: #666;
-  line-height: 1.6;
 }
 
 .sidebar-box input {
