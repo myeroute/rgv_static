@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 
 const {
-  variant = "home", // 'home' | 'post'
+  variant = "home",
   post = null,
 } = Astro.props;
 
@@ -11,10 +11,10 @@ const recentPosts = (await getCollection("blog"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
 
-/* ===== MORE FROM THIS TOPIC (POST ONLY) ===== */
+/* ===== MORE FROM THIS TOPIC ===== */
 let relatedPosts = [];
 
-if (variant === "post" && post) {
+if (post && post.data) {
   const allPosts = await getCollection("blog");
   const currentSlug = post.slug;
 
@@ -45,8 +45,8 @@ if (variant === "post" && post) {
     <input type="text" placeholder="Search..." />
   </section>
 
-  <!-- More from this topic (POST ONLY) -->
-  {variant === "post" && relatedPosts.length > 0 && (
+  <!-- More from this topic (BLOG POST ONLY) -->
+  {post && relatedPosts.length > 0 && (
     <section class="sidebar-box">
       <h3>More from this topic</h3>
       <ul class="sidebar-list">
@@ -80,3 +80,55 @@ if (variant === "post" && post) {
     </p>
   </section>
 </aside>
+
+<style>
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-box {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar-box h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.sidebar-box p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.sidebar-box input {
+  width: 100%;
+  padding: 0.55rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sidebar-list li {
+  margin-bottom: 0.6rem;
+}
+
+.sidebar-list a {
+  text-decoration: none;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.sidebar-list a:hover {
+  color: #4f46e5;
+}
+</style>
