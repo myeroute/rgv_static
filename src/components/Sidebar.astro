@@ -47,7 +47,6 @@ if (post && post.data) {
       id="sidebar-search"
       autocomplete="off"
     />
-
     <ul class="search-dropdown" id="search-results" hidden></ul>
   </section>
 
@@ -86,6 +85,11 @@ if (post && post.data) {
     </p>
   </section>
 </aside>
+
+<!-- 🔑 DATA PHẢI ĐỨNG TRƯỚC JS -->
+<script type="application/json" id="search-data">
+{JSON.stringify(allPosts)}
+</script>
 
 <script>
   const POSTS = JSON.parse(
@@ -129,10 +133,6 @@ if (post && post.data) {
       dropdown.hidden = true;
     }
   });
-</script>
-
-<script type="application/json" id="search-data">
-  {JSON.stringify(allPosts)}
 </script>
 
 <style>
