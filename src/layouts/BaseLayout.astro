@@ -1,16 +1,16 @@
 ---
-import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Sidebar from '../components/Sidebar.astro'; // NEW
-import '../styles/post-card.css'; // NEW: global PostCard styles
+import Sidebar from '../components/Sidebar.astro';
+import '../styles/post-card.css';
+
 const {
   title = 'Retro Gaming Verse',
   description = 'Timeless play experiences with retro games and retro-style indie games.',
   canonical = Astro.url.href,
-  noindex = true, // đang test → chặn index
+  noindex = true,
 
-  sidebar = null, // NEW: 'home' | 'post' | null
-  post = null,    // NEW: blog post data
+  sidebar = null, // 'home' | 'post' | null
+  post = null,
 } = Astro.props;
 ---
 
@@ -36,18 +36,25 @@ const {
           <a href="/retro-games/">Retro Games</a>
           <a href="/retro-style-indie-games/">Retro-Style Indie Games</a>
         </nav>
+
+        <!-- SEARCH ICON -->
+        <div class="header-search">
+          <a href="/search/" aria-label="Search">
+            🔍
+          </a>
+        </div>
       </div>
     </header>
 
     <!-- MAIN -->
     {sidebar ? (
-      <div class="layout-with-sidebar">  <!-- NEW -->
+      <div class="layout-with-sidebar">
         <main class="layout-content">
           <slot />
         </main>
 
         <aside class="layout-sidebar">
-          <Sidebar variant={sidebar} post={post} />  <!-- NEW -->
+          <Sidebar variant={sidebar} post={post} />
         </aside>
       </div>
     ) : (
@@ -107,7 +114,7 @@ const {
       margin: 0 auto;
       padding: 1.25rem 1rem;
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
     }
 
@@ -132,6 +139,16 @@ const {
 
     .site-nav a:hover {
       text-decoration: underline;
+    }
+
+    .header-search a {
+      font-size: 1.1rem;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .header-search a:hover {
+      opacity: 0.7;
     }
 
     /* ===== LAYOUT WITH SIDEBAR ===== */
