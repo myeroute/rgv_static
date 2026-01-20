@@ -1,33 +1,29 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 
 const {
-  variant = 'home', // 'home' | 'post'
+  variant = "home", // 'home' | 'post'
   post = null,
 } = Astro.props;
 
-// Recent posts (always)
-const recentPosts = (await getCollection('blog'))
+/* ===== RECENT POSTS ===== */
+const recentPosts = (await getCollection("blog"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
 
-// Logic: More from this topic
+/* ===== MORE FROM THIS TOPIC (POST ONLY) ===== */
 let relatedPosts = [];
-let relatedTitle = '';
 
-if (variant === 'post' && post) {
-  const allPosts = await getCollection('blog');
-  const currentSlug = post.id.split('/').pop();
+if (variant === "post" && post) {
+  const allPosts = await getCollection("blog");
 
   if (post.data.game) {
-    relatedTitle = `More from ${post.data.game}`;
     relatedPosts = allPosts.filter(
       (p) =>
         p.id !== post.id &&
         p.data.game === post.data.game
     );
   } else if (post.data.tag) {
-    relatedTitle = `More ${post.data.tag}`;
     relatedPosts = allPosts.filter(
       (p) =>
         p.id !== post.id &&
@@ -48,13 +44,13 @@ if (variant === 'post' && post) {
     <input type="text" placeholder="Search..." />
   </section>
 
-  <!-- More from this topic (post only, conditional) -->
-  {variant === 'post' && relatedPosts.length > 0 && (
+  <!-- More from this topic (POST ONLY) -->
+  {variant === "post" && relatedPosts.length > 0 && (
     <section class="sidebar-box">
-      <h3>{relatedTitle}</h3>
+      <h3>More from this topic</h3>
       <ul class="sidebar-list">
         {relatedPosts.map((p) => {
-          const slug = p.id.split('/').pop();
+          const slug = p.id.split("/").pop();
           return (
             <li>
               <a href={`/${slug}/`}>{p.data.title}</a>
@@ -70,7 +66,7 @@ if (variant === 'post' && post) {
     <h3>Recent Posts</h3>
     <ul class="sidebar-list">
       {recentPosts.map((p) => {
-        const slug = p.id.split('/').pop();
+        const slug = p.id.split("/").pop();
         return (
           <li>
             <a href={`/${slug}/`}>{p.data.title}</a>
@@ -80,7 +76,7 @@ if (variant === 'post' && post) {
     </ul>
   </section>
 
-  <!-- Author -->
+  <!-- About -->
   <section class="sidebar-box">
     <h3>About</h3>
     <p>
@@ -105,17 +101,19 @@ if (variant === 'post' && post) {
 
 .sidebar-box h3 {
   margin-top: 0;
+  margin-bottom: 1rem;
   font-size: 1rem;
 }
 
 .sidebar-box p {
   font-size: 0.95rem;
   color: #666;
+  line-height: 1.6;
 }
 
 .sidebar-box input {
   width: 100%;
-  padding: 0.5rem 0.6rem;
+  padding: 0.55rem 0.6rem;
   font-size: 0.9rem;
 }
 
