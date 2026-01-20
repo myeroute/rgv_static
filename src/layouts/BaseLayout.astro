@@ -1,17 +1,25 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Sidebar from '../components/Sidebar.astro'; // NEW
+import Sidebar from '../components/Sidebar.astro';
+
+import { getCollection } from "astro:content";
 
 const {
   title = 'Retro Gaming Verse',
   description = 'Timeless play experiences with retro games and retro-style indie games.',
   canonical = Astro.url.href,
-  noindex = true, // đang test → chặn index
+  noindex = true,
 
-  sidebar = null, // NEW: 'home' | 'post' | null
-  post = null,    // NEW: blog post data
+  sidebar = null,
+  post = null,
 } = Astro.props;
+
+/* ===== GLOBAL SEARCH DATA ===== */
+const searchPosts = (await getCollection("blog")).map((p) => ({
+  title: p.data.title,
+  slug: p.slug,
+}));
 ---
 
 <!DOCTYPE html>
@@ -41,13 +49,13 @@ const {
 
     <!-- MAIN -->
     {sidebar ? (
-      <div class="layout-with-sidebar">  <!-- NEW -->
+      <div class="layout-with-sidebar">
         <main class="layout-content">
           <slot />
         </main>
 
         <aside class="layout-sidebar">
-          <Sidebar variant={sidebar} post={post} />  <!-- NEW -->
+          <Sidebar variant={sidebar} post={post} />
         </aside>
       </div>
     ) : (
@@ -85,6 +93,63 @@ const {
         </div>
       </div>
     </footer>
+
+    <!-- ===== GLOBAL SEARCH DATA ===== -->
+    <script type="application/json" id="global-search-data">
+      {JSON.stringify(searchPosts)}
+    </script>
+
+    <!-- ===== GLOBAL SEARCH SCRIPT ===== -->
+    <script>
+    (function () {
+      const input = document.getElementById("sidebar-search");
+      if (!input) return;
+
+      const dataEl = document.getElementById("global-search-data");
+      if (!dataEl) return;
+
+      const POSTS = JSON.parse(dataEl.textContent);
+
+      // create dropdown once
+      const dropdown = document.createElement("ul");
+      dropdown.className = "search-dropdown";
+      dropdown.hidden = true;
+      input.parentElement.appendChild(dropdown);
+
+      input.addEventListener("input", function () {
+        const query = this.value.toLowerCase().trim();
+
+        if (query.length < 4) {
+          dropdown.hidden = true;
+          dropdown.innerHTML = "";
+          return;
+        }
+
+        const matches = POSTS
+          .filter(p => p.title.toLowerCase().includes(query))
+          .slice(0, 5);
+
+        if (matches.length === 0) {
+          dropdown.hidden = true;
+          dropdown.innerHTML = "";
+          return;
+        }
+
+        dropdown.innerHTML = matches
+          .map(p => `<li><a href="/${p.slug}/">${p.title}</a></li>`)
+          .join("");
+
+        dropdown.hidden = false;
+      });
+
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest(".sidebar-box")) {
+          dropdown.hidden = true;
+        }
+      });
+    })();
+    </script>
+
   </body>
 
   <style is:global>
@@ -134,7 +199,7 @@ const {
       text-decoration: underline;
     }
 
-    /* ===== LAYOUT WITH SIDEBAR ===== */ /* NEW */
+    /* ===== LAYOUT WITH SIDEBAR ===== */
 
     .layout-with-sidebar {
       max-width: 1100px;
@@ -149,8 +214,35 @@ const {
       min-width: 0;
     }
 
-    .layout-sidebar {
-      min-width: 0;
+    /* ===== SEARCH DROPDOWN (GLOBAL) ===== */
+
+    .search-dropdown {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin-top: 0.4rem;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      list-style: none;
+      padding: 0.5rem 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      z-index: 50;
+    }
+
+    .search-dropdown li {
+      padding: 0.4rem 0.75rem;
+    }
+
+    .search-dropdown a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      color: #374151;
+      display: block;
+    }
+
+    .search-dropdown a:hover {
+      background: #f3f4f6;
     }
 
     /* ===== FOOTER ===== */
