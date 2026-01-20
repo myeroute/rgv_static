@@ -1,13 +1,15 @@
 ---
-import Sidebar from '../components/Sidebar.astro';
+import Sidebar from "../components/Sidebar.astro";
+import GlobalStyles from "../components/GlobalStyles.astro";
 
-/* 🔴 QUAN TRỌNG: LOAD GLOBAL CSS */
-import '../styles/global.css';
-import '../styles/post-card.css';
+/*
+  KHÔNG import global.css ở đây nữa
+  Global CSS sẽ được giữ thông qua GlobalStyles component
+*/
 
 const {
-  title = 'Retro Gaming Verse',
-  description = 'Timeless play experiences with retro games and retro-style indie games.',
+  title = "Retro Gaming Verse",
+  description = "Timeless play experiences with retro games and retro-style indie games.",
   sidebar = null, // 'home' | 'post' | null
   post = null,
 } = Astro.props;
@@ -23,10 +25,13 @@ const {
   </head>
 
   <body>
+    <!-- 🔴 BẮT BUỘC: gắn GlobalStyles để Astro giữ global.css -->
+    <GlobalStyles />
+
     <!-- ================= HEADER ================= -->
     <header class="site-header">
       <div class="header-inner">
-        <!-- MOBILE NAV TOGGLE -->
+        <!-- Mobile nav toggle -->
         <input
           type="checkbox"
           id="nav-toggle"
@@ -89,6 +94,7 @@ const {
         </main>
       )}
 
+      <!-- ================= FOOTER ================= -->
       <footer class="site-footer">
         <div class="footer-inner">
           <div class="footer-about">
