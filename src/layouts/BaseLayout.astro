@@ -1,14 +1,14 @@
 ---
 import Footer from '../components/Footer.astro';
 import Sidebar from '../components/Sidebar.astro';
+
+/* LOAD CSS – SINGLE SOURCE OF TRUTH */
+import '../styles/global.css';
 import '../styles/post-card.css';
 
 const {
   title = 'Retro Gaming Verse',
   description = 'Timeless play experiences with retro games and retro-style indie games.',
-  canonical = Astro.url.href,
-  noindex = true,
-
   sidebar = null, // 'home' | 'post' | null
   post = null,
 } = Astro.props;
@@ -24,7 +24,7 @@ const {
   </head>
 
   <body>
-    <!-- ================= HEADER (OUTSIDE TYPO SCOPE) ================= -->
+    <!-- ================= HEADER (NO TYPO SCOPE) ================= -->
     <header class="site-header">
       <div class="header-inner">
         <!-- MOBILE NAV TOGGLE -->
@@ -121,3 +121,4 @@ const {
     </div>
   </body>
 </html>
+
