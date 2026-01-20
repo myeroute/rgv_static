@@ -1,9 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-const {
-  post = null,
-} = Astro.props;
+const { post = null } = Astro.props;
 
 /* ===== RECENT POSTS ===== */
 const recentPosts = (await getCollection("blog"))
@@ -19,15 +17,11 @@ if (post && post.data) {
 
   if (post.data.game) {
     relatedPosts = allPosts.filter(
-      (p) =>
-        p.slug !== currentSlug &&
-        p.data.game === post.data.game
+      (p) => p.slug !== currentSlug && p.data.game === post.data.game
     );
   } else if (post.data.tag) {
     relatedPosts = allPosts.filter(
-      (p) =>
-        p.slug !== currentSlug &&
-        p.data.tag === post.data.tag
+      (p) => p.slug !== currentSlug && p.data.tag === post.data.tag
     );
   }
 
@@ -37,22 +31,28 @@ if (post && post.data) {
 }
 ---
 
-<aside class="sidebar">
+<aside class="sidebar" data-sidebar>
 
   <!-- Search -->
   <section class="sidebar-box">
     <h3>Search</h3>
-    <input type="text" placeholder="Search..." />
+    <input
+      type="text"
+      placeholder="Search posts..."
+      data-search-input
+    />
   </section>
 
-  <!-- More from this topic -->
+  <!-- More from this topic (blog post only) -->
   {post && relatedPosts.length > 0 && (
     <section class="sidebar-box">
       <h3>More from this topic</h3>
-      <ul class="sidebar-list">
+      <ul class="sidebar-list" data-search-list>
         {relatedPosts.map((p) => (
-          <li>
-            <a href={`/${p.slug}/`}>{p.data.title}</a>
+          <li data-search-item>
+            <a href={`/${p.slug}/`} data-search-title>
+              {p.data.title}
+            </a>
           </li>
         ))}
       </ul>
@@ -62,10 +62,12 @@ if (post && post.data) {
   <!-- Recent posts -->
   <section class="sidebar-box">
     <h3>Recent Posts</h3>
-    <ul class="sidebar-list">
+    <ul class="sidebar-list" data-search-list>
       {recentPosts.map((p) => (
-        <li>
-          <a href={`/${p.slug}/`}>{p.data.title}</a>
+        <li data-search-item>
+          <a href={`/${p.slug}/`} data-search-title>
+            {p.data.title}
+          </a>
         </li>
       ))}
     </ul>
@@ -80,6 +82,24 @@ if (post && post.data) {
     </p>
   </section>
 </aside>
+
+<script>
+  const input = document.querySelector('[data-search-input]');
+  const items = document.querySelectorAll('[data-search-item]');
+
+  if (input) {
+    input.addEventListener('input', () => {
+      const query = input.value.toLowerCase().trim();
+
+      items.forEach((item) => {
+        const titleEl = item.querySelector('[data-search-title]');
+        const title = titleEl?.textContent.toLowerCase() || '';
+
+        item.style.display = title.includes(query) ? '' : 'none';
+      });
+    });
+  }
+</script>
 
 <style>
 .sidebar {
