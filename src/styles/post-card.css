@@ -91,3 +91,28 @@
   aspect-ratio: 16 / 9;
   border-radius: 6px;
 }
+/* =========================================================
+   FIX: LIMIT THUMBNAIL HEIGHT FOR LIST (HOMEPAGE)
+   ========================================================= */
+
+/* LIST view thumbnail should not behave like hero */
+.post-card--list .post-card-thumb {
+  height: 220px;
+}
+
+/* image already has object-fit: cover */
+.post-card--list .post-card-thumb img {
+  height: 100%;
+}
+
+/* Mobile: tighter thumbnail */
+@media (max-width: 768px) {
+  .post-card--list {
+    grid-template-columns: 1fr;
+  }
+
+  .post-card--list .post-card-thumb {
+    height: 200px;
+  }
+}
+
