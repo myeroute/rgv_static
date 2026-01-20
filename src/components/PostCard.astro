@@ -1,18 +1,14 @@
 ---
 /**
- * PostCard – VARIANT VERSION
- * - list (default): homepage, flow đọc
- * - grid: category, archive
- * - KHÔNG phát minh component
- * - KHÔNG đoán context
+ * PostCard – FINAL ARCHIVE VERSION
+ * variant:
+ * - list (default): homepage list
+ * - grid: WordPress-style archive card
  */
 
 const { post, variant = "list" } = Astro.props;
 
-// Guard mềm
-if (!post) {
-  return null;
-}
+if (!post) return null;
 
 const slug = post.slug ?? "";
 const data = post.data ?? {};
@@ -26,11 +22,7 @@ const pubDate = data.pubDate ?? null;
 <article class={`post-card post-card--${variant}`}>
   {heroImage && (
     <a href={`/${slug}/`} class="post-card-thumb">
-      <img
-        src={heroImage}
-        alt={title}
-        loading="lazy"
-      />
+      <img src={heroImage} alt={title} loading="lazy" />
     </a>
   )}
 
@@ -42,6 +34,10 @@ const pubDate = data.pubDate ?? null;
     {description && (
       <p class="post-card-desc">{description}</p>
     )}
+
+    <a href={`/${slug}/`} class="post-card-button">
+      Read More
+    </a>
 
     {pubDate && (
       <time class="post-card-date">
@@ -56,7 +52,7 @@ const pubDate = data.pubDate ?? null;
    BASE
 ===================== */
 .post-card {
-  margin-bottom: 32px;
+  height: 100%;
 }
 
 .post-card-thumb img {
@@ -65,47 +61,59 @@ const pubDate = data.pubDate ?? null;
 }
 
 .post-card-title {
-  margin: 0 0 8px;
+  margin: 0 0 0.75rem;
   font-size: 1.15rem;
 }
 
 .post-card-desc {
-  margin: 0;
+  margin: 0 0 1.25rem;
   font-size: 0.95rem;
-  opacity: 0.85;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.post-card-button {
+  margin-top: auto;
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background: #6b5cff;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.post-card-button:hover {
+  opacity: 0.9;
 }
 
 .post-card-date {
   display: block;
-  margin-top: 6px;
+  margin-top: 0.75rem;
   font-size: 0.8rem;
   opacity: 0.6;
 }
 
 /* =====================
-   LIST VARIANT (HOMEPAGE)
+   LIST (HOMEPAGE)
 ===================== */
 .post-card--list {
   display: grid;
   grid-template-columns: 160px 1fr;
   gap: 16px;
-  align-items: start;
+  margin-bottom: 32px;
 }
 
-.post-card--list .post-card-thumb img {
-  border-radius: 4px;
+.post-card--list .post-card-button {
+  display: none;
 }
 
 /* =====================
-   GRID VARIANT (CATEGORY)
+   GRID (CATEGORY / ARCHIVE)
 ===================== */
 .post-card--grid {
   display: flex;
   flex-direction: column;
-}
-
-.post-card--grid .post-card-thumb {
-  margin-bottom: 12px;
 }
 
 .post-card--grid .post-card-thumb img {
@@ -117,5 +125,6 @@ const pubDate = data.pubDate ?? null;
 .post-card--grid .post-card-body {
   display: flex;
   flex-direction: column;
+  padding-top: 1rem;
 }
 </style>
