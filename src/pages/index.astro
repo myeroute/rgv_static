@@ -3,29 +3,25 @@ import { getCollection } from "astro:content";
 import PostCard from "../components/PostCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const posts = await getCollection("blog");
+const PAGE_SIZE = 8;
 
-const sortedPosts = posts
-  .filter((p) => p.data)
-  .sort((a, b) => {
-    const da = pDate(a);
-    const db = pDate(b);
-    return db - da;
-  });
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 
-function pDate(post) {
-  return post.data.pubDate
-    ? new Date(post.data.pubDate).getTime()
-    : 0;
-}
+const latestPosts = posts.slice(0, PAGE_SIZE);
 ---
 
 <BaseLayout sidebar="home">
   <section class="home-post-list">
-    {sortedPosts.map((post) => (
+    {latestPosts.map((post) => (
       <PostCard post={post} />
     ))}
   </section>
+
+  <nav class="pagination">
+    <a href="/page/2/">Older →</a>
+  </nav>
 </BaseLayout>
 
 <style>
@@ -33,5 +29,16 @@ function pDate(post) {
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 3rem;
+}
+
+.pagination a {
+  text-decoration: none;
+  font-weight: 500;
 }
 </style>
