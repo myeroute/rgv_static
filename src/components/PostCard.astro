@@ -1,7 +1,7 @@
 ---
 /**
- * PostCard – HOMEPAGE IMAGE SCALE FIX
- * - Homepage (list): larger thumbnail, no CTA
+ * PostCard – HOMEPAGE READ MORE ENABLED
+ * - Homepage (list): large image + Read More
  * - Category (grid): untouched
  */
 
@@ -66,7 +66,7 @@ const heroImage = data.heroImage ?? null;
 /* ===== TYPOGRAPHY ===== */
 .post-card-title {
   margin: 0 0 0.75rem;
-  font-size: 1.35rem; /* ⬅️ hơi lớn hơn cho homepage feel */
+  font-size: 1.35rem;
   line-height: 1.35;
   font-weight: 600;
 }
@@ -80,7 +80,7 @@ const heroImage = data.heroImage ?? null;
 }
 
 .post-card-desc {
-  margin: 0;
+  margin: 0 0 1.25rem;
   font-size: 1rem;
   line-height: 1.65;
   color: #444;
@@ -88,7 +88,6 @@ const heroImage = data.heroImage ?? null;
 
 /* ===== CTA ===== */
 .post-card-button {
-  margin-top: auto;
   align-self: flex-start;
   padding: 0.55rem 1.25rem;
   background: #6b5cff;
@@ -99,10 +98,14 @@ const heroImage = data.heroImage ?? null;
   white-space: nowrap;
 }
 
+.post-card-button:hover {
+  opacity: 0.9;
+}
+
 /* ===== LIST (HOMEPAGE) ===== */
 .post-card--list {
   display: grid;
-  grid-template-columns: 360px 1fr; /* 🔑 ảnh to lại */
+  grid-template-columns: 360px 1fr;
   gap: 28px;
   margin-bottom: 48px;
 }
@@ -111,10 +114,6 @@ const heroImage = data.heroImage ?? null;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 8px;
-}
-
-.post-card--list .post-card-button {
-  display: none; /* homepage không CTA */
 }
 
 /* ===== GRID (CATEGORY) – DO NOT TOUCH ===== */
