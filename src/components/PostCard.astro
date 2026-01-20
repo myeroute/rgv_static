@@ -1,8 +1,8 @@
 ---
 /**
- * PostCard – HOMEPAGE READ MORE ENABLED
- * - Homepage (list): large image + Read More
- * - Category (grid): untouched
+ * PostCard – WORDPRESS-STYLE LIST LAYOUT
+ * - Homepage: image height matches text + button
+ * - Category grid: untouched
  */
 
 const { post, variant = "list" } = Astro.props;
@@ -41,7 +41,7 @@ const heroImage = data.heroImage ?? null;
 </article>
 
 <style>
-/* ===== RESET LINK DEFAULT ===== */
+/* ===== RESET ===== */
 .post-card a {
   color: inherit;
   text-decoration: none;
@@ -52,12 +52,19 @@ const heroImage = data.heroImage ?? null;
   height: 100%;
 }
 
-.post-card-thumb img {
-  width: 100%;
-  display: block;
+/* ===== THUMB ===== */
+.post-card-thumb {
+  height: 100%;
 }
 
-/* ===== BODY FLEX ===== */
+.post-card-thumb img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ===== BODY ===== */
 .post-card-body {
   display: flex;
   flex-direction: column;
@@ -71,16 +78,12 @@ const heroImage = data.heroImage ?? null;
   font-weight: 600;
 }
 
-.post-card-title-link {
-  color: #111;
-}
-
 .post-card-title-link:hover {
   text-decoration: underline;
 }
 
 .post-card-desc {
-  margin: 0 0 1.25rem;
+  margin: 0 0 1.5rem;
   font-size: 1rem;
   line-height: 1.65;
   color: #444;
@@ -88,6 +91,7 @@ const heroImage = data.heroImage ?? null;
 
 /* ===== CTA ===== */
 .post-card-button {
+  margin-top: auto; /* 🔑 đẩy nút xuống đáy block */
   align-self: flex-start;
   padding: 0.55rem 1.25rem;
   background: #6b5cff;
@@ -95,7 +99,6 @@ const heroImage = data.heroImage ?? null;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 500;
-  white-space: nowrap;
 }
 
 .post-card-button:hover {
@@ -107,13 +110,13 @@ const heroImage = data.heroImage ?? null;
   display: grid;
   grid-template-columns: 360px 1fr;
   gap: 28px;
-  margin-bottom: 48px;
+  margin-bottom: 56px;
+  align-items: stretch; /* 🔑 hai cột cao bằng nhau */
 }
 
-.post-card--list .post-card-thumb img {
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: 8px;
+.post-card--list .post-card-thumb {
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 /* ===== GRID (CATEGORY) – DO NOT TOUCH ===== */
