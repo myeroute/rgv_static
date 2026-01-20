@@ -7,6 +7,9 @@ const posts = (await getCollection("blog")).map((p) => ({
   description: p.data.description,
   slug: p.slug,
 }));
+
+// Encode JSON posts to Base64
+const searchDataBase64 = Buffer.from(JSON.stringify(posts)).toString("base64");
 ---
 
 <BaseLayout
@@ -27,9 +30,9 @@ const posts = (await getCollection("blog")).map((p) => ({
     <ul id="search-results" class="search-results"></ul>
   </section>
 
-  <!-- SEARCH DATA – SAFE JSON -->
-  <script type="application/json" id="search-data">
-    {JSON.stringify(posts).replace(/</g, "\\u003c")}
+  <!-- SEARCH DATA BASE64 -->
+  <script type="application/json" id="search-data-base64">
+    {searchDataBase64}
   </script>
 
   <!-- SEARCH SCRIPT -->
@@ -37,11 +40,18 @@ const posts = (await getCollection("blog")).map((p) => ({
     (() => {
       const input = document.getElementById("search-input");
       const results = document.getElementById("search-results");
-      const dataEl = document.getElementById("search-data");
-
+      const dataEl = document.getElementById("search-data-base64");
       if (!input || !results || !dataEl) return;
 
-      const POSTS = JSON.parse(dataEl.textContent);
+      // Decode Base64 to string, then JSON.parse
+      let POSTS = [];
+      try {
+        const jsonString = atob(dataEl.textContent.trim());
+        POSTS = JSON.parse(jsonString);
+      } catch (err) {
+        console.error("Search data decode/parse error:", err);
+        return;
+      }
 
       function renderList(list) {
         results.innerHTML = "";
@@ -94,46 +104,32 @@ const posts = (await getCollection("blog")).map((p) => ({
       margin: 2rem auto 4rem;
       padding: 0 1rem;
     }
-
-    .search-page h1 {
-      margin-bottom: 1.5rem;
+    .search-results {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
     }
-
+    .search-results li {
+      margin-bottom: 1rem;
+    }
+    .search-results a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .search-results strong {
+      display: block;
+      font-size: 1.1rem;
+    }
+    .search-results .desc {
+      font-size: 0.9rem;
+      color: #555;
+    }
     #search-input {
       width: 100%;
       padding: 0.75rem;
       font-size: 1rem;
-      margin-bottom: 1.5rem;
       border: 1px solid #ccc;
       border-radius: 6px;
-    }
-
-    .search-results {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .search-results li {
-      margin-bottom: 1.25rem;
-    }
-
-    .search-results a {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .search-results strong {
-      display: block;
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .search-results .desc {
-      font-size: 0.9rem;
-      color: #555;
-      line-height: 1.4;
     }
   </style>
 </BaseLayout>
