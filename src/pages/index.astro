@@ -5,42 +5,27 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const posts = await getCollection("blog");
 
+const sortedPosts = posts
+  .filter((p) => p.data)
+  .sort((a, b) => {
+    const da = pDate(a);
+    const db = pDate(b);
+    return db - da;
+  });
+
 function pDate(post) {
   return post.data.pubDate
     ? new Date(post.data.pubDate).getTime()
     : 0;
 }
-
-const sortedPosts = posts
-  .filter((p) => p.data)
-  .sort((a, b) => pDate(b) - pDate(a));
-
-const PAGE_SIZE = 10;
-
-export async function getStaticPaths() {
-  return Astro.paginate(sortedPosts, {
-    pageSize: PAGE_SIZE,
-  });
-}
-
-const { page } = Astro.props;
 ---
 
 <BaseLayout sidebar="home">
   <section class="home-post-list">
-    {page.data.map((post) => (
+    {sortedPosts.map((post) => (
       <PostCard post={post} />
     ))}
   </section>
-
-  <nav class="pagination">
-    {page.url.prev && (
-      <a class="prev" href={page.url.prev}>← Newer</a>
-    )}
-    {page.url.next && (
-      <a class="next" href={page.url.next}>Older →</a>
-    )}
-  </nav>
 </BaseLayout>
 
 <style>
@@ -48,16 +33,5 @@ const { page } = Astro.props;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-}
-
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 3rem;
-}
-
-.pagination a {
-  text-decoration: none;
-  font-weight: 500;
 }
 </style>
