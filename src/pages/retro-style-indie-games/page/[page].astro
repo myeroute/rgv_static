@@ -1,0 +1,140 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { categories } from '../../../config/categories';
+
+/**
+ * STATIC PATHS
+ * Page 1 = /retro-style-indie-games/
+ * Page >= 2 = /retro-style-indie-games/page/[page]/
+ */
+export async function getStaticPaths() {
+  const POSTS_PER_PAGE = 9;
+  const category = categories['retro-style-indie-games'];
+
+  const allPosts = (await getCollection('blog'))
+    .filter((post) => post.data.category === category.slug)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
+
+  const paths = [];
+
+  // chỉ sinh page 2 trở đi
+  for (let page = 2; page <= totalPages; page++) {
+    paths.push({
+      params: { page: String(page) },
+      props: { page },
+    });
+  }
+
+  return paths;
+}
+
+const POSTS_PER_PAGE = 9;
+
+const { page } = Astro.props;
+const currentPage = Number(page);
+
+const category = categories['retro-style-indie-games'];
+
+const allPosts = (await getCollection('blog'))
+  .filter((post) => post.data.category === category.slug)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
+
+const start = (currentPage - 1) * POSTS_PER_PAGE;
+const end = start + POSTS_PER_PAGE;
+const posts = allPosts.slice(start, end);
+
+const prevPage =
+  currentPage === 2
+    ? '/retro-style-indie-games/'
+    : `/retro-style-indie-games/page/${currentPage - 1}/`;
+
+const nextPage =
+  currentPage < totalPages
+    ? `/retro-style-indie-games/page/${currentPage + 1}/`
+    : null;
+---
+
+<BaseLayout
+  title={`${category.title} – Page ${currentPage}`}
+  description={category.description}
+  sidebar={null}
+>
+  <section class="category-wrapper">
+    <header class="category-header">
+      <h1>{category.title}</h1>
+      <p class="category-description">
+        {category.description}
+      </p>
+    </header>
+
+    <section class="category-posts">
+      {posts.map((post) => (
+        <PostCard post={post} variant="grid" />
+      ))}
+    </section>
+
+    <nav class="pagination">
+      {prevPage && <a href={prevPage}>← Previous</a>}
+
+      <span class="pagination-info">
+        Page {currentPage} of {totalPages}
+      </span>
+
+      {nextPage && <a href={nextPage}>Next →</a>}
+    </nav>
+  </section>
+</BaseLayout>
+
+<style>
+.category-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+.category-header {
+  max-width: 720px;
+}
+
+.category-header h1 {
+  margin-bottom: 1rem;
+}
+
+.category-description {
+  line-height: 1.7;
+}
+
+.category-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 3rem 2.5rem;
+  margin-top: 3.5rem;
+}
+
+.pagination {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+.pagination-info {
+  opacity: 0.7;
+}
+</style>
