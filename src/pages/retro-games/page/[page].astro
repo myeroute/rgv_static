@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { categories } from '../../../config/categories';
+
+// ===== CONFIG =====
+const POSTS_PER_PAGE = 9;
+
+// ===== GET PAGE PARAM =====
+const { page } = Astro.params;
+const currentPage = Number(page);
+
+// Guard: page phải là số >= 2
+if (Number.isNaN(currentPage) || currentPage < 2) {
+  throw new Error('Invalid page number');
+}
+
+// ===== CATEGORY =====
+const category = categories['retro-games'];
+
+// ===== FETCH + FILTER POSTS =====
+const allPosts = (await getCollection('blog'))
+  .filter((post) => post.data.category === category.slug)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// ===== PAGINATION LOGIC =====
+const totalPosts = allPosts.length;
+const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+
+if (currentPage > totalPages) {
+  throw new Error('Page not found');
+}
+
+const start = (currentPage - 1) * POSTS_PER_PAGE;
+const end = start + POSTS_PER_PAGE;
+const posts = allPosts.slice(start, end);
+
+// ===== PREV / NEXT =====
+const prevPage =
+  currentPage === 2
+    ? '/retro-games/'
+    : `/retro-games/page/${currentPage - 1}/`;
+
+const nextPage =
+  currentPage < totalPages
+    ? `/retro-games/page/${currentPage + 1}/`
+    : null;
+---
+
+<BaseLayout
+  title={`${category.title} – Page ${currentPage}`}
+  description={category.description}
+  sidebar={null}
+>
+  <section class="category-wrapper">
+    <header class="category-header">
+      <h1>{category.title}</h1>
+      <p class="category-description">
+        {category.description}
+      </p>
+    </header>
+
+    <section class="category-posts">
+      {posts.map((post) => (
+        <PostCard post={post} variant="grid" />
+      ))}
+    </section>
+
+    <!-- PAGINATION -->
+    <nav class="pagination">
+      {prevPage && (
+        <a class="pagination-prev" href={prevPage}>
+          ← Previous
+        </a>
+      )}
+
+      <span class="pagination-info">
+        Page {currentPage} of {totalPages}
+      </span>
+
+      {nextPage && (
+        <a class="pagination-next" href={nextPage}>
+          Next →
+        </a>
+      )}
+    </nav>
+  </section>
+</BaseLayout>
+
+<style>
+.category-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+.category-header {
+  max-width: 720px;
+}
+
+.category-header h1 {
+  margin-bottom: 1rem;
+}
+
+.category-description {
+  line-height: 1.7;
+}
+
+/* GRID */
+.category-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 3rem 2.5rem;
+  margin-top: 3.5rem;
+}
+
+/* PAGINATION */
+.pagination {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #333;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+.pagination-info {
+  opacity: 0.7;
+}
+</style>
