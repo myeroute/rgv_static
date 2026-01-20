@@ -1,19 +1,19 @@
 ---
 /**
- * PostCard – SAFE VERSION
- * - KHÔNG throw error
- * - KHÔNG giả định đủ field
- * - Dùng được cho: index, category, archive
+ * PostCard – VARIANT VERSION
+ * - list (default): homepage, flow đọc
+ * - grid: category, archive
+ * - KHÔNG phát minh component
+ * - KHÔNG đoán context
  */
 
-const { post } = Astro.props;
+const { post, variant = "list" } = Astro.props;
 
-// Guard mềm – nếu không có post thì render rỗng
+// Guard mềm
 if (!post) {
   return null;
 }
 
-// Chuẩn Astro content collection
 const slug = post.slug ?? "";
 const data = post.data ?? {};
 
@@ -23,7 +23,7 @@ const heroImage = data.heroImage ?? null;
 const pubDate = data.pubDate ?? null;
 ---
 
-<article class="post-card">
+<article class={`post-card post-card--${variant}`}>
   {heroImage && (
     <a href={`/${slug}/`} class="post-card-thumb">
       <img
@@ -52,28 +52,27 @@ const pubDate = data.pubDate ?? null;
 </article>
 
 <style>
+/* =====================
+   BASE
+===================== */
 .post-card {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .post-card-thumb img {
   width: 100%;
-  height: auto;
   display: block;
 }
 
 .post-card-title {
   margin: 0 0 8px;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
 .post-card-desc {
   margin: 0;
-  opacity: 0.85;
   font-size: 0.95rem;
+  opacity: 0.85;
 }
 
 .post-card-date {
@@ -81,5 +80,42 @@ const pubDate = data.pubDate ?? null;
   margin-top: 6px;
   font-size: 0.8rem;
   opacity: 0.6;
+}
+
+/* =====================
+   LIST VARIANT (HOMEPAGE)
+===================== */
+.post-card--list {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.post-card--list .post-card-thumb img {
+  border-radius: 4px;
+}
+
+/* =====================
+   GRID VARIANT (CATEGORY)
+===================== */
+.post-card--grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card--grid .post-card-thumb {
+  margin-bottom: 12px;
+}
+
+.post-card--grid .post-card-thumb img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.post-card--grid .post-card-body {
+  display: flex;
+  flex-direction: column;
 }
 </style>
